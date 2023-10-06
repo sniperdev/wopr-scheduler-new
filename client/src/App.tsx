@@ -1,10 +1,13 @@
 import './App.css'
+import {Route, Routes} from "react-router-dom";
+import LoginPage from "./Pages/LoginPage.tsx";
 
 function App() {
 
   return (
-    <div>
-    </div>
+    <Routes>
+      <Route path="/" element={<LoginPage/>}></Route>
+    </Routes>
   )
 }
 
