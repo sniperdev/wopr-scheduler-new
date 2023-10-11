@@ -1,7 +1,7 @@
 import './LoginPage.css'
 import {useState} from "react";
 import SignInFormComponent from "./components/SingInFormComponent.tsx";
-import SignUpFormComponent from "./components/SignUpFormComponent.tsx";
+import RegistrationFormComponent from "./components/RegistrationFormComponent.tsx";
 
 const LoginPage = () => {
 	const [login, setLogin] = useState(true)
@@ -13,7 +13,7 @@ const LoginPage = () => {
 	return (
 		<div className="d-flex align-items-center justify-content-center vw-100 vh-100">
 			{
-				login?<SignInFormComponent changeLoginForm={changeLoginForm}/>:<SignUpFormComponent changeLoginForm={changeLoginForm}/>
+				login?<SignInFormComponent changeLoginForm={changeLoginForm}/>:<RegistrationFormComponent changeLoginForm={changeLoginForm}/>
 			}
 		</div>
 	);
