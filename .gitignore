@@ -7,7 +7,6 @@ client/yarn-error.log*
 client/pnpm-debug.log*
 client/lerna-debug.log*
 
-client/node_modules
 client/dist
 client/dist-ssr
 client/*.local
@@ -23,3 +22,5 @@ client/*.ntvs*
 client/*.njsproj
 client/*.sln
 client/*.sw?
+
+*/node_modules
