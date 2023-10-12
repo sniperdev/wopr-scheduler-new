@@ -1,5 +1,6 @@
 import { Plus, DashLg as Minus } from 'react-bootstrap-icons';
 import { useState } from 'react';
+import {Shifts} from "../../../utils/interfaces/ShiftsInterface.ts";
 
 const WorkScheduleComponent = () => {
 	const [shifts, setShifts] = useState<Shifts[]>([{ name: '', from: '', to: '' }, { name: '', from: '', to: '' }]);

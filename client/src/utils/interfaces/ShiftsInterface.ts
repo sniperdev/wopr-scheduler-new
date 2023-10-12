@@ -1,4 +1,4 @@
-interface Shifts {
+export interface Shifts {
 	name: string;
 	from: string;
 	to: string;
