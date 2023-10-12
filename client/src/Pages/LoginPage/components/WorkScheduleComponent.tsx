@@ -2,7 +2,7 @@ import { Plus, DashLg as Minus } from 'react-bootstrap-icons';
 import { useState } from 'react';
 
 const WorkScheduleComponent = () => {
-	const [shifts, setShifts] = useState<Shifts[]>([{ name: '', from: '', to: '' }]);
+	const [shifts, setShifts] = useState<Shifts[]>([{ name: '', from: '', to: '' }, { name: '', from: '', to: '' }]);
 
 	const addTimeSpan = () => {
 		setShifts([...shifts, { name: '', from: '', to: '' }]);
