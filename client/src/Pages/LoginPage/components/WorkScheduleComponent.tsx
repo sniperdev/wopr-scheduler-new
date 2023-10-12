@@ -1,4 +1,4 @@
-import {Plus} from 'react-bootstrap-icons'
+import {Plus, DashLg as Minus} from 'react-bootstrap-icons'
 import {useState} from "react";
 
 
@@ -8,6 +8,10 @@ const WorkScheduleComponent = () => {
 
 	const addTimeSpan = ()=>{
 		setShifts([...shifts, {name:"",from:"",to:""}])
+	}
+
+	const removeTimeSpan = () =>{
+		setShifts(shifts.slice(0,shifts.length-1))
 	}
 
 	return (
@@ -25,8 +29,9 @@ const WorkScheduleComponent = () => {
 					<input type="time" className="form-control col" value={element.to}/>
 				</div>
 			)}
-			<div className="row row-cols-3">
+			<div className="row row-cols-3 gap-2">
 				<button className="btn btn-primary" type="button" onClick={addTimeSpan}><Plus className="fs-3"/></button>
+				<button className="btn btn-outline-danger" type="button" onClick={removeTimeSpan}><Minus className="fs-3"/></button>
 			</div>
 		</form>
 	);
