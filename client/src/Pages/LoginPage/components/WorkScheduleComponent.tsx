@@ -29,9 +29,12 @@ const WorkScheduleComponent = () => {
 					<input type="time" className="form-control col" value={element.to}/>
 				</div>
 			)}
-			<div className="row row-cols-3 gap-2">
-				<button className="btn btn-primary" type="button" onClick={addTimeSpan}><Plus className="fs-3"/></button>
-				<button className="btn btn-outline-danger" type="button" onClick={removeTimeSpan}><Minus className="fs-3"/></button>
+			<div className="row row-cols-sm-6 gap-2">
+				<button className="btn btn-success" type="button" onClick={addTimeSpan}><Plus className="fs-3"/></button>
+				<button className="btn btn-danger" type="button" onClick={removeTimeSpan}><Minus className="fs-3"/></button>
+			</div>
+			<div className="row">
+				<button className="btn btn-primary">Dalej</button>
 			</div>
 		</form>
 	);
