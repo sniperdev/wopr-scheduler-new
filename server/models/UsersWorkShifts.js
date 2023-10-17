@@ -2,7 +2,7 @@ const sequelize = require("../config/sequelize");
 const { DataTypes } = require("sequelize");
 const Users = require("./Users");
 
-const UsersWorkShifts = sequelize.define("users", {
+const UsersWorkShifts = sequelize.define("UsersWorkShifts", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -14,7 +14,7 @@ const UsersWorkShifts = sequelize.define("users", {
   end: {
     type: DataTypes.STRING,
   },
-  zmiana: {
+  shift: {
     type: DataTypes.INTEGER,
   },
   createdAt: {
