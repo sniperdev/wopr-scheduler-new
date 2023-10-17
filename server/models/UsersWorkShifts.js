@@ -28,7 +28,7 @@ const UsersWorkShifts = sequelize.define("UsersWorkShifts", {
 });
 
 UsersWorkShifts.belongsTo(Users, {
-  foreignKey: "id",
+  foreignKey: "user_id",
   onDelete: "CASCADE",
 });
 

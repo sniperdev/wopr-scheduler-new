@@ -23,9 +23,18 @@ app.listen(PORT, () => {
 app.use(Router);
 
 const mysqlConnection = require("./config/database");
+
 mysqlConnection.connect((err) => {
   if (!err) {
     console.log("Connected to database");
-  } else console.log("Connected to database ", err);
+  } else {
+    console.log("Connected to database ", err);
+  }
 });
 mysqlConnection.end();
+
+// const sequelize = require("./config/sequelize");
+// const Users = require("./models/Users");
+// const UsersWorkShifts = require("./models/UsersWorkShifts");
+// const ScheduledWorkShifts = require("./models/ScheduledWorkShifts");
+// sequelize.sync({ force: true });

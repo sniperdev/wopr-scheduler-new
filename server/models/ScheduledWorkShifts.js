@@ -28,7 +28,7 @@ const ScheduledWorkShifts = sequelize.define("ScheduledWorkShifts", {
 });
 
 ScheduledWorkShifts.belongsTo(Users, {
-  foreignKey: "id",
+  foreignKey: "user_id",
 });
 
 module.exports = ScheduledWorkShifts;
