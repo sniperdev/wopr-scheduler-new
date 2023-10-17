@@ -33,7 +33,7 @@ const Users = sequelize.define("Users", {
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,
-    default: false,
+    defaultValue: false,
   },
   createdAt: {
     field: "created_at",
