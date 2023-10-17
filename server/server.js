@@ -25,3 +25,4 @@ mysqlConnection.connect((err) => {
     console.log("Connected to database");
   } else console.log("Connected to database ", err);
 });
+mysqlConnection.end();
