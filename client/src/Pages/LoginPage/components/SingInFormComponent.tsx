@@ -1,17 +1,50 @@
 import React from "react";
+import { useMutation } from "@tanstack/react-query";
 
 interface Props {
   changeLoginForm: () => void;
 }
 
+interface IMutation {
+  email: string;
+  password: string;
+}
+
 const SignInFormComponent = ({ changeLoginForm }: Props) => {
+  const login = async (loginParameters: IMutation) => {
+    return fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(loginParameters),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Błąd HTTP: " + response.json());
+      }
+      return response.json();
+    });
+  };
+
+  const saveJWT = () => {
+    const token = loginMutation.data.jwt;
+    localStorage.setItem("token", token);
+  };
+
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: saveJWT,
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    loginMutation.mutateAsync({ email: email, password: password });
   };
+  if (loginMutation.data) console.log(loginMutation.data.jwt);
   return (
     <>
       <form
