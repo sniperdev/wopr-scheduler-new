@@ -13,7 +13,11 @@ app.use(
   }),
 );
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 
 const PORT = process.env.EXPRESS_PORT;
 app.listen(PORT, () => {
