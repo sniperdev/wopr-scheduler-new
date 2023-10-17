@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 require("dotenv/config");
+const Router = require("./routes/routes");
 
 const app = express();
 
@@ -18,6 +19,8 @@ const PORT = process.env.EXPRESS_PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}. (http://localhost:${PORT})`);
 });
+
+app.use(Router);
 
 const mysqlConnection = require("./config/database");
 mysqlConnection.connect((err) => {
