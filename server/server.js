@@ -33,6 +33,8 @@ mysqlConnection.connect((err) => {
 });
 mysqlConnection.end();
 
+// Syncing database tabels
+//
 // const sequelize = require("./config/sequelize");
 // const Users = require("./models/Users");
 // const UsersWorkShifts = require("./models/UsersWorkShifts");
