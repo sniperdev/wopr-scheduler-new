@@ -14,14 +14,14 @@ const registerSchema = Joi.object({
 
 const registerUser = async (req, res) => {
   const { error } = registerSchema.validate(req.body);
-  if (error) return res.status(400).send(error);
+  if (error) return res.status(400).json(error);
 
   const emailExist = await Users.findOne({
     where: { email: req.body.email },
   });
 
   if (emailExist)
-    return res.status(400).send({
+    return res.status(400).json({
       message: "Podany adres email już istnieje",
     });
 

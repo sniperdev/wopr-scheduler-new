@@ -12,27 +12,54 @@ interface IMutation {
 
 const SignInFormComponent = ({ changeLoginForm }: Props) => {
   const login = async (loginParameters: IMutation) => {
-    return fetch("http://localhost:3000/login", {
+    fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
       body: JSON.stringify(loginParameters),
     }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Błąd HTTP: " + response.json());
-      }
       return response.json();
+    }).catch(error=>{
+      if(error.response){
+        const {status,data} = error.response;
+        const errorMessage = data.message;
+        console.log(`Status Code: ${status}`);
+        console.log(`Error Message: ${errorMessage}`);
+      }
     });
   };
 
+  const loginNew = async (loginParameters: IMutation)=>{
+    try{
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify(loginParameters),
+      });
+      if(response.ok){
+
+      }
+      else{
+        const data = await response.json();
+        console.log(`Status Code: ${response.status}`);
+        console.log(`Error Message: ${data.message}`);
+      }
+    } catch (error){
+      console.error('Network error or other issue', error)
+    }
+  }
   const saveJWT = () => {
-    const token = loginMutation.data.jwt;
-    localStorage.setItem("token", token);
+    if(loginMutation.data) {
+      const token = loginMutation.data.jwt;
+      localStorage.setItem("token", token);
+    }
   };
 
   const loginMutation = useMutation({
-    mutationFn: login,
+    mutationFn: loginNew,
     onSuccess: saveJWT,
   });
 
