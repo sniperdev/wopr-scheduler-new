@@ -1,5 +1,6 @@
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 interface Props {
   changeLoginForm: () => void;
@@ -12,55 +13,33 @@ interface IMutation {
 
 const SignInFormComponent = ({ changeLoginForm }: Props) => {
   const login = async (loginParameters: IMutation) => {
-    fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-      body: JSON.stringify(loginParameters),
-    }).then((response) => {
-      return response.json();
-    }).catch(error=>{
-      if(error.response){
-        const {status,data} = error.response;
-        const errorMessage = data.message;
-        console.log(`Status Code: ${status}`);
-        console.log(`Error Message: ${errorMessage}`);
-      }
-    });
+    await axios
+      .post("http://localhost:3000/login", {
+        email: loginParameters.email,
+        password: loginParameters.password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        return response.data;
+      });
   };
 
-  const loginNew = async (loginParameters: IMutation)=>{
-    try{
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-        body: JSON.stringify(loginParameters),
-      });
-      if(response.ok){
+  const saveJWT = async (data: { jwt: string }) => {
+    console.log("ITAK SIĘ WYKONAŁO");
 
-      }
-      else{
-        const data = await response.json();
-        console.log(`Status Code: ${response.status}`);
-        console.log(`Error Message: ${data.message}`);
-      }
-    } catch (error){
-      console.error('Network error or other issue', error)
-    }
-  }
-  const saveJWT = () => {
-    if(loginMutation.data) {
-      const token = loginMutation.data.jwt;
+    console.log(data);
+    if (data) {
+      const token: string = data.jwt;
       localStorage.setItem("token", token);
     }
   };
 
   const loginMutation = useMutation({
-    mutationFn: loginNew,
-    onSuccess: saveJWT,
+    mutationFn: login,
+    onSuccess: async (data) => saveJWT(data),
+    onError: (err) => {
+      console.log("TEST" + err.message);
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,9 +48,8 @@ const SignInFormComponent = ({ changeLoginForm }: Props) => {
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    loginMutation.mutateAsync({ email: email, password: password });
+    loginMutation.mutate({ email: email, password: password });
   };
-  if (loginMutation.data) console.log(loginMutation.data.jwt);
   return (
     <>
       <form
