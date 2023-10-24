@@ -19,7 +19,7 @@ const RegistrationFormComponent = ({changeLoginForm}:Props) => {
 		switch (currentRegistrationStep) {
 			case 0: return <LoginInformationComponent setStep={setStep} changeLoginForm={changeLoginForm}/>
 			case 1: return <PersonalInfoComponent setStep={setStep}/>
-			case 2: return <WorkScheduleComponent/>
+			case 2: return <WorkScheduleComponent setStep={setStep}/>
 		}
 	}
 

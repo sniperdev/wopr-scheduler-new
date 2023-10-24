@@ -1,8 +1,9 @@
 import { Plus, DashLg as Minus } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import {Shifts} from "../../../utils/interfaces/ShiftsInterface.ts";
+import {Steps} from "../../../utils/interfaces/StepsInterface.ts";
 
-const WorkScheduleComponent = () => {
+const WorkScheduleComponent = ({setStep}: Steps) => {
 	const [shifts, setShifts] = useState<Shifts[]>([{ name: '', from: '', to: '' }, { name: '', from: '', to: '' }]);
 
 	const addTimeSpan = () => {
@@ -58,8 +59,11 @@ const WorkScheduleComponent = () => {
 					<Minus className="fs-3" />
 				</button>
 			</div>
-			<div className="row">
-				<button className="btn btn-primary" type="button">
+			<div className="row gap-2">
+				<button onClick={()=>setStep(1)} className="btn btn-secondary col" type="button">
+					Wróć
+				</button>
+				<button className="btn btn-primary col" type="button">
 					Dalej
 				</button>
 			</div>
