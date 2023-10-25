@@ -13,21 +13,17 @@ interface IMutation {
 
 const SignInFormComponent = ({ changeLoginForm }: Props) => {
   const login = async (loginParameters: IMutation) => {
-    await axios
+    return await axios
       .post("http://localhost:3000/login", {
         email: loginParameters.email,
         password: loginParameters.password,
       })
       .then((response) => {
-        console.log(response.data);
         return response.data;
       });
   };
 
   const saveJWT = async (data: { jwt: string }) => {
-    console.log("ITAK SIĘ WYKONAŁO");
-
-    console.log(data);
     if (data) {
       const token: string = data.jwt;
       localStorage.setItem("token", token);
