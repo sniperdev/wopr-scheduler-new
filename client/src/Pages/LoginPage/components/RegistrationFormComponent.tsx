@@ -8,11 +8,27 @@ interface Props {
   changeLoginForm: () => void;
 }
 
+interface IRegistrationInfo {
+  email: string;
+  password: string;
+  name: string;
+}
+
 const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
   const [currentRegistrationStep, setCurrentRegistrationStep] = useState(0);
 
+  const [registrationInfo, setRegistrationInfo] = useState<IRegistrationInfo>({
+    email: "",
+    password: "",
+    name: "",
+  });
+
   const setStep = (step: number) => {
     return setCurrentRegistrationStep(step);
+  };
+
+  const handleRegistrationInfo = (values: object) => {
+    setRegistrationInfo({ ...registrationInfo, ...values });
   };
 
   const renderStep = (currentRegistrationStep: number) => {
@@ -22,6 +38,7 @@ const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
           <LoginInformationComponent
             setStep={setStep}
             changeLoginForm={changeLoginForm}
+            handleRegistrationInfo={handleRegistrationInfo}
           />
         );
       case 1:

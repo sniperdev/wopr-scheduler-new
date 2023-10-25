@@ -1,10 +1,10 @@
 import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 import React, { useState } from "react";
 import Joi from "joi";
-import { TypeH2 } from "react-bootstrap-icons";
 
 interface Props {
   changeLoginForm: () => void;
+  handleRegistrationInfo: (value: object) => void;
 }
 
 interface IUser {
@@ -25,6 +25,7 @@ const loginSchema = Joi.object({
 const LoginInformationComponent = ({
   setStep,
   changeLoginForm,
+  handleRegistrationInfo,
 }: Steps & Props) => {
   const [loginInformation, setLoginInformation] = useState<IUser>({
     email: "",
@@ -47,6 +48,10 @@ const LoginInformationComponent = ({
     if (error) {
       setValidationError(error.message);
     } else {
+      handleRegistrationInfo({
+        email: loginInformation.email,
+        password: loginInformation.password,
+      });
       setStep(1);
     }
   };
