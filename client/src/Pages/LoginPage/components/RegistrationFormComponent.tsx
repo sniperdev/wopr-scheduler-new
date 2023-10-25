@@ -11,16 +11,22 @@ interface Props {
 interface IRegistrationInfo {
   email: string;
   password: string;
+  company: string;
   name: string;
+  surname: string;
+  phone: string;
 }
 
 const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
   const [currentRegistrationStep, setCurrentRegistrationStep] = useState(0);
 
   const [registrationInfo, setRegistrationInfo] = useState<IRegistrationInfo>({
+    company: "",
     email: "",
-    password: "",
     name: "",
+    password: "",
+    phone: "",
+    surname: "",
   });
 
   const setStep = (step: number) => {
@@ -42,7 +48,12 @@ const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
           />
         );
       case 1:
-        return <PersonalInfoComponent setStep={setStep} />;
+        return (
+          <PersonalInfoComponent
+            setStep={setStep}
+            handleRegistrationInfo={handleRegistrationInfo}
+          />
+        );
       case 2:
         return <WorkScheduleComponent setStep={setStep} />;
       case 3:

@@ -44,7 +44,7 @@ const LoginInformationComponent = ({
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { error, value } = loginSchema.validate(loginInformation);
+    const { error } = loginSchema.validate(loginInformation);
     if (error) {
       setValidationError(error.message);
     } else {
