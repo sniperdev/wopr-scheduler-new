@@ -1,6 +1,7 @@
 import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 import React, { useState } from "react";
 import Joi from "joi";
+import { TypeH2 } from "react-bootstrap-icons";
 
 interface Props {
   changeLoginForm: () => void;
@@ -30,22 +31,23 @@ const LoginInformationComponent = ({
     password: "",
     repeatPassword: "",
   });
+  const [validationError, setValidationError] = useState<string>("");
 
   const handleInputChange = (field: string, value: string) => {
     setLoginInformation((prevLoginInfo) => ({
       ...prevLoginInfo,
       [field]: value,
     }));
+    setValidationError("");
   };
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { error, value } = loginSchema.validate(loginInformation);
     if (error) {
-      console.log(error);
+      setValidationError(error.message);
     } else {
-      console.log(value);
-      setStep(2);
+      setStep(1);
     }
   };
 
@@ -54,6 +56,7 @@ const LoginInformationComponent = ({
       onSubmit={(event) => handleSubmitForm(event)}
       className="login-page-form d-flex flex-column gap-2 w-25"
     >
+      {validationError.length == 0 ? null : <p>Wprowadź poprawne dane</p>}
       <input
         type="text"
         className="form-control"
