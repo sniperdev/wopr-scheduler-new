@@ -1,9 +1,16 @@
 import { Plus, DashLg as Minus } from "react-bootstrap-icons";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Shifts } from "../../../utils/interfaces/ShiftsInterface.ts";
 import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 
-const WorkScheduleComponent = ({ setStep }: Steps) => {
+interface Props {
+  handleRegistrationInfo: (value: object) => void;
+}
+
+const WorkScheduleComponent = ({
+  setStep,
+  handleRegistrationInfo,
+}: Steps & Props) => {
   const [shifts, setShifts] = useState<Shifts[]>([
     { name: "", from: "", to: "" },
     { name: "", from: "", to: "" },
@@ -27,8 +34,19 @@ const WorkScheduleComponent = ({ setStep }: Steps) => {
     setShifts(updatedShifts);
   };
 
+  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleRegistrationInfo({
+      shifts: shifts,
+    });
+    setStep(3);
+  };
+
   return (
-    <form className="login-page-form d-flex flex-column gap-2 w-25">
+    <form
+      onSubmit={handleSubmitForm}
+      className="login-page-form d-flex flex-column gap-2 w-25"
+    >
       <p className="text-center fw-bold">Wpisz godziny i nazwy zmian</p>
       <div className="row">
         <p className="col">Nazwa zmiany</p>
@@ -42,18 +60,21 @@ const WorkScheduleComponent = ({ setStep }: Steps) => {
             className="form-control col"
             value={element.name}
             onChange={(e) => handleInputChange(index, "name", e.target.value)}
+            required
           />
           <input
             type="time"
             className="form-control col"
             value={element.from}
             onChange={(e) => handleInputChange(index, "from", e.target.value)}
+            required
           />
           <input
             type="time"
             className="form-control col"
             value={element.to}
             onChange={(e) => handleInputChange(index, "to", e.target.value)}
+            required
           />
         </div>
       ))}
@@ -77,11 +98,7 @@ const WorkScheduleComponent = ({ setStep }: Steps) => {
         >
           Wróć
         </button>
-        <button
-          onClick={() => setStep(3)}
-          className="btn btn-primary col"
-          type="button"
-        >
+        <button className="btn btn-primary col" type="submit">
           Dalej
         </button>
       </div>

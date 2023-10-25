@@ -69,13 +69,13 @@ const UsersFormComponent = ({ setStep }: Steps) => {
       </div>
       <div className="row gap-2">
         <button
-          onClick={() => setStep(1)}
+          onClick={() => setStep(2)}
           className="btn btn-secondary col"
           type="button"
         >
           Wróć
         </button>
-        <button className="btn btn-primary col" type="button">
+        <button className="btn btn-primary col" type="submit">
           Dalej
         </button>
       </div>

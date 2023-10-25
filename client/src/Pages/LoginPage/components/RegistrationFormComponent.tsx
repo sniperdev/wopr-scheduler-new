@@ -15,6 +15,7 @@ interface IRegistrationInfo {
   name: string;
   surname: string;
   phone: string;
+  shifts: string[];
 }
 
 const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
@@ -27,6 +28,7 @@ const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
     password: "",
     phone: "",
     surname: "",
+    shifts: [],
   });
 
   const setStep = (step: number) => {
@@ -55,7 +57,12 @@ const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
           />
         );
       case 2:
-        return <WorkScheduleComponent setStep={setStep} />;
+        return (
+          <WorkScheduleComponent
+            setStep={setStep}
+            handleRegistrationInfo={handleRegistrationInfo}
+          />
+        );
       case 3:
         return <UsersFormComponent setStep={setStep} />;
     }
