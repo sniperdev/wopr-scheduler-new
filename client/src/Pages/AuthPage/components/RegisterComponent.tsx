@@ -8,7 +8,7 @@ interface Props {
   changeLoginForm: () => void;
 }
 
-interface IRegistrationInfo {
+interface RegistrationInfo {
   email: string;
   password: string;
   company: string;
@@ -21,7 +21,7 @@ interface IRegistrationInfo {
 const RegisterComponent = ({ changeLoginForm }: Props) => {
   const [currentRegistrationStep, setCurrentRegistrationStep] = useState(0);
 
-  const [registrationInfo, setRegistrationInfo] = useState<IRegistrationInfo>({
+  const [registrationInfo, setRegistrationInfo] = useState<RegistrationInfo>({
     company: "",
     email: "",
     name: "",
