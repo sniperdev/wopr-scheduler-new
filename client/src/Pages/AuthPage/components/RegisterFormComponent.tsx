@@ -7,7 +7,7 @@ interface Props {
   handleRegistrationInfo: (value: object) => void;
 }
 
-interface IUser {
+interface User {
   email: string;
   password: string;
   repeatPassword: string;
@@ -27,23 +27,21 @@ const RegisterFormComponent = ({
   changeLoginForm,
   handleRegistrationInfo,
 }: Steps & Props) => {
-  const [loginInformation, setLoginInformation] = useState<IUser>({
+  const [loginInformation, setLoginInformation] = useState<User>({
     email: "",
     password: "",
     repeatPassword: "",
   });
   const [validationError, setValidationError] = useState<string>("");
 
-  const handleInputChange = (field: string, value: string) => {
-    setLoginInformation((prevLoginInfo) => ({
-      ...prevLoginInfo,
-      [field]: value,
-    }));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginInformation({ ...loginInformation, [name]: value });
     setValidationError("");
   };
 
-  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const { error } = loginSchema.validate(loginInformation);
     if (error) {
       setValidationError(error.message);
@@ -58,29 +56,30 @@ const RegisterFormComponent = ({
 
   return (
     <form
-      onSubmit={(event) => handleSubmitForm(event)}
+      onSubmit={handleSubmitForm}
       className="login-page-form d-flex flex-column gap-2 w-25"
     >
-      {validationError.length == 0 ? null : <p>Wprowadź poprawne dane</p>}
+      {validationError && <p>Wprowadź poprawne dane</p>}
       <input
         type="text"
         className="form-control"
         placeholder="Adres e-mail"
-        onChange={(event) => handleInputChange("email", event.target.value)}
+        name="email"
+        onChange={handleInputChange}
       />
       <input
         type="password"
         className="form-control"
         placeholder="Hasło"
-        onChange={(event) => handleInputChange("password", event.target.value)}
+        name="password"
+        onChange={handleInputChange}
       />
       <input
         type="password"
         className="form-control"
         placeholder="Powtórz hasło"
-        onChange={(event) =>
-          handleInputChange("repeatPassword", event.target.value)
-        }
+        name="repeatPassword"
+        onChange={handleInputChange}
       />
       <button type="submit" className="btn btn-primary">
         Zarejestruj się
