@@ -36,9 +36,7 @@ const WorkShiftFormComponent = ({
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleRegistrationInfo({
-      shifts: shifts,
-    });
+    handleRegistrationInfo(shifts);
     setStep(3);
   };
 
