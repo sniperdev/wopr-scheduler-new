@@ -1,5 +1,5 @@
-export interface Shifts {
-	name: string;
-	from: string;
-	to: string;
+export interface WorkShifts {
+  name: string;
+  from: string;
+  to: string;
 }

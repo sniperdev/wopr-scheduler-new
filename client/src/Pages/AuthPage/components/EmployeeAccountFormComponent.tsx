@@ -1,17 +1,17 @@
 import { DashLg as Minus, Plus } from "react-bootstrap-icons";
 import { useState } from "react";
-import { Users } from "../../../utils/interfaces/UsersInterface.ts";
+import { Employee } from "../../../utils/interfaces/EmployeeInterface.ts";
 import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 
 const EmployeeAccountFormComponent = ({ setStep }: Steps) => {
-  const [users, setUsers] = useState<Users[]>([
+  const [users, setUsers] = useState<Employee[]>([
     { name: "", surname: "", email: "" },
     { name: "", surname: "", email: "" },
   ]);
 
   const handleInputChange = (
     index: number,
-    field: keyof Users,
+    field: keyof Employee,
     value: string,
   ) => {
     const updatedShifts = [...users];

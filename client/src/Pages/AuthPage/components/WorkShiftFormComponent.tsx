@@ -1,6 +1,6 @@
 import { Plus, DashLg as Minus } from "react-bootstrap-icons";
 import React, { useState } from "react";
-import { Shifts } from "../../../utils/interfaces/ShiftsInterface.ts";
+import { WorkShifts } from "../../../utils/interfaces/WorkShiftsInterface.ts";
 import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 
 interface Props {
@@ -11,7 +11,7 @@ const WorkShiftFormComponent = ({
   setStep,
   handleRegistrationInfo,
 }: Steps & Props) => {
-  const [shifts, setShifts] = useState<Shifts[]>([
+  const [shifts, setShifts] = useState<WorkShifts[]>([
     { name: "", from: "", to: "" },
     { name: "", from: "", to: "" },
   ]);
@@ -26,7 +26,7 @@ const WorkShiftFormComponent = ({
 
   const handleInputChange = (
     index: number,
-    field: keyof Shifts,
+    field: keyof WorkShifts,
     value: string,
   ) => {
     const updatedShifts = [...shifts];
