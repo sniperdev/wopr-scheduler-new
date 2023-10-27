@@ -15,7 +15,7 @@ const personalInfoSchema = Joi.object({
     .pattern(/^[0-9]+$/),
 });
 
-const PersonalInfoComponent = ({
+const PersonalInfoFormComponent = ({
   setStep,
   handleRegistrationInfo,
 }: Steps & Props) => {
@@ -99,4 +99,4 @@ const PersonalInfoComponent = ({
   );
 };
 
-export default PersonalInfoComponent;
+export default PersonalInfoFormComponent;

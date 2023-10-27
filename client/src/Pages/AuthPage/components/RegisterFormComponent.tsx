@@ -22,7 +22,7 @@ const loginSchema = Joi.object({
   repeatPassword: Joi.ref("password"),
 });
 
-const LoginInformationComponent = ({
+const RegisterFormComponent = ({
   setStep,
   changeLoginForm,
   handleRegistrationInfo,
@@ -97,4 +97,4 @@ const LoginInformationComponent = ({
   );
 };
 
-export default LoginInformationComponent;
+export default RegisterFormComponent;

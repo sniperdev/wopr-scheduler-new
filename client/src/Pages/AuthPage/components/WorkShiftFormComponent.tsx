@@ -7,7 +7,7 @@ interface Props {
   handleRegistrationInfo: (value: object) => void;
 }
 
-const WorkScheduleComponent = ({
+const WorkShiftFormComponent = ({
   setStep,
   handleRegistrationInfo,
 }: Steps & Props) => {
@@ -106,4 +106,4 @@ const WorkScheduleComponent = ({
   );
 };
 
-export default WorkScheduleComponent;
+export default WorkShiftFormComponent;

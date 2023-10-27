@@ -1,8 +1,8 @@
 import { useState } from "react";
-import PersonalInfoComponent from "./PersonalInfoComponent.tsx";
-import LoginInformationComponent from "./LoginInformationComponent.tsx";
-import WorkScheduleComponent from "./WorkScheduleComponent.tsx";
-import UsersFormComponent from "./UsersFormComponent.tsx";
+import PersonalInfoFormComponent from "./PersonalInfoFormComponent.tsx";
+import RegisterFormComponent from "./RegisterFormComponent.tsx";
+import WorkShiftFormComponent from "./WorkShiftFormComponent.tsx";
+import EmployeeAccountFormComponent from "./EmployeeAccountFormComponent.tsx";
 
 interface Props {
   changeLoginForm: () => void;
@@ -18,7 +18,7 @@ interface IRegistrationInfo {
   shifts: string[];
 }
 
-const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
+const RegisterComponent = ({ changeLoginForm }: Props) => {
   const [currentRegistrationStep, setCurrentRegistrationStep] = useState(0);
 
   const [registrationInfo, setRegistrationInfo] = useState<IRegistrationInfo>({
@@ -43,7 +43,7 @@ const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
     switch (currentRegistrationStep) {
       case 0:
         return (
-          <LoginInformationComponent
+          <RegisterFormComponent
             setStep={setStep}
             changeLoginForm={changeLoginForm}
             handleRegistrationInfo={handleRegistrationInfo}
@@ -51,24 +51,24 @@ const RegistrationFormComponent = ({ changeLoginForm }: Props) => {
         );
       case 1:
         return (
-          <PersonalInfoComponent
+          <PersonalInfoFormComponent
             setStep={setStep}
             handleRegistrationInfo={handleRegistrationInfo}
           />
         );
       case 2:
         return (
-          <WorkScheduleComponent
+          <WorkShiftFormComponent
             setStep={setStep}
             handleRegistrationInfo={handleRegistrationInfo}
           />
         );
       case 3:
-        return <UsersFormComponent setStep={setStep} />;
+        return <EmployeeAccountFormComponent setStep={setStep} />;
     }
   };
 
   return <>{renderStep(currentRegistrationStep)}</>;
 };
 
-export default RegistrationFormComponent;
+export default RegisterComponent;

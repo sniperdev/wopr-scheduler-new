@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Users } from "../../../utils/interfaces/UsersInterface.ts";
 import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 
-const UsersFormComponent = ({ setStep }: Steps) => {
+const EmployeeAccountFormComponent = ({ setStep }: Steps) => {
   const [users, setUsers] = useState<Users[]>([
     { name: "", surname: "", email: "" },
     { name: "", surname: "", email: "" },
@@ -83,4 +83,4 @@ const UsersFormComponent = ({ setStep }: Steps) => {
   );
 };
 
-export default UsersFormComponent;
+export default EmployeeAccountFormComponent;
