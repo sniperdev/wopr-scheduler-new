@@ -27,66 +27,63 @@ const PersonalInfoFormComponent = ({
   });
   const [validationError, setValidationError] = useState<string>("");
 
-  const handleInputChange = (field: string, value: string) => {
-    setPersonalInfo((prevPersonalInfo) => ({
-      ...prevPersonalInfo,
-      [field]: value,
-    }));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPersonalInfo({ ...personalInfo, [name]: value });
     setValidationError("");
   };
 
-  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const { error } = personalInfoSchema.validate(personalInfo);
     if (error) {
       setValidationError(error.message);
     } else {
-      handleRegistrationInfo({
-        company: personalInfo.company,
-        name: personalInfo.name,
-        surname: personalInfo.surname,
-        phone: personalInfo.phone,
-      });
+      handleRegistrationInfo(personalInfo);
       setStep(2);
     }
   };
 
   return (
     <form onSubmit={handleSubmitForm} className="row gap-2 w-25">
-      {validationError.length == 0 ? null : <p>Wprowadź poprawne dane</p>}
+      {validationError && <p>Wprowadź poprawne dane</p>}
       <div>
         <input
-          onChange={(e) => handleInputChange("company", e.target.value)}
+          onChange={handleInputChange}
           type="text"
           className="form-control"
           placeholder="Nazwa firmy"
+          name="company"
           required
         />
       </div>
       <div className="col">
         <input
-          onChange={(e) => handleInputChange("name", e.target.value)}
+          onChange={handleInputChange}
           type="text"
           className="form-control"
           placeholder="Imie"
+          name="name"
           required
         />
       </div>
       <div className="col">
         <input
-          onChange={(e) => handleInputChange("surname", e.target.value)}
+          onChange={handleInputChange}
           type="text"
           className="form-control"
           placeholder="Nazwisko"
+          name="surname"
           required
         />
       </div>
       <div>
         <input
-          onChange={(e) => handleInputChange("phone", e.target.value)}
+          onChange={handleInputChange}
           type="text"
           className="form-control"
           placeholder="Numer telefonu"
+          name="phone"
           required
         />
       </div>
