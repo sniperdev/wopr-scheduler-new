@@ -1,5 +1,30 @@
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import bootstrap5Plugin from "@fullcalendar/bootstrap5";
+import timeGridWeek from "@fullcalendar/timegrid";
+import "./HomePage.css";
+
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 const HomePage = () => {
-  return <div></div>;
+  return (
+    <div className="vh-100 p-3">
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridWeek, bootstrap5Plugin]}
+        themeSystem="bootstrap5"
+        initialView="dayGridMonth"
+        headerToolbar={{
+          start: "prev next",
+          center: "title",
+          end: "timeGridWeek dayGridMonth",
+        }}
+        locale="pl"
+        weekNumberCalculation={"ISO"}
+        height="85%"
+      ></FullCalendar>
+    </div>
+  );
 };
 
 export default HomePage;
