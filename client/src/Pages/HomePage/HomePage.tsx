@@ -6,23 +6,26 @@ import "./HomePage.css";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import NavbarComponent from "./components/NavbarComponent.tsx";
 
 const HomePage = () => {
   return (
-    <div className="vh-100 p-3">
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridWeek, bootstrap5Plugin]}
-        themeSystem="bootstrap5"
-        initialView="dayGridMonth"
-        headerToolbar={{
-          start: "prev next",
-          center: "title",
-          end: "timeGridWeek dayGridMonth",
-        }}
-        locale="pl"
-        weekNumberCalculation={"ISO"}
-        height="85%"
-      ></FullCalendar>
+    <div className="vh-100">
+      <NavbarComponent></NavbarComponent>
+      <div className="mx-2 mt-2 calendar">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridWeek, bootstrap5Plugin]}
+          themeSystem="bootstrap5"
+          initialView="dayGridMonth"
+          headerToolbar={{
+            start: "prev next",
+            center: "title",
+            end: "timeGridWeek dayGridMonth",
+          }}
+          locale="pl"
+          weekNumberCalculation={"ISO"}
+        ></FullCalendar>
+      </div>
     </div>
   );
 };
