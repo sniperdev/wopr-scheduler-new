@@ -24,6 +24,7 @@ const HomePage = () => {
           }}
           locale="pl"
           weekNumberCalculation={"ISO"}
+          height="100%"
         ></FullCalendar>
       </div>
     </div>
