@@ -43,4 +43,6 @@ mysqlConnection.end();
 // const Users = require("./models/Users");
 // const UsersWorkShifts = require("./models/UsersWorkShifts");
 // const ScheduledWorkShifts = require("./models/ScheduledWorkShifts");
+// const Companies = require("./models/Companies");
+//
 // sequelize.sync({ force: true });

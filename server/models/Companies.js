@@ -1,12 +1,15 @@
 const sequelize = require("../config/sequelize");
 const { DataTypes } = require("sequelize");
-const Companies = require("./Companies");
 
-const Users = sequelize.define("Users", {
+const Companies = sequelize.define("Companies", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+  },
+  companyName: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   name: {
     type: DataTypes.STRING,
@@ -20,17 +23,13 @@ const Users = sequelize.define("Users", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  password: {
+  address: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   phone: {
     type: DataTypes.INTEGER,
     allowNull: false,
-  },
-  isAdmin: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
   },
   createdAt: {
     field: "created_at",
@@ -42,8 +41,4 @@ const Users = sequelize.define("Users", {
   },
 });
 
-Users.belongsTo(Companies, {
-  foreignKey: "company_id",
-});
-
-module.exports = Users;
+module.exports = Companies;
