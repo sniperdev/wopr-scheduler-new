@@ -39,10 +39,11 @@ mysqlConnection.end();
 
 // Syncing database tabels
 //
-// const sequelize = require("./config/sequelize");
+const sequelize = require("./config/sequelize");
 // const Users = require("./models/Users");
 // const UsersWorkShifts = require("./models/UsersWorkShifts");
 // const ScheduledWorkShifts = require("./models/ScheduledWorkShifts");
 // const Companies = require("./models/Companies");
 //
 // sequelize.sync({ force: true });
+sequelize.sync({ alter: true });

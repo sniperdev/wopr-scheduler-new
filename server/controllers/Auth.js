@@ -1,17 +1,3 @@
-const Users = require("../models/Users");
-const Joi = require("@hapi/joi");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-const registerSchema = Joi.object({
-  name: Joi.string().min(3).required(),
-  surname: Joi.string().min(3).required(),
-  email: Joi.string().min(6).required().email(),
-  password: Joi.string().min(6).required(),
-  phone: Joi.string().length(9).required(),
-  company: Joi.string().min(3).required(),
-});
-
 const registerUser = async (req, res) => {
   const { error } = registerSchema.validate(req.body);
   if (error) return res.status(400).json(error);
@@ -28,23 +14,50 @@ const registerUser = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-  const user = {
+  const company = {
+    companyName: req.body.company,
     name: req.body.name,
     surname: req.body.surname,
     email: req.body.email,
-    password: hashPassword,
+    address: req.body.address,
     phone: req.body.phone,
-    company: req.body.company,
   };
-  try {
-    await Users.create(user);
-    res.json({
-      message: "User registered",
+
+  Companies.create(company)
+    .then((newCompany) => {
+      const userData = {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        password: hashPassword,
+        phone: req.body.phone,
+        company_id: newCompany.id,
+      };
+      return Users.create(userData);
+    })
+    .then(() => {
+      res.status(200).json({ message: "Utworzono użytkownika" });
+    })
+    .catch((error) => {
+      console.error("Błąd:", error);
     });
-  } catch (err) {
-    console.log(err);
-  }
 };
+const Users = require("../models/Users");
+const Companies = require("../models/Companies");
+const Joi = require("@hapi/joi");
+const bcrypt = require("bcryptjs");
+
+const jwt = require("jsonwebtoken");
+
+const registerSchema = Joi.object({
+  name: Joi.string().min(3).required(),
+  surname: Joi.string().min(3).required(),
+  email: Joi.string().min(6).required().email(),
+  password: Joi.string().min(6).required(),
+  phone: Joi.string().length(9).required(),
+  company: Joi.string().min(3).required(),
+  address: Joi.string().min(5).required(),
+});
 
 const loginSchema = Joi.object({
   email: Joi.string().min(6).required().email(),
