@@ -44,6 +44,7 @@ const sequelize = require("./config/sequelize");
 // const UsersWorkShifts = require("./models/UsersWorkShifts");
 // const ScheduledWorkShifts = require("./models/ScheduledWorkShifts");
 // const Companies = require("./models/Companies");
+// const Shifts = require("./models/Shifts");
 //
 // sequelize.sync({ force: true });
 sequelize.sync({ alter: true });

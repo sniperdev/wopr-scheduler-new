@@ -1,3 +1,27 @@
+const Users = require("../models/Users");
+const Companies = require("../models/Companies");
+const Shifts = require("../models/Shifts");
+const Joi = require("@hapi/joi");
+const bcrypt = require("bcryptjs");
+
+const jwt = require("jsonwebtoken");
+
+const registerSchema = Joi.object({
+  name: Joi.string().min(3).required(),
+  surname: Joi.string().min(3).required(),
+  email: Joi.string().min(6).required().email(),
+  password: Joi.string().min(6).required(),
+  phone: Joi.string().length(9).required(),
+  company: Joi.string().min(3).required(),
+  address: Joi.string().min(5).required(),
+  shifts: Joi.array().required(),
+});
+
+const loginSchema = Joi.object({
+  email: Joi.string().min(6).required().email(),
+  password: Joi.string().required(),
+});
+
 const registerUser = async (req, res) => {
   const { error } = registerSchema.validate(req.body);
   if (error) return res.status(400).json(error);
@@ -22,7 +46,8 @@ const registerUser = async (req, res) => {
     address: req.body.address,
     phone: req.body.phone,
   };
-
+  const shifts = req.body.shifts;
+  console.log(shifts);
   Companies.create(company)
     .then((newCompany) => {
       const userData = {
@@ -33,7 +58,12 @@ const registerUser = async (req, res) => {
         phone: req.body.phone,
         company_id: newCompany.id,
       };
-      return Users.create(userData);
+      let newShifts = shifts.map((element) => ({
+        ...element,
+        company_id: newCompany.id,
+      }));
+      Users.create(userData);
+      Shifts.bulkCreate(newShifts);
     })
     .then(() => {
       res.status(200).json({ message: "Utworzono użytkownika" });
@@ -42,27 +72,6 @@ const registerUser = async (req, res) => {
       console.error("Błąd:", error);
     });
 };
-const Users = require("../models/Users");
-const Companies = require("../models/Companies");
-const Joi = require("@hapi/joi");
-const bcrypt = require("bcryptjs");
-
-const jwt = require("jsonwebtoken");
-
-const registerSchema = Joi.object({
-  name: Joi.string().min(3).required(),
-  surname: Joi.string().min(3).required(),
-  email: Joi.string().min(6).required().email(),
-  password: Joi.string().min(6).required(),
-  phone: Joi.string().length(9).required(),
-  company: Joi.string().min(3).required(),
-  address: Joi.string().min(5).required(),
-});
-
-const loginSchema = Joi.object({
-  email: Joi.string().min(6).required().email(),
-  password: Joi.string().required(),
-});
 
 const loginUser = async (req, res) => {
   const { error } = loginSchema.validate(req.body);
