@@ -77,7 +77,10 @@ const loginUser = async (req, res) => {
   const { error } = loginSchema.validate(req.body);
   if (error) return res.status(400).send(error);
 
-  const user = await Users.findOne({ where: { email: req.body.email } });
+  const response = await Users.findOne({
+    where: { email: req.body.email },
+  });
+  const user = response.toJSON();
   if (!user)
     return res.status(400).send({
       message: "Nie znaleziono adresu email",
@@ -89,9 +92,18 @@ const loginUser = async (req, res) => {
       message: "Niepoprawne hasło",
     });
 
+  let userNoPassword = {};
+  const keys = Object.keys(user);
+  for (const key of keys) {
+    if (key !== "password") {
+      userNoPassword[key] = user[key];
+    }
+  }
+
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_TOKEN);
   return res.header("auth-token", token).send({
     jwt: token,
+    data: userNoPassword,
   });
 };
 

@@ -3,7 +3,11 @@ import { useState } from "react";
 import LoginComponent from "./components/LoginComponent.tsx";
 import RegisterComponent from "./components/RegisterComponent.tsx";
 
-const AuthPage = () => {
+interface Props {
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+}
+
+const AuthPage = ({ setUser }: Props) => {
   const [login, setLogin] = useState(true);
 
   const changeLoginForm = (): void => {
@@ -13,7 +17,7 @@ const AuthPage = () => {
   return (
     <div className="d-flex align-items-center justify-content-center vw-100 vh-100">
       {login ? (
-        <LoginComponent changeLoginForm={changeLoginForm} />
+        <LoginComponent changeLoginForm={changeLoginForm} setUser={setUser} />
       ) : (
         <RegisterComponent changeLoginForm={changeLoginForm} />
       )}

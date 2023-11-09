@@ -1,36 +1,43 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { lazy, ReactNode, Suspense, useState } from "react";
 
 const LazyAuthPage = lazy(() => import("./pages/AuthPage/AuthPage.tsx"));
 const LazyHomePage = lazy(() => import("./pages/HomePage/HomePage.tsx"));
 
-// const ProtectedRoute = ({ user, children }) => {
-//   if (!user) {
-//     return <Navigate to="/landing" replace />;
-//   }
-//
-//   return children;
-// };
+interface ProtectedRouteProps {
+  user: User | undefined;
+  children: ReactNode;
+}
+
+const ProtectedRoute = ({ user, children }: ProtectedRouteProps) => {
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 function App() {
+  const [user, setUser] = useState<User>();
+
   return (
     <Routes>
-      {/*<ProtectedRoute user={user}>*/}
       <Route
         path="/app"
         element={
-          <Suspense fallback={<h1>Ładowanie...</h1>}>
-            <LazyHomePage />
-          </Suspense>
+          <ProtectedRoute user={user}>
+            <Suspense fallback={<h1>Ładowanie...</h1>}>
+              <LazyHomePage />
+            </Suspense>
+          </ProtectedRoute>
         }
       ></Route>
-      {/*</ProtectedRoute>*/}
       <Route
         path="/"
         element={
           <Suspense fallback={<h1>Ładowanie...</h1>}>
-            <LazyAuthPage />
+            <LazyAuthPage setUser={setUser} />
           </Suspense>
         }
       ></Route>

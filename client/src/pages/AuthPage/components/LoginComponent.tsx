@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   changeLoginForm: () => void;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
 
 interface FormData {
   email: string;
   password: string;
 }
-
-const SignInFormComponent = ({ changeLoginForm }: Props) => {
+const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -22,11 +24,13 @@ const SignInFormComponent = ({ changeLoginForm }: Props) => {
       "http://localhost:3000/login",
       loginParameters,
     );
+    setUser(response.data.data);
+    navigate("/app");
     return response.data;
   }
 
-  async function saveJWT(data: { jwt: string }) {
-    const token: string = data.jwt;
+  async function saveJWT(data: { jwt: string; user: User }) {
+    const token = data.jwt;
     localStorage.setItem("token", token);
   }
 
