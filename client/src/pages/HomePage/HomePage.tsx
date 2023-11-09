@@ -7,11 +7,13 @@ import "./HomePage.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import NavbarComponent from "./components/NavbarComponent.tsx";
-
-const HomePage = () => {
+interface Props {
+  user: User;
+}
+const HomePage = ({ user }: Props) => {
   return (
     <div className="vh-100">
-      <NavbarComponent></NavbarComponent>
+      <NavbarComponent user={user}></NavbarComponent>
       <div className="mx-2 mt-2 calendar">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridWeek, bootstrap5Plugin]}
