@@ -3,6 +3,7 @@ import PersonalInfoFormComponent from "./PersonalInfoFormComponent.tsx";
 import RegisterFormComponent from "./RegisterFormComponent.tsx";
 import WorkShiftFormComponent from "./WorkShiftFormComponent.tsx";
 import EmployeeAccountFormComponent from "./EmployeeAccountFormComponent.tsx";
+import { WorkShifts } from "../../../utils/interfaces/WorkShiftsInterface.ts";
 
 interface Props {
   changeLoginForm: () => void;
@@ -15,7 +16,7 @@ interface RegistrationInfo {
   name: string;
   surname: string;
   phone: string;
-  shifts: string[];
+  shifts: WorkShifts[];
 }
 
 const RegisterComponent = ({ changeLoginForm }: Props) => {
@@ -39,6 +40,11 @@ const RegisterComponent = ({ changeLoginForm }: Props) => {
     setRegistrationInfo({ ...registrationInfo, ...values });
   };
 
+  const handleShifts = (value: WorkShifts[]) => {
+    const newRegistrationInfo = { ...registrationInfo, shifts: [...value] };
+    setRegistrationInfo(newRegistrationInfo);
+  };
+
   const renderStep = (currentRegistrationStep: number) => {
     switch (currentRegistrationStep) {
       case 0:
@@ -60,7 +66,7 @@ const RegisterComponent = ({ changeLoginForm }: Props) => {
         return (
           <WorkShiftFormComponent
             setStep={setStep}
-            handleRegistrationInfo={handleRegistrationInfo}
+            handleShifts={handleShifts}
           />
         );
       case 3:

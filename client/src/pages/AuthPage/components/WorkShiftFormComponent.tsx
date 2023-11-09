@@ -4,13 +4,10 @@ import { WorkShifts } from "../../../utils/interfaces/WorkShiftsInterface.ts";
 import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 
 interface Props {
-  handleRegistrationInfo: (value: object) => void;
+  handleShifts: (value: WorkShifts[]) => void;
 }
 
-const WorkShiftFormComponent = ({
-  setStep,
-  handleRegistrationInfo,
-}: Steps & Props) => {
+const WorkShiftFormComponent = ({ setStep, handleShifts }: Steps & Props) => {
   const [shifts, setShifts] = useState<WorkShifts[]>([
     { name: "", from: "", to: "" },
     { name: "", from: "", to: "" },
@@ -36,7 +33,7 @@ const WorkShiftFormComponent = ({
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleRegistrationInfo(shifts);
+    handleShifts(shifts);
     setStep(3);
   };
 
