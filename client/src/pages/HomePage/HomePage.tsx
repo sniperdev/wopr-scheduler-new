@@ -7,10 +7,24 @@ import "./HomePage.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import NavbarComponent from "./components/NavbarComponent.tsx";
+import { useQuery } from "@tanstack/react-query";
+
 interface Props {
   user: User;
 }
 const HomePage = ({ user }: Props) => {
+  const fetchUserShifts = async () => {
+    const response = await fetch();
+    if (!response.ok) {
+      throw new Error("Something went wrong");
+    }
+    return response.json();
+  };
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ["userShifts"],
+    queryFn: fetchUserShifts,
+  });
+
   return (
     <div className="vh-100">
       <NavbarComponent user={user}></NavbarComponent>
