@@ -16,6 +16,7 @@ interface RegistrationInfo {
   name: string;
   surname: string;
   phone: string;
+  address: string;
   shifts: WorkShifts[];
 }
 
@@ -24,6 +25,7 @@ const RegisterComponent = ({ changeLoginForm }: Props) => {
 
   const [registrationInfo, setRegistrationInfo] = useState<RegistrationInfo>({
     company: "",
+    address: "",
     email: "",
     name: "",
     password: "",

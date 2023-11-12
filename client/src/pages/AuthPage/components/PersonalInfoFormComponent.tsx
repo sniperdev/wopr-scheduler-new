@@ -7,12 +7,14 @@ interface Props {
 }
 
 const personalInfoSchema = Joi.object({
-  company: Joi.string(),
-  name: Joi.string(),
-  surname: Joi.string(),
+  company: Joi.string().required(),
+  address: Joi.string().required(),
+  name: Joi.string().required(),
+  surname: Joi.string().required(),
   phone: Joi.string()
     .length(9)
-    .pattern(/^[0-9]+$/),
+    .pattern(/^[0-9]+$/)
+    .required(),
 });
 
 const PersonalInfoFormComponent = ({
@@ -21,6 +23,7 @@ const PersonalInfoFormComponent = ({
 }: Steps & Props) => {
   const [personalInfo, setPersonalInfo] = useState({
     company: "",
+    address: "",
     name: "",
     surname: "",
     phone: "",
@@ -54,6 +57,16 @@ const PersonalInfoFormComponent = ({
           className="form-control"
           placeholder="Nazwa firmy"
           name="company"
+          required
+        />
+      </div>
+      <div>
+        <input
+          onChange={handleInputChange}
+          type="text"
+          className="form-control"
+          placeholder="Adres firmy"
+          name="address"
           required
         />
       </div>
