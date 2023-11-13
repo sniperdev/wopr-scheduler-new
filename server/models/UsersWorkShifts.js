@@ -15,7 +15,7 @@ const UsersWorkShifts = sequelize.define("UsersWorkShifts", {
     type: DataTypes.STRING,
   },
   shift: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
   },
   createdAt: {
     field: "created_at",
