@@ -1,4 +1,5 @@
 import { Button, Form, Modal } from "react-bootstrap";
+import { useState } from "react";
 
 interface Props {
   showModal: boolean;
@@ -7,6 +8,8 @@ interface Props {
 }
 
 const AddDateModal = ({ showModal, handleCloseModal, selectedDate }: Props) => {
+  const [selectedOption, setSelectedOption] = useState<string>();
+
   return (
     <Modal
       show={showModal}
@@ -19,9 +22,9 @@ const AddDateModal = ({ showModal, handleCloseModal, selectedDate }: Props) => {
       </Modal.Header>
       <Modal.Body>
         <p>Data: {selectedDate}</p>
-        <label>Wybierz zmianę</label>
-        <Form.Select>
-          <option>Wybierz zmianę</option>
+        <Form.Label>Wybierz zmianę</Form.Label>
+        <Form.Select onChange={(e) => setSelectedOption(e.target.value)}>
+          <option value="">Wybierz...</option>
           <option value="R">R</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -31,7 +34,11 @@ const AddDateModal = ({ showModal, handleCloseModal, selectedDate }: Props) => {
         <Button variant="secondary" onClick={handleCloseModal}>
           Zamknij
         </Button>
-        <Button variant="primary" onClick={handleCloseModal}>
+        <Button
+          variant="primary"
+          onClick={handleCloseModal}
+          disabled={selectedOption === ""}
+        >
           Zapisz
         </Button>
       </Modal.Footer>
