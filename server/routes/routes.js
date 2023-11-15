@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../controllers/Auth");
 const verify = require("./verifyToken");
 const UsersWorkShifts = require("../controllers/UsersWorkShifts");
+const Shifts = require("../controllers/Shifts");
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.post(
   verify,
   UsersWorkShifts.addAllUserWorkShifts,
 );
+router.get("/Shifts/:id", verify, Shifts.getCompanyShifts);
 
 module.exports = router;
