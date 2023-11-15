@@ -8,8 +8,15 @@ const getAllUserWorkShifts = async (req, res) => {
         user_id: req.params.id,
       },
     });
-
-    return res.send(userWorkShifts);
+    const newWorkShifts = userWorkShifts.map((item) => {
+      return {
+        id: item.id,
+        start: item.start,
+        end: item.end,
+        title: item.shift,
+      };
+    });
+    return res.send(newWorkShifts);
   } catch (err) {
     return res.status(500);
   }
