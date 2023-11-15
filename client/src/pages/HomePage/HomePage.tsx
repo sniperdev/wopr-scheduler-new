@@ -75,6 +75,7 @@ const HomePage = ({ user }: Props) => {
           showModal={showModal}
           handleCloseModal={handleCloseModal}
           selectedDate={selectedDate}
+          user={user}
         />
       </div>
     </div>

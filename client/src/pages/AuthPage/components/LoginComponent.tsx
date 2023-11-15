@@ -38,7 +38,7 @@ const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
     mutationFn: login,
     onSuccess: saveJWT,
     onError: (err) => {
-      console.log(err.message);
+      console.log(err);
     },
   });
 
@@ -53,38 +53,38 @@ const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
   };
 
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className="login-page-form d-flex flex-column gap-2 w-25"
-    >
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Adres e-mail"
-        name="email"
-        value={formData.email}
-        onChange={handleInputChange}
-      />
-      <input
-        type="password"
-        className="form-control"
-        placeholder="Hasło"
-        name="password"
-        value={formData.password}
-        onChange={handleInputChange}
-      />
-      <button type="submit" className="btn btn-primary">
-        Zaloguj się
-      </button>
-      <div className="text-center">
-        <p>
-          Nie masz konta biznesowego?{" "}
-          <a href="#" onClick={changeLoginForm}>
-            Zarejestruj się
-          </a>
-        </p>
-      </div>
-    </form>
+    <div className="login-page-form">
+      {loginMutation.isError && <p>Wystąpił błąd logowania</p>}
+      <form onSubmit={handleFormSubmit} className="d-flex flex-column gap-2">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Adres e-mail"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+        />
+        <input
+          type="password"
+          className="form-control"
+          placeholder="Hasło"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+        />
+        <button type="submit" className="btn btn-primary">
+          Zaloguj się
+        </button>
+        <div className="text-center">
+          <p>
+            Nie masz konta biznesowego?{" "}
+            <a href="#" onClick={changeLoginForm}>
+              Zarejestruj się
+            </a>
+          </p>
+        </div>
+      </form>
+    </div>
   );
 };
 

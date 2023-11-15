@@ -28,7 +28,7 @@ function App() {
         element={
           <ProtectedRoute user={user}>
             <Suspense fallback={<h1>Ładowanie...</h1>}>
-              <LazyHomePage user={user} />
+              <LazyHomePage user={user!} />
             </Suspense>
           </ProtectedRoute>
         }
