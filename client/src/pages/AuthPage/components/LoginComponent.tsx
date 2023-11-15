@@ -24,14 +24,14 @@ const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
       "http://localhost:3000/login",
       loginParameters,
     );
-    setUser(response.data.data);
-    navigate("/app");
     return response.data;
   }
 
-  async function saveJWT(data: { jwt: string; user: User }) {
+  async function saveJWT(data: { jwt: string; data: User }) {
+    setUser(data.data);
     const token = data.jwt;
     localStorage.setItem("token", token);
+    navigate("/app");
   }
 
   const loginMutation = useMutation({
