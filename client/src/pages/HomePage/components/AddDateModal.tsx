@@ -62,7 +62,9 @@ const AddDateModal = ({
             <option value="">Wybierz...</option>
             {isSuccess &&
               data.map((element: Shift) => (
-                <option value={element.name}>{element.name}</option>
+                <option key={element.id} value={element.name}>
+                  {element.name}
+                </option>
               ))}
           </Form.Select>
         )}
