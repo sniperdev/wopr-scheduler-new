@@ -22,7 +22,7 @@ const HomePage = ({ user }: Props) => {
   const [showModal, setShowModal] = useState(false);
 
   const { isPending, isError, data } = useQuery({
-    queryKey: ["userShifts", user.id],
+    queryKey: ["userShifts", user.id, showModal],
     queryFn: async () => {
       const response = await axios.get(
         "http://localhost:3000/UsersWorkShifts/" + user.id,

@@ -1,6 +1,6 @@
 import { Button, Form, Modal } from "react-bootstrap";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 interface Props {
   showModal: boolean;
@@ -25,7 +25,7 @@ const AddDateModal = ({
   selectedDate,
   user,
 }: Props) => {
-  const [selectedOption, setSelectedOption] = useState<string>();
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
   const { isError, isSuccess, data } = useQuery({
     queryKey: ["shifts", user.company_id],
@@ -42,6 +42,39 @@ const AddDateModal = ({
     },
   });
 
+  const saveShiftMutation = useMutation({
+    mutationFn: async () => {
+      const handleElement = data.find(
+        (element: Shift) => element.id.toString() === selectedOption,
+      );
+      const response = await axios.post(
+        "http://localhost:3000/UsersWorkShifts/add",
+        {
+          user_id: user.id,
+          start: `${selectedDate}T${handleElement.start}`,
+          end: `${selectedDate}T${handleElement.end}`,
+          shift: handleElement.name,
+        },
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+  });
+
+  const saveShift = () => {
+    saveShiftMutation.mutate();
+    if (saveShiftMutation.isSuccess) handleCloseModal();
+  };
+
+  useEffect(() => {
+    saveShiftMutation.reset();
+    setSelectedOption("");
+  }, [showModal]);
+
   return (
     <Modal
       show={showModal}
@@ -55,14 +88,22 @@ const AddDateModal = ({
       <Modal.Body>
         <p>Data: {selectedDate}</p>
         <Form.Label>Wybierz zmianę</Form.Label>
+        {saveShiftMutation.isError && (
+          <p className="text-danger">
+            Nie udało się zapisać zmiany. Spróbuj ponownie
+          </p>
+        )}
         {isError ? (
           <p>Nie udało się pobrać zmian</p>
         ) : (
-          <Form.Select onChange={(e) => setSelectedOption(e.target.value)}>
+          <Form.Select
+            onChange={(e) => setSelectedOption(e.target.value)}
+            defaultValue=""
+          >
             <option value="">Wybierz...</option>
             {isSuccess &&
               data.map((element: Shift) => (
-                <option key={element.id} value={element.name}>
+                <option key={element.id} value={element.id.toString()}>
                   {element.name}
                 </option>
               ))}
@@ -75,7 +116,7 @@ const AddDateModal = ({
         </Button>
         <Button
           variant="primary"
-          onClick={handleCloseModal}
+          onClick={saveShift}
           disabled={selectedOption === ""}
         >
           Zapisz

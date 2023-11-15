@@ -23,8 +23,8 @@ const getAllUserWorkShifts = async (req, res) => {
 };
 
 const addUserShiftSchema = Joi.object({
-  start: Joi.string().min(5).max(5).required(),
-  end: Joi.string().min(5).max(5).required(),
+  start: Joi.string().required(),
+  end: Joi.string().required(),
   shift: Joi.string().required(),
   user_id: Joi.number().required(),
 });
