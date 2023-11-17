@@ -3,18 +3,26 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridWeek from "@fullcalendar/timegrid";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 import interactionPlugin from "@fullcalendar/interaction";
-import { DateClickArg } from "fullcalendar";
+import { DateClickArg, EventClickArg } from "fullcalendar";
 
 interface Props {
   data: any;
   handleDateClick: (clickedEvent: DateClickArg) => void;
+  handleRemoveEvent: (clickedEvent: EventClickArg) => void;
 }
 
-const CalendarComponent = ({ data, handleDateClick }: Props) => {
+const CalendarComponent = ({
+  data,
+  handleDateClick,
+  handleRemoveEvent,
+}: Props) => {
   const dateClicked = (clickedEvent: DateClickArg) => {
     handleDateClick(clickedEvent);
   };
 
+  const eventClicked = (clickedEvent: EventClickArg) => {
+    handleRemoveEvent(clickedEvent);
+  };
   return (
     <FullCalendar
       plugins={[
@@ -31,7 +39,7 @@ const CalendarComponent = ({ data, handleDateClick }: Props) => {
         end: "timeGridWeek dayGridMonth",
       }}
       events={data}
-      // eventClick={handleRemoveEvent}
+      eventClick={eventClicked}
       dateClick={dateClicked}
       locale="pl"
       weekNumberCalculation={"ISO"}
