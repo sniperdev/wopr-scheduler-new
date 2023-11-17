@@ -43,7 +43,7 @@ const AddDateModal = ({
   });
 
   const saveShiftMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (selectedDate: string) => {
       const handleElement = data.find(
         (element: Shift) => element.id.toString() === selectedOption,
       );
@@ -63,17 +63,18 @@ const AddDateModal = ({
       );
       return response.data;
     },
+    onSuccess: () => {
+      handleCloseModal();
+    },
   });
 
   const saveShift = () => {
-    saveShiftMutation.mutate();
-    if (saveShiftMutation.isSuccess) handleCloseModal();
+    saveShiftMutation.mutate(selectedDate);
   };
 
   useEffect(() => {
     saveShiftMutation.reset();
-    setSelectedOption("");
-  }, [showModal]);
+  }, [handleCloseModal]);
 
   return (
     <Modal
