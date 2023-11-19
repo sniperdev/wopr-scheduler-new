@@ -20,5 +20,5 @@ router.post(
   UsersWorkShifts.addAllUserWorkShifts,
 );
 router.get("/Shifts/:id", verify, Shifts.getCompanyShifts);
-
+router.delete("/UsersWorkShifts/:id", verify, UsersWorkShifts.deleteUserShift);
 module.exports = router;

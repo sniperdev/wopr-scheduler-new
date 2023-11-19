@@ -44,7 +44,20 @@ const addAllUserWorkShifts = async (req, res) => {
     });
 };
 
+const deleteUserShift = async (req, res) => {
+  try {
+    await UsersWorkShifts.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    return res.status(200).json({ message: "User work shift deleted" });
+  } catch (err) {
+    return res.status(500);
+  }
+};
 module.exports = {
   getAllUserWorkShifts,
   addAllUserWorkShifts,
+  deleteUserShift,
 };

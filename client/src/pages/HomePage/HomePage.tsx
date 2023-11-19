@@ -3,10 +3,10 @@ import "./HomePage.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import NavbarComponent from "./components/NavbarComponent.tsx";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import AddDateModal from "./components/AddDateModal.tsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DateClickArg, EventClickArg } from "fullcalendar";
 import CalendarComponent from "./components/CalendarComponent.tsx";
 
@@ -22,7 +22,6 @@ interface Shift {
 const HomePage = ({ user }: Props) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
-  const [userShifts, setUserShifts] = useState<Shift[]>([]);
 
   const { isPending, isError, data, refetch } = useQuery({
     queryKey: ["userShifts", user.id],
@@ -39,6 +38,22 @@ const HomePage = ({ user }: Props) => {
     },
   });
 
+  const removeDateMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await axios.delete(
+        "http://localhost:3000/UsersWorkShifts/" + id,
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      refetch();
+    },
+  });
   const handleDateClick = (clickedDate: DateClickArg) => {
     setSelectedDate(clickedDate.dateStr);
     setShowModal(true);
@@ -50,19 +65,13 @@ const HomePage = ({ user }: Props) => {
     setSelectedDate("");
   };
 
-  useEffect(() => {
-    setUserShifts(data);
-  }, [data]);
-
   const handleRemoveEvent = (clickedEvent: EventClickArg) => {
     const { event } = clickedEvent;
     const date = event.startStr.slice(0, 16);
-    const newUserShifts = userShifts.filter(
-      (shift: Shift) => !(shift.title === event.title && date === shift.start),
+    const clickedElement = data.find(
+      (shift: Shift) => shift.title === event.title && date === shift.start,
     );
-    console.log("userShifts: ", userShifts);
-    console.log("newUserShifts: ", newUserShifts);
-    setUserShifts(newUserShifts);
+    removeDateMutation.mutate(clickedElement.id);
   };
 
   return (
