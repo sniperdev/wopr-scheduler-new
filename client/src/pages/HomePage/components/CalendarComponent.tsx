@@ -4,9 +4,10 @@ import timeGridWeek from "@fullcalendar/timegrid";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 import interactionPlugin from "@fullcalendar/interaction";
 import { DateClickArg, EventClickArg } from "fullcalendar";
+import { WorkShifts } from "../../../utils/interfaces/WorkShiftsInterface.ts";
 
 interface Props {
-  data: any;
+  data: WorkShifts[];
   handleDateClick: (clickedEvent: DateClickArg) => void;
   handleRemoveEvent: (clickedEvent: EventClickArg) => void;
 }
@@ -31,12 +32,17 @@ const CalendarComponent = ({
         bootstrap5Plugin,
         interactionPlugin,
       ]}
+      displayEventEnd={true}
       themeSystem="bootstrap5"
       initialView="dayGridMonth"
       headerToolbar={{
         start: "prev next",
         center: "title",
         end: "timeGridWeek dayGridMonth",
+      }}
+      eventTimeFormat={{
+        hour: "numeric",
+        minute: "2-digit",
       }}
       events={data}
       eventClick={eventClicked}

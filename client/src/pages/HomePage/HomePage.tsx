@@ -9,6 +9,7 @@ import AddDateModal from "./components/AddDateModal.tsx";
 import { useState } from "react";
 import { DateClickArg, EventClickArg } from "fullcalendar";
 import CalendarComponent from "./components/CalendarComponent.tsx";
+import ReadyShiftsCalendarComponent from "./components/ReadyShiftsCalendarComponent.tsx";
 
 interface Props {
   user: User;
@@ -22,6 +23,7 @@ interface Shift {
 const HomePage = ({ user }: Props) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
+  const [calendarToggle, setCalendarToggle] = useState<boolean>(true);
 
   const { isPending, isError, data, refetch } = useQuery({
     queryKey: ["userShifts", user.id],
@@ -76,15 +78,23 @@ const HomePage = ({ user }: Props) => {
 
   return (
     <div className="vh-100">
-      <NavbarComponent user={user}></NavbarComponent>
+      <NavbarComponent
+        user={user}
+        setCalendarToggle={setCalendarToggle}
+        calendarToggle={calendarToggle}
+      ></NavbarComponent>
       {isPending && <p>Pobieranie danych kalendarza...</p>}
       {isError && <p>Wystąpił błąd</p>}
       <div className="mx-2 mt-2 calendar">
-        <CalendarComponent
-          data={data}
-          handleDateClick={handleDateClick}
-          handleRemoveEvent={handleRemoveEvent}
-        />
+        {calendarToggle ? (
+          <CalendarComponent
+            data={data}
+            handleDateClick={handleDateClick}
+            handleRemoveEvent={handleRemoveEvent}
+          />
+        ) : (
+          <ReadyShiftsCalendarComponent />
+        )}
       </div>
       <AddDateModal
         showModal={showModal}
