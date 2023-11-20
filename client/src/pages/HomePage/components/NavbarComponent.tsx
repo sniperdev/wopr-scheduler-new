@@ -1,14 +1,20 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 interface Props {
   user: User;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   calendarToggle: boolean;
 }
 const NavbarComponent = ({
   user,
+  setUser,
   setCalendarToggle,
   calendarToggle,
 }: Props) => {
+  const handleNameClick = () => {
+    localStorage.removeItem("token");
+    setUser(undefined);
+  };
   return (
     <Navbar expand="lg" className="p-3 bg-body-tertiary">
       <Container>
@@ -30,7 +36,11 @@ const NavbarComponent = ({
             </Button>
           </Nav>
           <Navbar.Text>
-            Zalogowany jako: <a href="#">{`${user.name} ${user.surname}`}</a>
+            Zalogowany jako:{" "}
+            <a
+              href="#"
+              onClick={handleNameClick}
+            >{`${user.name} ${user.surname}`}</a>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>

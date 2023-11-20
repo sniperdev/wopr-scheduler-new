@@ -38,6 +38,7 @@ function App() {
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyHomePage
                 user={user!}
+                setUser={setUser}
                 calendarToggle={calendarToggle}
                 setCalendarToggle={setCalendarToggle}
               />
@@ -52,6 +53,7 @@ function App() {
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyAdminPage
                 user={user!}
+                setUser={setUser}
                 calendarToggle={calendarToggle}
                 setCalendarToggle={setCalendarToggle}
               />

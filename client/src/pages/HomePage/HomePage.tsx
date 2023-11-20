@@ -13,6 +13,7 @@ import ReadyShiftsCalendarComponent from "./components/ReadyShiftsCalendarCompon
 
 interface Props {
   user: User;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   calendarToggle: boolean;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -22,7 +23,12 @@ interface Shift {
   start: string;
   end: string;
 }
-const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
+const HomePage = ({
+  user,
+  setUser,
+  calendarToggle,
+  setCalendarToggle,
+}: Props) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
 
@@ -81,6 +87,7 @@ const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
     <div className="vh-100">
       <NavbarComponent
         user={user}
+        setUser={setUser}
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
       ></NavbarComponent>
