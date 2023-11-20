@@ -31,7 +31,8 @@ const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
     setUser(data.data);
     const token = data.jwt;
     localStorage.setItem("token", token);
-    navigate("/app");
+    if (data.data.isAdmin) navigate("/admin");
+    else navigate("/app");
   }
 
   const loginMutation = useMutation({

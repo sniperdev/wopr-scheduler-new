@@ -13,6 +13,8 @@ import ReadyShiftsCalendarComponent from "./components/ReadyShiftsCalendarCompon
 
 interface Props {
   user: User;
+  calendarToggle: boolean;
+  setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 interface Shift {
   id: number;
@@ -20,10 +22,9 @@ interface Shift {
   start: string;
   end: string;
 }
-const HomePage = ({ user }: Props) => {
+const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
-  const [calendarToggle, setCalendarToggle] = useState<boolean>(true);
 
   const { isPending, isError, data, refetch } = useQuery({
     queryKey: ["userShifts", user.id],

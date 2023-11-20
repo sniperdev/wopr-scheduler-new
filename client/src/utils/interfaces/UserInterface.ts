@@ -4,7 +4,7 @@ interface User {
   surname: string;
   email: string;
   phone: number;
-  isAdmin: false;
+  isAdmin: boolean;
   createdAt: string;
   updatedAt: string;
   company_id: number;
