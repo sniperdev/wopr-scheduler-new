@@ -3,29 +3,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridWeek from "@fullcalendar/timegrid";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 import interactionPlugin from "@fullcalendar/interaction";
-import { DateClickArg, EventClickArg } from "fullcalendar";
-import { WorkShifts } from "../../../utils/interfaces/WorkShiftsInterface.ts";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-interface Props {
-  data: WorkShifts[];
-  handleDateClick: (clickedEvent: DateClickArg) => void;
-  handleRemoveEvent: (clickedEvent: EventClickArg) => void;
-}
-
-const CalendarComponent = ({
-  data,
-  handleDateClick,
-  handleRemoveEvent,
-}: Props) => {
-  const dateClicked = (clickedEvent: DateClickArg) => {
-    handleDateClick(clickedEvent);
-  };
-
-  const eventClicked = (clickedEvent: EventClickArg) => {
-    handleRemoveEvent(clickedEvent);
-  };
+const AdminCalendarComponent = () => {
   return (
     <FullCalendar
       plugins={[
@@ -46,9 +27,6 @@ const CalendarComponent = ({
         hour: "numeric",
         minute: "2-digit",
       }}
-      events={data}
-      eventClick={eventClicked}
-      dateClick={dateClicked}
       locale="pl"
       weekNumberCalculation={"ISO"}
       height="100%"
@@ -56,4 +34,4 @@ const CalendarComponent = ({
   );
 };
 
-export default CalendarComponent;
+export default AdminCalendarComponent;

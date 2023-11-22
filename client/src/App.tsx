@@ -19,7 +19,7 @@ const ProtectedRouteApp = ({ user, children }: ProtectedRouteProps) => {
 };
 
 const ProtectedRouteAdmin = ({ user, children }: ProtectedRouteProps) => {
-  if (!user && !user?.isAdmin) {
+  if (!user?.isAdmin) {
     return <Navigate to="/" replace />;
   }
   return children;

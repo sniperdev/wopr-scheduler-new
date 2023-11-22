@@ -1,7 +1,5 @@
 import "./HomePage.css";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import NavbarComponent from "./components/NavbarComponent.tsx";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
