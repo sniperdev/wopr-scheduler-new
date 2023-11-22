@@ -28,4 +28,10 @@ router.get(
   verify,
   ScheduledWorkShifts.getScheduledWorkShifts,
 );
+
+router.get(
+  "/AdminUsersWorkShifts/:id",
+  verify,
+  UsersWorkShifts.getAdminUserWorkShifts,
+);
 module.exports = router;

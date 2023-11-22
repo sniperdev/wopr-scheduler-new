@@ -1,4 +1,5 @@
 const UsersWorkShifts = require("../models/UsersWorkShifts");
+const Users = require("../models/Users");
 const Joi = require("@hapi/joi");
 
 const getAllUserWorkShifts = async (req, res) => {
@@ -14,6 +15,33 @@ const getAllUserWorkShifts = async (req, res) => {
         start: item.start,
         end: item.end,
         title: item.shift,
+      };
+    });
+    return res.send(newWorkShifts);
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
+const getAdminUserWorkShifts = async (req, res) => {
+  try {
+    const userWorkShifts = await UsersWorkShifts.findAll({
+      include: [
+        {
+          model: Users,
+          attributes: ["name", "surname"],
+          where: { company_id: req.params.id },
+        },
+      ],
+    });
+    const newWorkShifts = userWorkShifts.map((item) => {
+      return {
+        id: item.id,
+        name: item.User.name,
+        surname: item.User.surname,
+        start: item.start,
+        end: item.end,
+        title: `${item.shift} - ${item.User.name} ${item.User.surname}`,
       };
     });
     return res.send(newWorkShifts);
@@ -57,6 +85,7 @@ const deleteUserShift = async (req, res) => {
   }
 };
 module.exports = {
+  getAdminUserWorkShifts,
   getAllUserWorkShifts,
   addAllUserWorkShifts,
   deleteUserShift,

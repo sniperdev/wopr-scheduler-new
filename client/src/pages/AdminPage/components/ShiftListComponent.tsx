@@ -1,13 +1,14 @@
 import { ListGroup } from "react-bootstrap";
-
-const ShiftListComponent = () => {
+import { AdminShiftItem } from "../../../utils/interfaces/AdminShiftItem.ts";
+interface Props {
+  data: AdminShiftItem[];
+}
+const ShiftListComponent = ({ data }: Props) => {
   return (
     <ListGroup>
-      <ListGroup.Item>Cras justo odio</ListGroup.Item>
-      <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-      <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-      <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      {data.map((item: AdminShiftItem) => (
+        <ListGroup.Item>{item.title}</ListGroup.Item>
+      ))}
     </ListGroup>
   );
 };
