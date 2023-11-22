@@ -44,7 +44,9 @@ const getAdminUserWorkShifts = async (req, res) => {
         title: `${item.shift} - ${item.User.name} ${item.User.surname}`,
       };
     });
-    return res.send(newWorkShifts);
+    return res.send(
+      newWorkShifts.sort((a, b) => new Date(a.start) - new Date(b.start)),
+    );
   } catch (err) {
     return res.status(500);
   }
