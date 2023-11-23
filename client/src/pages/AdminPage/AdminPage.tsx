@@ -2,9 +2,9 @@ import NavbarComponent from "../HomePage/components/NavbarComponent.tsx";
 import AdminCalendarComponent from "./components/AdminCalendarComponent.tsx";
 import "./AdminPage.css";
 import ShiftListComponent from "./components/ShiftListComponent.tsx";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
 interface Props {
   user: User;
@@ -20,10 +20,10 @@ const AdminPage = ({
   setCalendarToggle,
 }: Props) => {
   const [calendarEvents, setCalendarEvents] = useState<AdminShiftItem[]>([]);
+  const [listEvents, setListEvents] = useState<AdminShiftItem[]>([]);
 
-  const { isPending, isError, data } = useQuery({
-    queryKey: ["allUsersShifts", user.company_id],
-    queryFn: async () => {
+  const UserShiftListMutation = useMutation({
+    mutationFn: async () => {
       const response = await axios.get(
         "http://localhost:3000/AdminUsersWorkShifts/" + user.company_id,
         {
@@ -34,7 +34,18 @@ const AdminPage = ({
       );
       return response.data;
     },
+    onSuccess: (data) => {
+      setListEvents(data);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
   });
+
+  useEffect(() => {
+    UserShiftListMutation.mutate();
+  }, []);
+
   return (
     <div className="vh-100">
       <NavbarComponent
@@ -45,17 +56,24 @@ const AdminPage = ({
       />
       <div className="d-flex mx-2 mt-3 calendar gap-3">
         <div className="w-25">
-          {isError ? (
-            <div>Error</div>
-          ) : isPending ? (
-            <div>Loading...</div>
-          ) : (
-            <ShiftListComponent
-              data={data}
-              calendarEvents={calendarEvents}
-              setCalendarEvents={setCalendarEvents}
-            />
-          )}
+          {/*{isError ? (*/}
+          {/*  <div>Error</div>*/}
+          {/*) : isPending ? (*/}
+          {/*  <div>Loading...</div>*/}
+          {/*) : (*/}
+          {/*  <ShiftListComponent*/}
+          {/*    data={listEvents}*/}
+          {/*    calendarEvents={calendarEvents}*/}
+          {/*    setCalendarEvents={setCalendarEvents}*/}
+          {/*  />*/}
+          {/*)}*/}
+          <ShiftListComponent
+            data={listEvents}
+            calendarEvents={calendarEvents}
+            setCalendarEvents={setCalendarEvents}
+            setListEvents={setListEvents}
+            listEvents={listEvents}
+          />
         </div>
         <div className="w-75">
           <AdminCalendarComponent calendarEvents={calendarEvents} />
