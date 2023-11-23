@@ -1,5 +1,5 @@
 export interface AdminShiftItem {
-  id: number;
+  id: string;
   name: string;
   surname: string;
   start: string;

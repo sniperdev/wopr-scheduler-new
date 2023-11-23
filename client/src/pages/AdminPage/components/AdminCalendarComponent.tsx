@@ -5,8 +5,13 @@ import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 import interactionPlugin from "@fullcalendar/interaction";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { AdminShiftItem } from "../../../utils/interfaces/AdminShiftItem.ts";
 
-const AdminCalendarComponent = () => {
+interface Props {
+  calendarEvents: AdminShiftItem[];
+}
+
+const AdminCalendarComponent = ({ calendarEvents }: Props) => {
   return (
     <FullCalendar
       plugins={[
@@ -18,6 +23,7 @@ const AdminCalendarComponent = () => {
       displayEventEnd={true}
       themeSystem="bootstrap5"
       initialView="dayGridMonth"
+      events={calendarEvents}
       headerToolbar={{
         start: "prev next",
         center: "title",

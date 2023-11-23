@@ -4,6 +4,8 @@ import "./AdminPage.css";
 import ShiftListComponent from "./components/ShiftListComponent.tsx";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useState } from "react";
+import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
 interface Props {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -17,6 +19,8 @@ const AdminPage = ({
   calendarToggle,
   setCalendarToggle,
 }: Props) => {
+  const [calendarEvents, setCalendarEvents] = useState<AdminShiftItem[]>([]);
+
   const { isPending, isError, data } = useQuery({
     queryKey: ["allUsersShifts", user.company_id],
     queryFn: async () => {
@@ -46,11 +50,15 @@ const AdminPage = ({
           ) : isPending ? (
             <div>Loading...</div>
           ) : (
-            <ShiftListComponent data={data} />
+            <ShiftListComponent
+              data={data}
+              calendarEvents={calendarEvents}
+              setCalendarEvents={setCalendarEvents}
+            />
           )}
         </div>
         <div className="w-75">
-          <AdminCalendarComponent />
+          <AdminCalendarComponent calendarEvents={calendarEvents} />
         </div>
       </div>
     </div>
