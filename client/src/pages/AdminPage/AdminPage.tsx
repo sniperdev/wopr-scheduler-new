@@ -51,6 +51,7 @@ const AdminPage = ({
     mutationFn: async () => {
       const response = await axios.post(
         "http://localhost:3000/createScheduledWorkShifts/",
+        calendarEvents,
         {
           headers: {
             "auth-token": `${localStorage.getItem("token")}`,
