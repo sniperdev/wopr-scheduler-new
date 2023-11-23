@@ -5,4 +5,5 @@ export interface AdminShiftItem {
   start: string;
   end: string;
   title: string;
+  user_id: string;
 }

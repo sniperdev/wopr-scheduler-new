@@ -42,6 +42,7 @@ const getAdminUserWorkShifts = async (req, res) => {
         start: item.start,
         end: item.end,
         title: `${item.shift} - ${item.User.name} ${item.User.surname}`,
+        user_id: item.user_id.toString(),
       };
     });
     return res.send(
