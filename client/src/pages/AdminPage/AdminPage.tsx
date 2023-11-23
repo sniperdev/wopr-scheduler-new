@@ -56,27 +56,27 @@ const AdminPage = ({
       />
       <div className="d-flex mx-2 mt-3 calendar gap-3">
         <div className="w-25">
-          {/*{isError ? (*/}
-          {/*  <div>Error</div>*/}
-          {/*) : isPending ? (*/}
-          {/*  <div>Loading...</div>*/}
-          {/*) : (*/}
-          {/*  <ShiftListComponent*/}
-          {/*    data={listEvents}*/}
-          {/*    calendarEvents={calendarEvents}*/}
-          {/*    setCalendarEvents={setCalendarEvents}*/}
-          {/*  />*/}
-          {/*)}*/}
-          <ShiftListComponent
-            data={listEvents}
+          {UserShiftListMutation.isError ? (
+            <div>Error</div>
+          ) : UserShiftListMutation.isPending ? (
+            <div>Loading...</div>
+          ) : (
+            <ShiftListComponent
+              data={listEvents}
+              calendarEvents={calendarEvents}
+              setCalendarEvents={setCalendarEvents}
+              setListEvents={setListEvents}
+              listEvents={listEvents}
+            />
+          )}
+        </div>
+        <div className="w-75">
+          <AdminCalendarComponent
             calendarEvents={calendarEvents}
             setCalendarEvents={setCalendarEvents}
             setListEvents={setListEvents}
             listEvents={listEvents}
           />
-        </div>
-        <div className="w-75">
-          <AdminCalendarComponent calendarEvents={calendarEvents} />
         </div>
       </div>
     </div>

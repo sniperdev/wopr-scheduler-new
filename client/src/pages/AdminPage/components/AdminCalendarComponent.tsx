@@ -6,12 +6,33 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { AdminShiftItem } from "../../../utils/interfaces/AdminShiftItem.ts";
+import { EventClickArg } from "fullcalendar";
 
 interface Props {
   calendarEvents: AdminShiftItem[];
+  setCalendarEvents: React.Dispatch<React.SetStateAction<AdminShiftItem[]>>;
+  listEvents: AdminShiftItem[];
+  setListEvents: React.Dispatch<React.SetStateAction<AdminShiftItem[]>>;
 }
 
-const AdminCalendarComponent = ({ calendarEvents }: Props) => {
+const AdminCalendarComponent = ({
+  calendarEvents,
+  setCalendarEvents,
+  listEvents,
+  setListEvents,
+}: Props) => {
+  const handleEventClick = (info: EventClickArg) => {
+    const clickedEvent = Number(info.event.id);
+    const clickedEventList = calendarEvents.find(
+      (element) => Number(element.id) === clickedEvent,
+    );
+    if (clickedEventList) {
+      setListEvents([...listEvents, clickedEventList]);
+      setCalendarEvents(
+        calendarEvents.filter((e) => Number(e.id) !== clickedEvent),
+      );
+    }
+  };
   return (
     <FullCalendar
       plugins={[
@@ -24,6 +45,7 @@ const AdminCalendarComponent = ({ calendarEvents }: Props) => {
       themeSystem="bootstrap5"
       initialView="dayGridMonth"
       events={calendarEvents}
+      eventClick={handleEventClick}
       headerToolbar={{
         start: "prev next",
         center: "title",
