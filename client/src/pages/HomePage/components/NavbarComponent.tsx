@@ -26,7 +26,7 @@ const NavbarComponent = ({
               onClick={() => setCalendarToggle(true)}
               active={calendarToggle}
             >
-              Moje zmiany
+              {user.isAdmin ? "Tworzenie grafiku" : "Mój grafik"}
             </Button>
             <Button
               onClick={() => setCalendarToggle(false)}
