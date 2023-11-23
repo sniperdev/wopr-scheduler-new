@@ -34,4 +34,10 @@ router.get(
   verify,
   UsersWorkShifts.getAdminUserWorkShifts,
 );
+
+router.post(
+  "/createScheduledWorkShifts/",
+  verify,
+  ScheduledWorkShifts.createScheduledWorkShifts,
+);
 module.exports = router;

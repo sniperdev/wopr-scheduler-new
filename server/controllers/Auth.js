@@ -48,7 +48,6 @@ const registerUser = async (req, res) => {
     phone: req.body.phone,
   };
   const shifts = req.body.shifts;
-  console.log(shifts);
   Companies.create(company)
     .then((newCompany) => {
       const userData = {

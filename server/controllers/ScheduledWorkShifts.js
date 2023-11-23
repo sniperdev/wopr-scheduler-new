@@ -18,4 +18,14 @@ const getScheduledWorkShifts = async (req, res) => {
   }
 };
 
-module.exports = { getScheduledWorkShifts };
+const createScheduledWorkShifts = async (req, res) => {
+  try {
+    const shifts = req.body;
+    console.log(shifts);
+    const scheduledWorkShifts = await ScheduledWorkShifts.bulkCreate(shifts);
+    return res.send(scheduledWorkShifts);
+  } catch (err) {
+    return res.status(500);
+  }
+};
+module.exports = { getScheduledWorkShifts, createScheduledWorkShifts };

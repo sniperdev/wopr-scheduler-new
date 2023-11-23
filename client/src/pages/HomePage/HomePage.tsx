@@ -88,6 +88,7 @@ const HomePage = ({
         setUser={setUser}
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
+        saveShiftsMutation={undefined}
       ></NavbarComponent>
       {isPending && <p>Pobieranie danych kalendarza...</p>}
       {isError && <p>Wystąpił błąd</p>}

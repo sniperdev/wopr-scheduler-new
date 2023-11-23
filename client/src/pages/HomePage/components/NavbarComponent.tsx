@@ -4,12 +4,14 @@ interface Props {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   calendarToggle: boolean;
+  saveShiftsMutation: any;
 }
 const NavbarComponent = ({
   user,
   setUser,
   setCalendarToggle,
   calendarToggle,
+  saveShiftsMutation,
 }: Props) => {
   const handleNameClick = () => {
     localStorage.removeItem("token");
@@ -20,9 +22,8 @@ const NavbarComponent = ({
       <Container>
         <Navbar.Brand>Scheduler App</Navbar.Brand>
         <Navbar.Collapse className="justify-content-end">
-          <Nav className="mx-auto" navbarScroll>
+          <Nav className="mx-auto gap-2" navbarScroll>
             <Button
-              className="me-2"
               onClick={() => setCalendarToggle(true)}
               active={calendarToggle}
             >
@@ -33,6 +34,9 @@ const NavbarComponent = ({
               active={!calendarToggle}
             >
               Gotowy grafik
+            </Button>
+            <Button variant="danger" onClick={saveShiftsMutation.mutate}>
+              Zapisz grafik
             </Button>
           </Nav>
           <Navbar.Text>

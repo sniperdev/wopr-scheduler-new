@@ -47,6 +47,25 @@ const AdminPage = ({
     UserShiftListMutation.mutate();
   }, []);
 
+  const saveShiftsMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post(
+        "http://localhost:3000/createScheduledWorkShifts/",
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      setCalendarEvents([]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
   return (
     <div className="vh-100">
       <NavbarComponent
@@ -54,6 +73,7 @@ const AdminPage = ({
         setUser={setUser}
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
+        saveShiftsMutation={saveShiftsMutation}
       />
       <div className="d-flex mx-2 mt-3 calendar gap-3">
         {calendarToggle && (
