@@ -47,12 +47,13 @@ const AddDateModal = ({
       const handleElement = data.find(
         (element: Shift) => element.id.toString() === selectedOption,
       );
+      const formatedDate = selectedDate.slice(0, 10);
       const response = await axios.post(
         "http://localhost:3000/UsersWorkShifts/add",
         {
           user_id: user.id,
-          start: `${selectedDate}T${handleElement.start}`,
-          end: `${selectedDate}T${handleElement.end}`,
+          start: `${formatedDate}T${handleElement.start}`,
+          end: `${formatedDate}T${handleElement.end}`,
           shift: handleElement.name,
         },
         {
@@ -87,7 +88,7 @@ const AddDateModal = ({
         <Modal.Title>Dodaj nową zmianę</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Data: {selectedDate}</p>
+        <p>Data: {selectedDate.slice(0, 10)}</p>
         <Form.Label>Wybierz zmianę</Form.Label>
         {saveShiftMutation.isError && (
           <p className="text-danger">
