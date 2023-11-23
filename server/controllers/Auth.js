@@ -15,6 +15,7 @@ const registerSchema = Joi.object({
   company: Joi.string().min(3).required(),
   address: Joi.string().min(5).required(),
   shifts: Joi.array().required(),
+  isAdmin: Joi.boolean(),
 });
 
 const loginSchema = Joi.object({
@@ -57,6 +58,7 @@ const registerUser = async (req, res) => {
         password: hashPassword,
         phone: req.body.phone,
         company_id: newCompany.id,
+        isAdmin: req.body.isAdmin,
       };
       let newShifts = shifts.map((element) => ({
         ...element,
