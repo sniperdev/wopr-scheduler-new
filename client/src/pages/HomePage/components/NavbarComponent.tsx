@@ -5,6 +5,7 @@ interface Props {
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   calendarToggle: boolean;
   saveShiftsMutation: any;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 }
 const NavbarComponent = ({
   user,
@@ -12,6 +13,7 @@ const NavbarComponent = ({
   setCalendarToggle,
   calendarToggle,
   saveShiftsMutation,
+  setShowModal,
 }: Props) => {
   const handleNameClick = () => {
     localStorage.removeItem("token");
@@ -48,6 +50,11 @@ const NavbarComponent = ({
               onClick={handleNameClick}
             >{`${user.name} ${user.surname}`}</a>
           </Navbar.Text>
+          {saveShiftsMutation && (
+            <Button className="mx-4" onClick={() => setShowModal!(true)}>
+              Ustawienia
+            </Button>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

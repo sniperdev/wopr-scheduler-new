@@ -7,6 +7,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
 import ReadyShiftsCalendarComponent from "../HomePage/components/ReadyShiftsCalendarComponent.tsx";
+import SettingsPanelModal from "./components/SettingsPanelModal.tsx";
 interface Props {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -22,6 +23,7 @@ const AdminPage = ({
 }: Props) => {
   const [calendarEvents, setCalendarEvents] = useState<AdminShiftItem[]>([]);
   const [listEvents, setListEvents] = useState<AdminShiftItem[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const UserShiftListMutation = useMutation({
     mutationFn: async () => {
@@ -75,6 +77,7 @@ const AdminPage = ({
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
         saveShiftsMutation={saveShiftsMutation}
+        setShowModal={setShowModal}
       />
       <div className="d-flex mx-2 mt-3 calendar gap-3">
         {calendarToggle && (
@@ -109,6 +112,7 @@ const AdminPage = ({
             <ReadyShiftsCalendarComponent />
           </div>
         )}
+        <SettingsPanelModal showModal={showModal} setShowModal={setShowModal} />
       </div>
     </div>
   );
