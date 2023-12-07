@@ -35,9 +35,11 @@ const NavbarComponent = ({
             >
               Gotowy grafik
             </Button>
-            <Button variant="danger" onClick={saveShiftsMutation.mutate}>
-              Zapisz grafik
-            </Button>
+            {saveShiftsMutation && (
+              <Button variant="danger" onClick={saveShiftsMutation.mutate}>
+                Zapisz grafik
+              </Button>
+            )}
           </Nav>
           <Navbar.Text>
             Zalogowany jako:{" "}
