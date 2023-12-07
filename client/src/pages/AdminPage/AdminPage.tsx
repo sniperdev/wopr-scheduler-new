@@ -120,6 +120,7 @@ const AdminPage = ({
             <SettingsPanelModal
               showModal={showModal}
               setShowModal={setShowModal}
+              user={user}
             />
           )}
         </Suspense>

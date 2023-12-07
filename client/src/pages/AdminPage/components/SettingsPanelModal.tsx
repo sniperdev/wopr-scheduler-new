@@ -7,9 +7,10 @@ import UsersSettingComponent from "./UsersSettingComponent.tsx";
 interface Props {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  user: User;
 }
 
-const SettingsPanelModal = ({ showModal, setShowModal }: Props) => {
+const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
   const [activeTab, setActiveTab] = useState("companyInfo");
 
   const handleSettingTab = (tab: string) => setActiveTab(tab);
@@ -18,7 +19,7 @@ const SettingsPanelModal = ({ showModal, setShowModal }: Props) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "companyInfo":
-        return <CompanyInfoSettingComponent />;
+        return <CompanyInfoSettingComponent user={user} />;
       case "shifts":
         return <ShiftsSettingComponent />;
       case "users":

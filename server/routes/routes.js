@@ -4,6 +4,7 @@ const verify = require("./verifyToken");
 const UsersWorkShifts = require("../controllers/UsersWorkShifts");
 const Shifts = require("../controllers/Shifts");
 const ScheduledWorkShifts = require("../controllers/ScheduledWorkShifts");
+const Settings = require("../controllers/Settings");
 
 const router = express.Router();
 
@@ -40,4 +41,7 @@ router.post(
   verify,
   ScheduledWorkShifts.createScheduledWorkShifts,
 );
+
+router.get("/companyInfo/:id", verify, Settings.companyInfo);
+
 module.exports = router;
