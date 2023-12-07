@@ -4,16 +4,19 @@ import "./AdminPage.css";
 import ShiftListComponent from "./components/ShiftListComponent.tsx";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
 import ReadyShiftsCalendarComponent from "../HomePage/components/ReadyShiftsCalendarComponent.tsx";
-import SettingsPanelModal from "./components/SettingsPanelModal.tsx";
 interface Props {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   calendarToggle: boolean;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const SettingsPanelModal = lazy(
+  () => import("./components/SettingsPanelModal"),
+);
 
 const AdminPage = ({
   user,
@@ -112,7 +115,14 @@ const AdminPage = ({
             <ReadyShiftsCalendarComponent />
           </div>
         )}
-        <SettingsPanelModal showModal={showModal} setShowModal={setShowModal} />
+        <Suspense fallback={<div>Ładowanie ustawień...</div>}>
+          {showModal && (
+            <SettingsPanelModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+            />
+          )}
+        </Suspense>
       </div>
     </div>
   );
