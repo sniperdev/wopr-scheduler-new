@@ -1,4 +1,4 @@
-import { Modal, Nav } from "react-bootstrap";
+import { Modal, Nav, Navbar } from "react-bootstrap";
 import { useState } from "react";
 import CompanyInfoSettingComponent from "./CompanyInfoSettingComponent.tsx";
 import ShiftsSettingComponent from "./ShiftsSettingComponent.tsx";
@@ -40,7 +40,7 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
         <Modal.Title>Ustawienia</Modal.Title>
       </Modal.Header>
       <Modal.Body className="d-flex gap-4">
-        <div className="w-25 border-end">
+        <div className="w-100 d-none md:block">
           <Nav className="flex-column">
             <Nav.Link onClick={() => handleSettingTab("companyInfo")}>
               Informacje o firmie
@@ -53,7 +53,10 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
             </Nav.Link>
           </Nav>
         </div>
-        <div className="w-75">{renderTabContent()}</div>
+        <div className="w-75">
+          <Navbar.Toggle className="ml-auto" />
+          {renderTabContent()}
+        </div>
       </Modal.Body>
     </Modal>
   );

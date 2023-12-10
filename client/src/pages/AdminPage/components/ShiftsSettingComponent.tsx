@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 interface Props {
   user: User;
@@ -67,49 +67,53 @@ const ShiftsSettingComponent = ({ user }: Props) => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div>
-      <h2>Edycja zmiany</h2>
-      <Form onSubmit={handleFormSubmit}>
-        {shifts.map((shift) => {
-          return (
-            <div className="row gap-2" key={shift.id}>
-              <Form.Group className="col">
-                <Form.Label>Nazwa zmiany</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  value={shift.name}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group className="col">
-                <Form.Label>Godzina rozpoczęcia</Form.Label>
-                <Form.Control
-                  type="time"
-                  name="startTime"
-                  value={shift.start}
-                  onChange={handleInputChange}
-                  className="form-control col"
-                />
-              </Form.Group>
-              <Form.Group className="col">
-                <Form.Label>Godzina zakończenia</Form.Label>
-                <Form.Control
-                  type="time"
-                  name="endTime"
-                  value={shift.end}
-                  onChange={handleInputChange}
-                  className="form-control col"
-                />
-              </Form.Group>
-            </div>
-          );
-        })}
-        <Button type="submit" className="my-2">
-          Zapisz zmiany
-        </Button>
-      </Form>
-    </div>
+    <Container fluid>
+      <Row>
+        <Col xs={12} md={8}>
+          <h2>Edycja zmiany</h2>
+          <Form onSubmit={handleFormSubmit}>
+            {shifts.map((shift) => {
+              return (
+                <div className="row gap-2" key={shift.id}>
+                  <Form.Group className="col">
+                    <Form.Label>Nazwa zmiany</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      value={shift.name}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col">
+                    <Form.Label>Godzina rozpoczęcia</Form.Label>
+                    <Form.Control
+                      type="time"
+                      name="startTime"
+                      value={shift.start}
+                      onChange={handleInputChange}
+                      className="form-control col"
+                    />
+                  </Form.Group>
+                  <Form.Group className="col">
+                    <Form.Label>Godzina zakończenia</Form.Label>
+                    <Form.Control
+                      type="time"
+                      name="endTime"
+                      value={shift.end}
+                      onChange={handleInputChange}
+                      className="form-control col"
+                    />
+                  </Form.Group>
+                </div>
+              );
+            })}
+            <Button type="submit" className="my-2">
+              Zapisz zmiany
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

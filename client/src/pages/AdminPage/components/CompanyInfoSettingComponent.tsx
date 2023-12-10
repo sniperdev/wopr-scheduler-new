@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 interface CompanyInfo {
@@ -77,69 +77,73 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div className="w-50">
-      <h2>Informacje o firmie</h2>
-      <Form onSubmit={handleInputSubmit}>
-        <Form.Group>
-          <Form.Label>Nazwa firmy</Form.Label>
-          <Form.Control
-            onChange={handleInputChange}
-            type="text"
-            placeholder="Nazwa firmy"
-            name="companyName"
-            required
-            value={companyInfoRe?.companyName}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Adres firmy</Form.Label>
-          <Form.Control
-            onChange={handleInputChange}
-            type="text"
-            placeholder="Adres firmy"
-            name="address"
-            required
-            value={companyInfoRe?.address}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Imię</Form.Label>
-          <Form.Control
-            onChange={handleInputChange}
-            type="text"
-            placeholder="Imie"
-            name="name"
-            required
-            value={companyInfoRe?.name}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Nazwisko</Form.Label>
-          <Form.Control
-            onChange={handleInputChange}
-            type="text"
-            placeholder="Nazwisko"
-            name="surname"
-            required
-            value={companyInfoRe?.surname}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Numer Telefonu</Form.Label>
-          <Form.Control
-            onChange={handleInputChange}
-            type="text"
-            placeholder="Numer telefonu"
-            name="phone"
-            required
-            value={companyInfoRe?.phone}
-          />
-        </Form.Group>
-        <Button type="submit" className="my-3">
-          Zapisz zmiany
-        </Button>
-      </Form>
-    </div>
+    <Container fluid>
+      <Row>
+        <Col xs={12} md={8}>
+          <h2>Informacje o firmie</h2>
+          <Form onSubmit={handleInputSubmit}>
+            <Form.Group>
+              <Form.Label>Nazwa firmy</Form.Label>
+              <Form.Control
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Nazwa firmy"
+                name="companyName"
+                required
+                value={companyInfoRe?.companyName}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Adres firmy</Form.Label>
+              <Form.Control
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Adres firmy"
+                name="address"
+                required
+                value={companyInfoRe?.address}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Imię</Form.Label>
+              <Form.Control
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Imie"
+                name="name"
+                required
+                value={companyInfoRe?.name}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Nazwisko</Form.Label>
+              <Form.Control
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Nazwisko"
+                name="surname"
+                required
+                value={companyInfoRe?.surname}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Numer Telefonu</Form.Label>
+              <Form.Control
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Numer telefonu"
+                name="phone"
+                required
+                value={companyInfoRe?.phone}
+              />
+            </Form.Group>
+            <Button type="submit" className="my-3">
+              Zapisz zmiany
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
