@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Button, Form, ListGroup } from "react-bootstrap";
@@ -6,8 +6,22 @@ import { Button, Form, ListGroup } from "react-bootstrap";
 interface Props {
   user: User;
 }
+
+interface NewUser {
+  name: string;
+  surname: string;
+  phone: string;
+  email: string;
+  isAdmin: boolean;
+}
 const UsersSettingComponent = ({ user }: Props) => {
-  const [newUserName, setNewUserName] = useState("");
+  const [newUser, setNewUser] = useState<NewUser>({
+    name: "",
+    surname: "",
+    phone: "",
+    email: "",
+    isAdmin: false,
+  });
 
   const {
     data: users,
@@ -18,11 +32,14 @@ const UsersSettingComponent = ({ user }: Props) => {
     queryKey: ["users", user.company_id],
     queryFn: async () => {
       return axios
-        .get<User[]>(`http://localhost:3000/users/${user.company_id}`, {
-          headers: {
-            "auth-token": `${localStorage.getItem("token")}`,
+        .get<{ id: number; name: string; surname: string; email: string }[]>(
+          `http://localhost:3000/users/${user.company_id}`,
+          {
+            headers: {
+              "auth-token": `${localStorage.getItem("token")}`,
+            },
           },
-        })
+        )
         .then((res) => res.data);
     },
   });
@@ -44,32 +61,44 @@ const UsersSettingComponent = ({ user }: Props) => {
     },
   });
 
-  // const addUserMutation = useMutation(
-  //   (userName: string) =>
-  //     axios.post(
-  //       `http://localhost:3000/users`,
-  //       { name: userName, company_id: user.company_id },
-  //       {
-  //         headers: {
-  //           "auth-token": `${localStorage.getItem("token")}`,
-  //         },
-  //       },
-  //     ),
-  //   {
-  //     onSuccess: () => {
-  //       // Po pomyślnym dodaniu użytkownika, odśwież listę użytkowników
-  //       queryClient.invalidateQueries(["users", user.company_id]);
-  //     },
-  //   },
-  // );
+  const addUserMutation = useMutation({
+    mutationFn: async (newUser: NewUser) => {
+      const response = await axios.post(
+        `http://localhost:3000/users/${user.company_id}`,
+        newUser,
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      setNewUser({
+        name: "",
+        surname: "",
+        phone: "",
+        email: "",
+        isAdmin: false,
+      });
+      refetch();
+    },
+  });
 
   const handleDeleteUser = (userId: number) => {
     deleteUserMutation.mutate(userId);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked } = e.target;
+    const inputValue = name === "isAdmin" ? checked : value;
+    setNewUser({ ...newUser, [name]: inputValue });
+  };
+
   const handleAddUser = (event: React.FormEvent) => {
     event.preventDefault();
-    // addUserMutation.mutate(newUserName);
+    if (newUser) addUserMutation.mutate(newUser);
   };
 
   if (isLoading) return "Loading...";
@@ -91,14 +120,52 @@ const UsersSettingComponent = ({ user }: Props) => {
       </ListGroup>
       <Form onSubmit={handleAddUser}>
         <Form.Group>
-          <Form.Label>Nowy użytkownik</Form.Label>
+          <Form.Label>Imię</Form.Label>
           <Form.Control
             type="text"
-            value={newUserName}
-            onChange={(e) => setNewUserName(e.target.value)}
+            name="name"
+            onChange={handleInputChange}
+            value={newUser.name}
           />
         </Form.Group>
-        <Button type="submit">Dodaj użytkownika</Button>
+        <Form.Group>
+          <Form.Label>Nazwisko</Form.Label>
+          <Form.Control
+            type="text"
+            name="surname"
+            onChange={handleInputChange}
+            value={newUser.surname}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Numer telefonu</Form.Label>
+          <Form.Control
+            type="text"
+            name="phone"
+            onChange={handleInputChange}
+            value={newUser.phone}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            name="email"
+            onChange={handleInputChange}
+            value={newUser.email}
+          />
+        </Form.Group>
+        <Form.Group className="my-2">
+          <Form.Check
+            type="switch"
+            label="Nadać uprawnienia administratora?"
+            name="isAdmin"
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Button type="submit" className="my-2">
+          Dodaj użytkownika
+        </Button>
       </Form>
     </div>
   );

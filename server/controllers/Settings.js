@@ -1,5 +1,6 @@
 const Companies = require("../models/Companies");
 const Users = require("../models/Users");
+const bcrypt = require("bcryptjs");
 const companyInfo = async (req, res) => {
   try {
     const companyInfo = await Companies.findOne({
@@ -74,4 +75,36 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { companyInfo, updateCompanyInfo, allUsers, deleteUser };
+const addUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, surname, email, phone, isAdmin } = req.body;
+
+    const password = Math.random().toString(36).slice(-8);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    await Users.create({
+      name,
+      surname,
+      email,
+      phone,
+      isAdmin,
+      password: hashedPassword,
+      company_id: id,
+    });
+
+    return res
+      .status(200)
+      .send({ message: "User added successfully", password });
+  } catch (err) {
+    return res.status(500);
+  }
+};
+module.exports = {
+  companyInfo,
+  updateCompanyInfo,
+  allUsers,
+  deleteUser,
+  addUser,
+};
