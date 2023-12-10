@@ -1,4 +1,5 @@
 const Companies = require("../models/Companies");
+const Users = require("../models/Users");
 const companyInfo = async (req, res) => {
   try {
     const companyInfo = await Companies.findOne({
@@ -37,4 +38,40 @@ const updateCompanyInfo = async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 };
-module.exports = { companyInfo, updateCompanyInfo };
+
+const allUsers = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const allUsers = await Users.findAll({
+      where: {
+        company_id: id,
+      },
+    });
+    const allUsersNoAdmins = allUsers.filter((user) => user.isAdmin !== true);
+    const mappedUsers = allUsersNoAdmins.map((user) => ({
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+    }));
+    return res.send(mappedUsers);
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Users.destroy({
+      where: {
+        id: id,
+      },
+    });
+    return res.status(200).send({ message: "User deleted successfully" });
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
+module.exports = { companyInfo, updateCompanyInfo, allUsers, deleteUser };

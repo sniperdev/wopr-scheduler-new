@@ -45,4 +45,9 @@ router.post(
 router.get("/companyInfo/:id", verify, Settings.companyInfo);
 
 router.put("/companyInfo/:id", verify, Settings.updateCompanyInfo);
+
+router.get("/users/:id", verify, Settings.allUsers);
+
+router.delete("/users/:id", verify, Settings.deleteUser);
+
 module.exports = router;
