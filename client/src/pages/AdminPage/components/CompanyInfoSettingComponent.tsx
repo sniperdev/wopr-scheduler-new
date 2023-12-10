@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 interface CompanyInfo {
@@ -63,7 +63,8 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
     if (companyInfo) setCompanyInfoRe(companyInfo);
   }, [companyInfo]);
 
-  const handleInputSubmit = () => {
+  const handleInputSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     saveCompanyInfoSettingMutation.mutate(companyInfoRe);
   };
 
@@ -76,64 +77,68 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div className="w-25">
+    <div className="w-50">
       <h2>Informacje o firmie</h2>
-      <div>
-        <input
-          onChange={handleInputChange}
-          type="text"
-          className="form-control"
-          placeholder="Nazwa firmy"
-          name="company"
-          required
-          value={companyInfoRe?.companyName}
-        />
-      </div>
-      <div>
-        <input
-          onChange={handleInputChange}
-          type="text"
-          className="form-control my-1"
-          placeholder="Adres firmy"
-          name="address"
-          required
-          value={companyInfoRe?.address}
-        />
-      </div>
-      <div className="col">
-        <input
-          onChange={handleInputChange}
-          type="text"
-          className="form-control my-1"
-          placeholder="Imie"
-          name="name"
-          required
-          value={companyInfoRe?.name}
-        />
-      </div>
-      <div className="col">
-        <input
-          onChange={handleInputChange}
-          type="text"
-          className="form-control my-1"
-          placeholder="Nazwisko"
-          name="surname"
-          required
-          value={companyInfoRe?.surname}
-        />
-      </div>
-      <div>
-        <input
-          onChange={handleInputChange}
-          type="text"
-          className="form-control my-1"
-          placeholder="Numer telefonu"
-          name="phone"
-          required
-          value={companyInfoRe?.phone}
-        />
-      </div>
-      <Button onClick={handleInputSubmit}>Zapisz zmiany</Button>
+      <Form onSubmit={handleInputSubmit}>
+        <Form.Group>
+          <Form.Label>Nazwa firmy</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            type="text"
+            placeholder="Nazwa firmy"
+            name="companyName"
+            required
+            value={companyInfoRe?.companyName}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Adres firmy</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            type="text"
+            placeholder="Adres firmy"
+            name="address"
+            required
+            value={companyInfoRe?.address}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Imię</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            type="text"
+            placeholder="Imie"
+            name="name"
+            required
+            value={companyInfoRe?.name}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Nazwisko</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            type="text"
+            placeholder="Nazwisko"
+            name="surname"
+            required
+            value={companyInfoRe?.surname}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Numer Telefonu</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            type="text"
+            placeholder="Numer telefonu"
+            name="phone"
+            required
+            value={companyInfoRe?.phone}
+          />
+        </Form.Group>
+        <Button type="submit" className="my-3">
+          Zapisz zmiany
+        </Button>
+      </Form>
     </div>
   );
 };
