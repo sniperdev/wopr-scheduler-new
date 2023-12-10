@@ -48,12 +48,13 @@ const allUsers = async (req, res) => {
         company_id: id,
       },
     });
-    const allUsersNoAdmins = allUsers.filter((user) => user.isAdmin !== true);
-    const mappedUsers = allUsersNoAdmins.map((user) => ({
+    // const allUsersNoAdmins = allUsers.filter((user) => user.isAdmin !== true);
+    const mappedUsers = allUsers.map((user) => ({
       id: user.id,
       name: user.name,
       surname: user.surname,
       email: user.email,
+      isAdmin: user.isAdmin,
     }));
     return res.send(mappedUsers);
   } catch (err) {

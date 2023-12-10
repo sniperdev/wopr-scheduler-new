@@ -28,18 +28,31 @@ const UsersSettingComponent = ({ user }: Props) => {
     isLoading,
     error,
     refetch,
-  } = useQuery<{ id: number; name: string; surname: string; email: string }[]>({
+  } = useQuery<
+    {
+      id: number;
+      name: string;
+      surname: string;
+      email: string;
+      isAdmin: boolean;
+    }[]
+  >({
     queryKey: ["users", user.company_id],
     queryFn: async () => {
       return axios
-        .get<{ id: number; name: string; surname: string; email: string }[]>(
-          `http://localhost:3000/users/${user.company_id}`,
+        .get<
           {
-            headers: {
-              "auth-token": `${localStorage.getItem("token")}`,
-            },
+            id: number;
+            name: string;
+            surname: string;
+            email: string;
+            isAdmin: boolean;
+          }[]
+        >(`http://localhost:3000/users/${user.company_id}`, {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
           },
-        )
+        })
         .then((res) => res.data);
     },
   });
@@ -113,6 +126,13 @@ const UsersSettingComponent = ({ user }: Props) => {
             <div className="d-flex justify-content-between">
               <span>{`${user.name} ${user.surname}`}</span>
               <span>{user.email}</span>
+              <Form.Check
+                type="switch"
+                label="Admin"
+                name="isAdmin"
+                defaultChecked={user.isAdmin}
+                disabled
+              />
               <Button onClick={() => handleDeleteUser(user.id)}>Usuń</Button>
             </div>
           </ListGroup.Item>
