@@ -21,7 +21,7 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
       case "companyInfo":
         return <CompanyInfoSettingComponent user={user} />;
       case "shifts":
-        return <ShiftsSettingComponent />;
+        return <ShiftsSettingComponent user={user} />;
       case "users":
         return <UsersSettingComponent user={user} />;
       default:
