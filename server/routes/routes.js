@@ -44,4 +44,5 @@ router.post(
 
 router.get("/companyInfo/:id", verify, Settings.companyInfo);
 
+router.put("/companyInfo/:id", verify, Settings.updateCompanyInfo);
 module.exports = router;

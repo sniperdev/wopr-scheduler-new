@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 
 interface CompanyInfo {
   companyName: string;
@@ -15,12 +16,20 @@ interface Props {
 }
 
 const CompanyInfoSettingComponent = ({ user }: Props) => {
+  const [companyInfoRe, setCompanyInfoRe] = useState<CompanyInfo>({
+    address: "",
+    companyName: "",
+    name: "",
+    phone: "",
+    surname: "",
+  });
+
   const {
     data: companyInfo,
     isLoading,
     error,
   } = useQuery<CompanyInfo>({
-    queryKey: ["companyInfo"],
+    queryKey: ["companyInfo", user.company_id],
     queryFn: async () => {
       return axios
         .get<CompanyInfo>(
@@ -35,8 +44,33 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
     },
   });
 
-  const handleInputChange = () => {};
-  const handleInputSubmit = () => {};
+  const saveCompanyInfoSettingMutation = useMutation({
+    mutationFn: async (companyInfoRe: CompanyInfo) => {
+      const response = await axios.put(
+        "http://localhost:3000/companyInfo/" + user.company_id,
+        companyInfoRe,
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+  });
+
+  useEffect(() => {
+    if (companyInfo) setCompanyInfoRe(companyInfo);
+  }, [companyInfo]);
+
+  const handleInputSubmit = () => {
+    saveCompanyInfoSettingMutation.mutate(companyInfoRe);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCompanyInfoRe({ ...companyInfoRe, [name]: value });
+  };
 
   if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error.message;
@@ -52,7 +86,7 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
           placeholder="Nazwa firmy"
           name="company"
           required
-          value={companyInfo?.companyName}
+          value={companyInfoRe?.companyName}
         />
       </div>
       <div>
@@ -63,7 +97,7 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
           placeholder="Adres firmy"
           name="address"
           required
-          value={companyInfo?.address}
+          value={companyInfoRe?.address}
         />
       </div>
       <div className="col">
@@ -74,7 +108,7 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
           placeholder="Imie"
           name="name"
           required
-          value={companyInfo?.name}
+          value={companyInfoRe?.name}
         />
       </div>
       <div className="col">
@@ -85,7 +119,7 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
           placeholder="Nazwisko"
           name="surname"
           required
-          value={companyInfo?.surname}
+          value={companyInfoRe?.surname}
         />
       </div>
       <div>
@@ -96,7 +130,7 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
           placeholder="Numer telefonu"
           name="phone"
           required
-          value={companyInfo?.phone}
+          value={companyInfoRe?.phone}
         />
       </div>
       <Button onClick={handleInputSubmit}>Zapisz zmiany</Button>
