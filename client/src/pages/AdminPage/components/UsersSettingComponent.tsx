@@ -37,7 +37,7 @@ const UsersSettingComponent = ({ user }: Props) => {
       isAdmin: boolean;
     }[]
   >({
-    queryKey: ["users", user.company_id],
+    queryKey: ["users", user.company_id, user.id],
     queryFn: async () => {
       return axios
         .get<
@@ -48,7 +48,7 @@ const UsersSettingComponent = ({ user }: Props) => {
             email: string;
             isAdmin: boolean;
           }[]
-        >(`http://localhost:3000/users/${user.company_id}`, {
+        >(`http://localhost:3000/users/${user.company_id}/${user.id}`, {
           headers: {
             "auth-token": `${localStorage.getItem("token")}`,
           },

@@ -42,20 +42,22 @@ const updateCompanyInfo = async (req, res) => {
 
 const allUsers = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { company_id, user_id } = req.params;
+    console.log(company_id, user_id);
     const allUsers = await Users.findAll({
       where: {
-        company_id: id,
+        company_id: company_id,
       },
     });
-    // const allUsersNoAdmins = allUsers.filter((user) => user.isAdmin !== true);
-    const mappedUsers = allUsers.map((user) => ({
-      id: user.id,
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    }));
+    const mappedUsers = allUsers
+      .filter((user) => user.id !== parseInt(user_id))
+      .map((user) => ({
+        id: user.id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      }));
     return res.send(mappedUsers);
   } catch (err) {
     return res.status(500);
