@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { Button, Form, ListGroup } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
 
 interface Props {
   user: User;
@@ -120,24 +120,37 @@ const UsersSettingComponent = ({ user }: Props) => {
   return (
     <div>
       <h2>Użytkownicy</h2>
-      <ListGroup>
-        {users?.map((user) => (
-          <ListGroup.Item key={user.id}>
-            <div className="d-flex justify-content-between">
-              <span>{`${user.name} ${user.surname}`}</span>
-              <span>{user.email}</span>
-              <Form.Check
-                type="switch"
-                label="Admin"
-                name="isAdmin"
-                defaultChecked={user.isAdmin}
-                disabled
-              />
-              <Button onClick={() => handleDeleteUser(user.id)}>Usuń</Button>
-            </div>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Admin</th>
+            <th>Akcje</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users?.map((user) => (
+            <tr key={user.id}>
+              <td>{`${user.name} ${user.surname}`}</td>
+              <td>{user.email}</td>
+              <td>
+                <Form.Check
+                  type="switch"
+                  label="Admin"
+                  name="isAdmin"
+                  defaultChecked={user.isAdmin}
+                  disabled
+                />
+              </td>
+              <td className="text-center">
+                <Button onClick={() => handleDeleteUser(user.id)}>Usuń</Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      <h3>Dodaj użytkownika</h3>
       <Form onSubmit={handleAddUser}>
         <Form.Group>
           <Form.Label>Imię</Form.Label>
