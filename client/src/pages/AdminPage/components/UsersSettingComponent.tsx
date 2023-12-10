@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { Button, Form, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 
 interface Props {
   user: User;
@@ -118,89 +118,95 @@ const UsersSettingComponent = ({ user }: Props) => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div>
-      <h2>Użytkownicy</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Admin</th>
-            <th>Akcje</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users?.map((user) => (
-            <tr key={user.id}>
-              <td>{`${user.name} ${user.surname}`}</td>
-              <td>{user.email}</td>
-              <td>
-                <Form.Check
-                  type="switch"
-                  label="Admin"
-                  name="isAdmin"
-                  defaultChecked={user.isAdmin}
-                  disabled
-                />
-              </td>
-              <td className="text-center">
-                <Button onClick={() => handleDeleteUser(user.id)}>Usuń</Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      <h3>Dodaj użytkownika</h3>
-      <Form onSubmit={handleAddUser}>
-        <Form.Group>
-          <Form.Label>Imię</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            onChange={handleInputChange}
-            value={newUser.name}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Nazwisko</Form.Label>
-          <Form.Control
-            type="text"
-            name="surname"
-            onChange={handleInputChange}
-            value={newUser.surname}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Numer telefonu</Form.Label>
-          <Form.Control
-            type="text"
-            name="phone"
-            onChange={handleInputChange}
-            value={newUser.phone}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            onChange={handleInputChange}
-            value={newUser.email}
-          />
-        </Form.Group>
-        <Form.Group className="my-2">
-          <Form.Check
-            type="switch"
-            label="Nadać uprawnienia administratora?"
-            name="isAdmin"
-            onChange={handleInputChange}
-          />
-        </Form.Group>
-        <Button type="submit" className="my-2">
-          Dodaj użytkownika
-        </Button>
-      </Form>
-    </div>
+    <Container fluid>
+      <Row>
+        <Col xs={12} md={8}>
+          <h2>Użytkownicy</h2>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Akcje</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users?.map((user) => (
+                <tr key={user.id}>
+                  <td>{`${user.name} ${user.surname}`}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <Form.Check
+                      type="switch"
+                      label="Admin"
+                      name="isAdmin"
+                      defaultChecked={user.isAdmin}
+                      disabled
+                    />
+                  </td>
+                  <td className="text-center">
+                    <Button onClick={() => handleDeleteUser(user.id)}>
+                      Usuń
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <h3>Dodaj użytkownika</h3>
+          <Form onSubmit={handleAddUser}>
+            <Form.Group>
+              <Form.Label>Imię</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                onChange={handleInputChange}
+                value={newUser.name}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Nazwisko</Form.Label>
+              <Form.Control
+                type="text"
+                name="surname"
+                onChange={handleInputChange}
+                value={newUser.surname}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Numer telefonu</Form.Label>
+              <Form.Control
+                type="text"
+                name="phone"
+                onChange={handleInputChange}
+                value={newUser.phone}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                onChange={handleInputChange}
+                value={newUser.email}
+              />
+            </Form.Group>
+            <Form.Group className="my-2">
+              <Form.Check
+                type="switch"
+                label="Nadać uprawnienia administratora?"
+                name="isAdmin"
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Button type="submit" className="my-2">
+              Dodaj użytkownika
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
