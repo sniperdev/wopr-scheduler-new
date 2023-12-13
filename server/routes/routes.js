@@ -54,4 +54,8 @@ router.post("/users/:id", verify, Settings.addUser);
 
 router.get("/resetSettings", verify, Settings.resetSettings);
 
+router.post("/shift/:id", verify, Settings.addShift);
+
+router.delete("/shift/:id", verify, Settings.removeShift);
+
 module.exports = router;

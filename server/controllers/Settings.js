@@ -1,5 +1,6 @@
 const Companies = require("../models/Companies");
 const Users = require("../models/Users");
+const Shifts = require("../models/Shifts");
 const bcrypt = require("bcryptjs");
 const resetSettingsFunction =
   require("../config/defaultDatabaseValues").resetSettingsFunction();
@@ -107,6 +108,33 @@ const addUser = async (req, res) => {
   }
 };
 
+const addShift = async (req, res) => {
+  try {
+    await Shifts.create({
+      name: req.body.name,
+      start: req.body.start,
+      end: req.body.end,
+      company_id: req.params.id,
+    });
+    return res.status(200).send({ message: "Shift added successfully" });
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
+const removeShift = async (req, res) => {
+  try {
+    await Shifts.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    return res.status(200).send({ message: "Shift removed successfully" });
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
 const resetSettings = (req, res) => {
   try {
     resetSettingsFunction();
@@ -122,4 +150,6 @@ module.exports = {
   deleteUser,
   addUser,
   resetSettings,
+  addShift,
+  removeShift,
 };
