@@ -81,7 +81,11 @@ const loginUser = async (req, res) => {
   const response = await Users.findOne({
     where: { email: req.body.email },
   });
-  const user = response.toJSON();
+  if (!response)
+    return res.status(400).send({
+      message: "Nie znaleziono adresu email",
+    });
+  const user = await response.toJSON();
   if (!user)
     return res.status(400).send({
       message: "Nie znaleziono adresu email",
