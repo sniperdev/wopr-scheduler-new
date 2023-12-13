@@ -52,4 +52,6 @@ router.delete("/users/:id", verify, Settings.deleteUser);
 
 router.post("/users/:id", verify, Settings.addUser);
 
+router.get("/resetSettings", verify, Settings.resetSettings);
+
 module.exports = router;

@@ -1,6 +1,8 @@
 const Companies = require("../models/Companies");
 const Users = require("../models/Users");
 const bcrypt = require("bcryptjs");
+const resetSettingsFunction =
+  require("../config/defaultDatabaseValues").resetSettingsFunction();
 const companyInfo = async (req, res) => {
   try {
     const companyInfo = await Companies.findOne({
@@ -104,10 +106,20 @@ const addUser = async (req, res) => {
     return res.status(500);
   }
 };
+
+const resetSettings = (req, res) => {
+  try {
+    resetSettingsFunction();
+    return res.status(200).send({ message: "Settings reset successfully" });
+  } catch (err) {
+    return res.status(500);
+  }
+};
 module.exports = {
   companyInfo,
   updateCompanyInfo,
   allUsers,
   deleteUser,
   addUser,
+  resetSettings,
 };

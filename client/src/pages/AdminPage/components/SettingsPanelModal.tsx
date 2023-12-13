@@ -3,6 +3,7 @@ import { useState } from "react";
 import CompanyInfoSettingComponent from "./CompanyInfoSettingComponent.tsx";
 import ShiftsSettingComponent from "./ShiftsSettingComponent.tsx";
 import UsersSettingComponent from "./UsersSettingComponent.tsx";
+import ResetSettingComponent from "./ResetSettingComponent.tsx";
 
 interface Props {
   showModal: boolean;
@@ -24,6 +25,8 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
         return <ShiftsSettingComponent user={user} />;
       case "users":
         return <UsersSettingComponent user={user} />;
+      case "reset":
+        return <ResetSettingComponent user={user} />;
       default:
         return null;
     }
@@ -40,7 +43,7 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
         <Modal.Title>Ustawienia</Modal.Title>
       </Modal.Header>
       <Modal.Body className="d-flex gap-4">
-        <div className="w-100 d-none md:block">
+        <div className="">
           <Nav className="flex-column">
             <Nav.Link onClick={() => handleSettingTab("companyInfo")}>
               Informacje o firmie
@@ -50,6 +53,9 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
             </Nav.Link>
             <Nav.Link onClick={() => handleSettingTab("users")}>
               Użytkownicy
+            </Nav.Link>
+            <Nav.Link onClick={() => handleSettingTab("reset")}>
+              Reset ustawień serwera
             </Nav.Link>
           </Nav>
         </div>
