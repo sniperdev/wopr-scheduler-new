@@ -47,14 +47,22 @@ const AddDateModal = ({
       const handleElement = data.find(
         (element: Shift) => element.id.toString() === selectedOption,
       );
+
+      // const ShiftId = data.find((element) => {
+      //   if (element.name === selectedOption) {
+      //     return element.id;
+      //   }
+      // });
+
       const formatedDate = selectedDate.slice(0, 10);
+
       const response = await axios.post(
         "http://localhost:3000/UsersWorkShifts/add",
         {
           user_id: user.id,
           start: `${formatedDate}T${handleElement.start}`,
           end: `${formatedDate}T${handleElement.end}`,
-          shift: handleElement.name,
+          shift: handleElement.id.toString(),
         },
         {
           headers: {
