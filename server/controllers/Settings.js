@@ -143,6 +143,30 @@ const resetSettings = (req, res) => {
     return res.status(500);
   }
 };
+
+const updateShift = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, start, end } = req.body;
+
+    const updatedShift = await Shifts.update(
+      { name, start, end },
+      {
+        where: {
+          id: id,
+        },
+      },
+    );
+
+    if (updatedShift[0] === 0) {
+      return res.status(404).send({ message: "Shift not found" });
+    }
+
+    return res.status(200).send({ message: "Shift updated successfully" });
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+};
 module.exports = {
   companyInfo,
   updateCompanyInfo,
@@ -152,4 +176,5 @@ module.exports = {
   resetSettings,
   addShift,
   removeShift,
+  updateShift,
 };

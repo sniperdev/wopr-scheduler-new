@@ -17,6 +17,7 @@ interface Shifts {
 
 const ShiftsSettingComponent = ({ user }: Props) => {
   const [shifts, setShifts] = useState<Shifts[]>([]);
+  const [originalShifts, setOriginalShifts] = useState<Shifts[]>([]);
   const [addShift, setAddShift] = useState({
     name: "",
     start: "",
@@ -37,7 +38,10 @@ const ShiftsSettingComponent = ({ user }: Props) => {
   });
 
   useEffect(() => {
-    if (data) setShifts(data);
+    if (data) {
+      setShifts(data);
+      setOriginalShifts(JSON.parse(JSON.stringify(data)));
+    }
   }, [data]);
 
   const addShiftMutation = useMutation({
@@ -79,9 +83,37 @@ const ShiftsSettingComponent = ({ user }: Props) => {
     },
   });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // const { name, value } = event.target;
-    // setShift({ ...shift, [name]: value });
+  const updateShiftMutation = useMutation({
+    mutationFn: async (updatedShift: Shifts) => {
+      const response = await axios.put(
+        `http://localhost:3000/shift/${updatedShift.id}`,
+        updatedShift,
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+  ) => {
+    const { name, value } = event.target;
+    setShifts((prevShifts) => {
+      const newShifts = [...prevShifts];
+      const index = newShifts.findIndex((shift) => shift.id === id);
+      if (index !== -1) {
+        newShifts[index] = { ...newShifts[index], [name]: value };
+      }
+      return newShifts;
+    });
   };
 
   const handleRemoveButtonClick = (id: number) => {
@@ -107,7 +139,9 @@ const ShiftsSettingComponent = ({ user }: Props) => {
         <Col md={12} lg={8}>
           <h2>Edycja zmiany</h2>
           <Form>
-            {shifts.map((shift) => {
+            {shifts.map((shift, index) => {
+              const isChanged =
+                JSON.stringify(shift) !== JSON.stringify(originalShifts[index]);
               return (
                 <div className="row gap-2" key={shift.id}>
                   <Form.Group className="col">
@@ -116,7 +150,9 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                       type="text"
                       name="name"
                       value={shift.name}
-                      onChange={handleInputChange}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInputChange(event, shift.id)
+                      }
                     />
                   </Form.Group>
                   <Form.Group className="col">
@@ -125,7 +161,9 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                       type="time"
                       name="startTime"
                       value={shift.start}
-                      onChange={handleInputChange}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInputChange(event, shift.id)
+                      }
                       className="form-control col"
                     />
                   </Form.Group>
@@ -135,7 +173,9 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                       type="time"
                       name="endTime"
                       value={shift.end}
-                      onChange={handleInputChange}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInputChange(event, shift.id)
+                      }
                       className="form-control col"
                     />
                   </Form.Group>
@@ -144,7 +184,8 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                       className=""
                       variant="secondary"
                       type="button"
-                      disabled
+                      disabled={!isChanged}
+                      onClick={() => updateShiftMutation.mutate(shift)}
                     >
                       <PencilSquare />
                     </Button>

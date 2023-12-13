@@ -58,4 +58,5 @@ router.post("/shift/:id", verify, Settings.addShift);
 
 router.delete("/shift/:id", verify, Settings.removeShift);
 
+router.put("/shift/:id", verify, Settings.updateShift);
 module.exports = router;
