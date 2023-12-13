@@ -112,7 +112,7 @@ const AdminPage = ({
           </div>
         ) : (
           <div className="w-100">
-            <ReadyShiftsCalendarComponent />
+            <ReadyShiftsCalendarComponent user={user} />
           </div>
         )}
         <Suspense fallback={<div>Ładowanie ustawień...</div>}>

@@ -25,7 +25,7 @@ router.get("/Shifts/:id", verify, Shifts.getCompanyShifts);
 router.delete("/UsersWorkShifts/:id", verify, UsersWorkShifts.deleteUserShift);
 
 router.get(
-  "/ScheduledWorkShifts",
+  "/ScheduledWorkShifts/:id",
   verify,
   ScheduledWorkShifts.getScheduledWorkShifts,
 );

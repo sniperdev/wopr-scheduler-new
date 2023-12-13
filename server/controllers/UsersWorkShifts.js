@@ -26,6 +26,7 @@ const getAllUserWorkShifts = async (req, res) => {
 const getAdminUserWorkShifts = async (req, res) => {
   try {
     const userWorkShifts = await UsersWorkShifts.findAll({
+      where: { isScheduled: false },
       include: [
         {
           model: Users,

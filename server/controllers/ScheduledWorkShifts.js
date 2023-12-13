@@ -1,14 +1,22 @@
-const ScheduledWorkShifts = require("../models/ScheduledWorkShifts");
-
+const UsersWorkShifts = require("../models/UsersWorkShifts");
+const Users = require("../models/Users");
 const getScheduledWorkShifts = async (req, res) => {
   try {
-    const scheduledWorkShifts = await ScheduledWorkShifts.findAll();
+    const scheduledWorkShifts = await UsersWorkShifts.findAll({
+      where: { isScheduled: true, company_id: req.params.id },
+      include: [
+        {
+          model: Users,
+          attributes: ["name", "surname"],
+        },
+      ],
+    });
     let newWorkShifts = scheduledWorkShifts.map((item) => {
       return {
         id: item.id,
         start: item.start,
         end: item.end,
-        title: item.title,
+        title: `${item.shift} - ${item.User.name} ${item.User.surname}`,
         user_id: item.user_id,
       };
     });
@@ -24,8 +32,13 @@ const getScheduledWorkShifts = async (req, res) => {
 const createScheduledWorkShifts = async (req, res) => {
   try {
     const shifts = req.body;
-    const scheduledWorkShifts = await ScheduledWorkShifts.bulkCreate(shifts);
-    return res.send(scheduledWorkShifts);
+    for (const shift of shifts) {
+      await UsersWorkShifts.update(
+        { isScheduled: true },
+        { where: { id: shift.id } },
+      );
+    }
+    return res.status(200).send({ message: "Ustawiono grafik" });
   } catch (err) {
     return res.status(500);
   }

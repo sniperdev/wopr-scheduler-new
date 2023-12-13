@@ -18,6 +18,10 @@ const UsersWorkShifts = sequelize.define("UsersWorkShifts", {
   shift: {
     type: DataTypes.STRING,
   },
+  isScheduled: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
   createdAt: {
     field: "created_at",
     type: DataTypes.DATE,

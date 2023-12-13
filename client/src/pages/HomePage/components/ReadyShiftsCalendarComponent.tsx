@@ -6,12 +6,16 @@ import FullCalendar from "@fullcalendar/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const ReadyShiftsCalendarComponent = () => {
+interface Props {
+  user: User;
+}
+
+const ReadyShiftsCalendarComponent = ({ user }: Props) => {
   const { isPending, isError, data } = useQuery({
-    queryKey: ["readyShifts"],
+    queryKey: ["readyShifts", user.company_id],
     queryFn: async () => {
       const response = await axios.get(
-        "http://localhost:3000/ScheduledWorkShifts/",
+        "http://localhost:3000/ScheduledWorkShifts/" + user.company_id,
         {
           headers: {
             "auth-token": `${localStorage.getItem("token")}`,
