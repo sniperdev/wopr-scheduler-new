@@ -18,28 +18,20 @@ const getAllUserWorkShifts = async (req, res) => {
     });
     const newWorkShifts = userWorkShifts.map((item) => {
       const defaultShift = defaultWorkShifts.find(
-        (shift) => shift.name === item.shift,
+        (shift) => shift.id === item.shift_id,
       );
       let color = null;
-      if (defaultShift && defaultShift.updated_at > item.created_at) {
+      if (defaultShift && defaultShift.updatedAt > item.createdAt) {
         color = "red";
       }
       return {
         id: item.id,
         start: item.start,
         end: item.end,
-        title: item.shift,
+        title: defaultShift.name,
         color: color,
       };
     });
-    // const newWorkShifts = userWorkShifts.map((item) => {
-    //   return {
-    //     id: item.id,
-    //     start: item.start,
-    //     end: item.end,
-    //     title: item.shift,
-    //   };
-    // });
     return res.send(newWorkShifts);
   } catch (err) {
     return res.status(500);
