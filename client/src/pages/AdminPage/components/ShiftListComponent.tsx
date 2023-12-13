@@ -23,7 +23,7 @@ const ShiftListComponent = ({
     <ListGroup>
       {data.map((item: AdminShiftItem) => (
         <ListGroup.Item key={item.id} onClick={() => handleClick(item)}>
-          {item.title}
+          {item.title} - <b>{item.start.slice(5, 10)}</b>
         </ListGroup.Item>
       ))}
     </ListGroup>

@@ -1,6 +1,7 @@
 const sequelize = require("../config/sequelize");
 const { DataTypes } = require("sequelize");
 const Users = require("./Users");
+const Companies = require("./Companies");
 
 const UsersWorkShifts = sequelize.define("UsersWorkShifts", {
   id: {
@@ -29,6 +30,10 @@ const UsersWorkShifts = sequelize.define("UsersWorkShifts", {
 
 UsersWorkShifts.belongsTo(Users, {
   foreignKey: "user_id",
+  onDelete: "CASCADE",
+});
+UsersWorkShifts.belongsTo(Companies, {
+  foreignKey: "company_id",
   onDelete: "CASCADE",
 });
 
