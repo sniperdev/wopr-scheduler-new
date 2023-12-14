@@ -2,8 +2,10 @@ import { useState } from "react";
 import PersonalInfoFormComponent from "./PersonalInfoFormComponent.tsx";
 import RegisterFormComponent from "./RegisterFormComponent.tsx";
 import WorkShiftFormComponent from "./WorkShiftFormComponent.tsx";
-import EmployeeAccountFormComponent from "./EmployeeAccountFormComponent.tsx";
 import { WorkShifts } from "../../../utils/interfaces/WorkShiftsInterface.ts";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   changeLoginForm: () => void;
@@ -18,9 +20,11 @@ interface RegistrationInfo {
   phone: string;
   address: string;
   shifts: WorkShifts[];
+  isAdmin: boolean;
 }
 
 const RegisterComponent = ({ changeLoginForm }: Props) => {
+  const navigate = useNavigate();
   const [currentRegistrationStep, setCurrentRegistrationStep] = useState(0);
 
   const [registrationInfo, setRegistrationInfo] = useState<RegistrationInfo>({
@@ -32,6 +36,16 @@ const RegisterComponent = ({ changeLoginForm }: Props) => {
     phone: "",
     surname: "",
     shifts: [],
+    isAdmin: true,
+  });
+
+  const registerUserMutation = useMutation({
+    mutationFn: () => {
+      return axios.post("http://localhost:3000/register", registrationInfo);
+    },
+    onSuccess: () => {
+      navigate("/login");
+    },
   });
 
   const setStep = (step: number) => {
@@ -45,6 +59,10 @@ const RegisterComponent = ({ changeLoginForm }: Props) => {
   const handleShifts = (value: WorkShifts[]) => {
     const newRegistrationInfo = { ...registrationInfo, shifts: [...value] };
     setRegistrationInfo(newRegistrationInfo);
+  };
+
+  const handleRegister = async () => {
+    registerUserMutation.mutate();
   };
 
   const renderStep = (currentRegistrationStep: number) => {
@@ -69,10 +87,9 @@ const RegisterComponent = ({ changeLoginForm }: Props) => {
           <WorkShiftFormComponent
             setStep={setStep}
             handleShifts={handleShifts}
+            handleRegister={handleRegister}
           />
         );
-      case 3:
-        return <EmployeeAccountFormComponent setStep={setStep} />;
     }
   };
 

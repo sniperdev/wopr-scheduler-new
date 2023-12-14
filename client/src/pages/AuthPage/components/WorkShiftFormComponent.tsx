@@ -5,16 +5,21 @@ import { Steps } from "../../../utils/interfaces/StepsInterface.ts";
 
 interface Props {
   handleShifts: (value: WorkShifts[]) => void;
+  handleRegister: () => void;
 }
 
-const WorkShiftFormComponent = ({ setStep, handleShifts }: Steps & Props) => {
+const WorkShiftFormComponent = ({
+  setStep,
+  handleShifts,
+  handleRegister,
+}: Steps & Props) => {
   const [shifts, setShifts] = useState<WorkShifts[]>([
-    { name: "", from: "", to: "" },
-    { name: "", from: "", to: "" },
+    { name: "", start: "", end: "" },
+    { name: "", start: "", end: "" },
   ]);
 
   const addTimeSpan = () => {
-    setShifts([...shifts, { name: "", from: "", to: "" }]);
+    setShifts([...shifts, { name: "", start: "", end: "" }]);
   };
 
   const removeTimeSpan = () => {
@@ -34,7 +39,7 @@ const WorkShiftFormComponent = ({ setStep, handleShifts }: Steps & Props) => {
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleShifts(shifts);
-    setStep(3);
+    handleRegister();
   };
 
   return (
@@ -60,15 +65,15 @@ const WorkShiftFormComponent = ({ setStep, handleShifts }: Steps & Props) => {
           <input
             type="time"
             className="form-control col"
-            value={element.from}
-            onChange={(e) => handleInputChange(index, "from", e.target.value)}
+            value={element.start}
+            onChange={(e) => handleInputChange(index, "start", e.target.value)}
             required
           />
           <input
             type="time"
             className="form-control col"
-            value={element.to}
-            onChange={(e) => handleInputChange(index, "to", e.target.value)}
+            value={element.end}
+            onChange={(e) => handleInputChange(index, "end", e.target.value)}
             required
           />
         </div>
@@ -94,7 +99,7 @@ const WorkShiftFormComponent = ({ setStep, handleShifts }: Steps & Props) => {
           Wróć
         </button>
         <button className="btn btn-primary col" type="submit">
-          Dalej
+          Załóż konto
         </button>
       </div>
     </form>

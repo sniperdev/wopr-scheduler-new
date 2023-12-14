@@ -69,6 +69,8 @@ function App() {
           </Suspense>
         }
       ></Route>
+      <Route path="/login" element={<Navigate to="/" replace />} />
+      <Route path="/register" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
