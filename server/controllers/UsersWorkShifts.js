@@ -48,6 +48,10 @@ const getAdminUserWorkShifts = async (req, res) => {
           attributes: ["name", "surname"],
           where: { company_id: req.params.id },
         },
+        {
+          model: Shifts,
+          attributes: ["name"],
+        },
       ],
     });
     const newWorkShifts = userWorkShifts.map((item) => {
@@ -55,7 +59,7 @@ const getAdminUserWorkShifts = async (req, res) => {
         id: item.id,
         start: item.start,
         end: item.end,
-        title: `${item.shift} - ${item.User.name} ${item.User.surname}`,
+        title: `${item.Shift.name} - ${item.User.name} ${item.User.surname}`,
         user_id: item.user_id.toString(),
       };
     });
