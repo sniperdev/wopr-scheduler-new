@@ -6,4 +6,5 @@ export interface AdminShiftItem {
   end: string;
   title: string;
   user_id: string;
+  date?: string;
 }
