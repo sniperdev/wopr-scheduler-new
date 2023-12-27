@@ -1,5 +1,6 @@
 const UsersWorkShifts = require("../models/UsersWorkShifts");
 const Users = require("../models/Users");
+const Shifts = require("../models/Shifts");
 const getScheduledWorkShifts = async (req, res) => {
   try {
     const scheduledWorkShifts = await UsersWorkShifts.findAll({
@@ -9,6 +10,10 @@ const getScheduledWorkShifts = async (req, res) => {
           model: Users,
           attributes: ["name", "surname"],
         },
+        {
+          model: Shifts,
+          attributes: ["name"],
+        },
       ],
     });
     let newWorkShifts = scheduledWorkShifts.map((item) => {
@@ -16,7 +21,7 @@ const getScheduledWorkShifts = async (req, res) => {
         id: item.id,
         start: item.start,
         end: item.end,
-        title: `${item.shift} - ${item.User.name} ${item.User.surname}`,
+        title: `${item.Shift.name} - ${item.User.name} ${item.User.surname}`,
         user_id: item.user_id,
       };
     });

@@ -36,7 +36,7 @@ const ReadyShiftsCalendarComponent = ({ user }: Props) => {
           bootstrap5Plugin,
           interactionPlugin,
         ]}
-        displayEventEnd={true}
+        // displayEventEnd={true}
         themeSystem="bootstrap5"
         initialView="dayGridMonth"
         headerToolbar={{
