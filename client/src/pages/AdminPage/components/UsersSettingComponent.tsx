@@ -127,7 +127,7 @@ const UsersSettingComponent = ({ user }: Props) => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Admin</th>
+                <th>Typ</th>
                 <th>Akcje</th>
               </tr>
             </thead>
@@ -136,15 +136,7 @@ const UsersSettingComponent = ({ user }: Props) => {
                 <tr key={user.id}>
                   <td>{`${user.name} ${user.surname}`}</td>
                   <td>{user.email}</td>
-                  <td>
-                    <Form.Check
-                      type="switch"
-                      label="Admin"
-                      name="isAdmin"
-                      defaultChecked={user.isAdmin}
-                      disabled
-                    />
-                  </td>
+                  <td>{user.isAdmin ? "Administrator" : "Pracownik"}</td>
                   <td className="text-center">
                     <Button onClick={() => handleDeleteUser(user.id)}>
                       Usuń
