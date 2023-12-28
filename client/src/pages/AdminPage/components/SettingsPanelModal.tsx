@@ -2,7 +2,7 @@ import { Modal, Nav, Navbar } from "react-bootstrap";
 import { useState } from "react";
 import CompanyInfoSettingComponent from "./settings/CompanyInfoSettingComponent.tsx";
 import ShiftsSettingComponent from "./settings/ShiftsSettingComponent.tsx";
-import UsersSettingComponent from "./settings/UsersSettingComponent.tsx";
+import UsersSettingComponent from "./settings/UsersSettingComponent/UsersSettingComponent.tsx";
 import ResetSettingComponent from "./settings/ResetSettingComponent.tsx";
 
 interface Props {
