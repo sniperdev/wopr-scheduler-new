@@ -2,11 +2,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-interface Props {
-  user: User;
-}
-
-const ResetSettingComponent = ({ user }: Props) => {
+const ResetSettingComponent = () => {
   const { mutate, status, error } = useMutation({
     mutationFn: async () => {
       const response = await axios.post(

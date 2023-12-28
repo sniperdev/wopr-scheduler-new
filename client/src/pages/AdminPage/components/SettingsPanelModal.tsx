@@ -1,9 +1,9 @@
 import { Modal, Nav, Navbar } from "react-bootstrap";
 import { useState } from "react";
-import CompanyInfoSettingComponent from "./CompanyInfoSettingComponent.tsx";
-import ShiftsSettingComponent from "./ShiftsSettingComponent.tsx";
-import UsersSettingComponent from "./UsersSettingComponent.tsx";
-import ResetSettingComponent from "./ResetSettingComponent.tsx";
+import CompanyInfoSettingComponent from "./settings/CompanyInfoSettingComponent.tsx";
+import ShiftsSettingComponent from "./settings/ShiftsSettingComponent.tsx";
+import UsersSettingComponent from "./settings/UsersSettingComponent.tsx";
+import ResetSettingComponent from "./settings/ResetSettingComponent.tsx";
 
 interface Props {
   showModal: boolean;
@@ -26,7 +26,7 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
       case "users":
         return <UsersSettingComponent user={user} />;
       case "reset":
-        return <ResetSettingComponent user={user} />;
+        return <ResetSettingComponent />;
       default:
         return null;
     }

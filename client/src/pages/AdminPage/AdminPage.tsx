@@ -15,7 +15,7 @@ interface Props {
 }
 
 const SettingsPanelModal = lazy(
-  () => import("./components/SettingsPanelModal"),
+  () => import("./components/SettingsPanelModal.tsx"),
 );
 
 const AdminPage = ({
