@@ -45,6 +45,7 @@ const AddUserComponent = ({ newUser, setNewUser, addUserMutation }: Props) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
     const inputValue = name === "isAdmin" ? checked : value;
+    if (name === "phone" && value.length > 9) return;
     setErrors(undefined);
     setNewUser({ ...newUser, [name]: inputValue });
   };
