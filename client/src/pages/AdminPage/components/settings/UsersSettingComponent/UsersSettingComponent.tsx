@@ -11,6 +11,7 @@ interface Props {
 }
 
 const UsersSettingComponent = ({ user }: Props) => {
+  const [showCard, setShowCard] = useState(false);
   const [newUser, setNewUser] = useState<NewUser>({
     name: "",
     surname: "",
@@ -83,8 +84,8 @@ const UsersSettingComponent = ({ user }: Props) => {
       );
       return response.data;
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+      setShowCard(true);
       setNewUser({
         name: "",
         surname: "",
@@ -138,9 +139,10 @@ const UsersSettingComponent = ({ user }: Props) => {
               setNewUser={setNewUser}
               addUserMutation={addUserMutation}
             ></AddUserComponent>
-            {addUserMutation.isSuccess && (
+            {showCard && (
               <SuccessAddUserCard
                 newUser={addUserMutation.data.newUser}
+                setShowCard={setShowCard}
               ></SuccessAddUserCard>
             )}
           </div>

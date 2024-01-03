@@ -1,4 +1,4 @@
-import { Card } from "react-bootstrap";
+import { Card, CloseButton } from "react-bootstrap";
 
 type NewUser = {
   name: string;
@@ -8,12 +8,16 @@ type NewUser = {
 };
 interface Props {
   newUser: NewUser;
+  setShowCard: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SuccessAddUserCard = ({ newUser }: Props) => {
+const SuccessAddUserCard = ({ newUser, setShowCard }: Props) => {
   return (
     <Card className="h-75 w-50">
-      <Card.Header>Wiadomość do przesłania dla użytkownika</Card.Header>
+      <Card.Header className="d-flex justify-content-between">
+        Wiadomość do przesłania dla użytkownika{" "}
+        <CloseButton onClick={() => setShowCard(false)} />
+      </Card.Header>
       <Card.Body>
         <Card.Title>
           Witaj {newUser.name} {newUser.surname}!
