@@ -61,7 +61,7 @@ const AddUserComponent = ({ newUser, setNewUser, addUserMutation }: Props) => {
   };
 
   return (
-    <>
+    <div>
       <h3>Dodaj użytkownika</h3>
       <Form onSubmit={handleAddUser}>
         <Form.Group>
@@ -113,7 +113,7 @@ const AddUserComponent = ({ newUser, setNewUser, addUserMutation }: Props) => {
           Dodaj użytkownika
         </Button>
       </Form>
-    </>
+    </div>
   );
 };
 

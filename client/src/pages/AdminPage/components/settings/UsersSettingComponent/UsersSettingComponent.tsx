@@ -4,6 +4,7 @@ import axios from "axios";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import AddUserComponent from "./AddUserComponent.tsx";
 import { NewUser } from "../../../../../utils/interfaces/NewUserInterface.ts";
+import SuccessAddUserCard from "./SuccessAddUserCard.tsx";
 
 interface Props {
   user: User;
@@ -82,7 +83,8 @@ const UsersSettingComponent = ({ user }: Props) => {
       );
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       setNewUser({
         name: "",
         surname: "",
@@ -130,11 +132,18 @@ const UsersSettingComponent = ({ user }: Props) => {
               ))}
             </tbody>
           </Table>
-          <AddUserComponent
-            newUser={newUser}
-            setNewUser={setNewUser}
-            addUserMutation={addUserMutation}
-          ></AddUserComponent>
+          <div className="d-flex gap-4">
+            <AddUserComponent
+              newUser={newUser}
+              setNewUser={setNewUser}
+              addUserMutation={addUserMutation}
+            ></AddUserComponent>
+            {addUserMutation.isSuccess && (
+              <SuccessAddUserCard
+                newUser={addUserMutation.data.newUser}
+              ></SuccessAddUserCard>
+            )}
+          </div>
         </Col>
       </Row>
     </Container>

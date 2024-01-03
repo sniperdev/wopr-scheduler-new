@@ -100,9 +100,10 @@ const addUser = async (req, res) => {
       company_id: id,
     });
 
-    return res
-      .status(200)
-      .send({ message: "User added successfully", password });
+    return res.status(200).send({
+      message: "User added successfully",
+      newUser: { name, surname, email, password },
+    });
   } catch (err) {
     return res.status(500);
   }
