@@ -1,4 +1,6 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Gear, InfoCircle } from "react-bootstrap-icons";
+
 interface Props {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -51,10 +53,17 @@ const NavbarComponent = ({
             >{`${user.name} ${user.surname}`}</a>
           </Navbar.Text>
           {saveShiftsMutation && (
-            <Button className="mx-4" onClick={() => setShowModal!(true)}>
-              Ustawienia
+            <Button
+              className="mx-4"
+              onClick={() => setShowModal!(true)}
+              variant="secondary"
+            >
+              <Gear />
             </Button>
           )}
+          <Button variant="info">
+            <InfoCircle />
+          </Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>
