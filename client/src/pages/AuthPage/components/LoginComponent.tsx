@@ -55,7 +55,11 @@ const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
 
   return (
     <div className="login-page-form">
-      {loginMutation.isError && <p>Wystąpił błąd logowania</p>}
+      {loginMutation.isError && (
+        <p className="text-center text-danger fw-bold">
+          Wystąpił błąd logowania
+        </p>
+      )}
       <form onSubmit={handleFormSubmit} className="d-flex flex-column gap-2">
         <input
           type="text"
