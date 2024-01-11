@@ -8,6 +8,7 @@ interface Props {
   calendarToggle: boolean;
   saveShiftsMutation: any;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const NavbarComponent = ({
   user,
@@ -16,6 +17,7 @@ const NavbarComponent = ({
   calendarToggle,
   saveShiftsMutation,
   setShowModal,
+  setShowCanvas,
 }: Props) => {
   const handleNameClick = () => {
     localStorage.removeItem("token");
@@ -61,7 +63,7 @@ const NavbarComponent = ({
               <Gear />
             </Button>
           )}
-          <Button variant="info">
+          <Button variant="info" onClick={() => setShowCanvas(true)}>
             <InfoCircle />
           </Button>
         </Navbar.Collapse>

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { DateClickArg, EventClickArg } from "fullcalendar";
 import CalendarComponent from "./components/CalendarComponent.tsx";
 import ReadyShiftsCalendarComponent from "./components/ReadyShiftsCalendarComponent.tsx";
+import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasComponent.tsx";
 
 interface Props {
   user: User;
@@ -29,6 +30,7 @@ const HomePage = ({
 }: Props) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(false);
 
   const { isPending, isError, data, refetch } = useQuery({
     queryKey: ["userShifts", user.id],
@@ -61,6 +63,7 @@ const HomePage = ({
       refetch();
     },
   });
+
   const handleDateClick = (clickedDate: DateClickArg) => {
     setSelectedDate(clickedDate.dateStr);
     setShowModal(true);
@@ -90,6 +93,7 @@ const HomePage = ({
         calendarToggle={calendarToggle}
         saveShiftsMutation={undefined}
         setShowModal={undefined}
+        setShowCanvas={setShowCanvas}
       ></NavbarComponent>
       {isPending && <p>Pobieranie danych kalendarza...</p>}
       {isError && <p>Wystąpił błąd</p>}
@@ -110,6 +114,10 @@ const HomePage = ({
         selectedDate={selectedDate}
         user={user}
       />
+      <HelpOffcanvasComponent
+        showCanvas={showCanvas}
+        setShowCanvas={setShowCanvas}
+      ></HelpOffcanvasComponent>
     </div>
   );
 };
