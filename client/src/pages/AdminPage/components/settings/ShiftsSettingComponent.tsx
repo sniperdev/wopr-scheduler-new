@@ -161,10 +161,8 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                       type="time"
                       name="startTime"
                       value={shift.start}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        handleInputChange(event, shift.id)
-                      }
                       className="form-control col"
+                      disabled
                     />
                   </Form.Group>
                   <Form.Group className="col">
@@ -173,10 +171,8 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                       type="time"
                       name="endTime"
                       value={shift.end}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        handleInputChange(event, shift.id)
-                      }
                       className="form-control col"
+                      disabled
                     />
                   </Form.Group>
                   <div className="col gap-2 d-flex align-items-end">
