@@ -2,7 +2,7 @@ import NavbarComponent from "../HomePage/components/NavbarComponent.tsx";
 import AdminCalendarComponent from "./components/AdminCalendarComponent.tsx";
 import "./AdminPage.css";
 import ShiftListComponent from "./components/ShiftListComponent.tsx";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
@@ -52,6 +52,21 @@ const AdminPage = ({
     UserShiftListMutation.mutate();
   }, []);
 
+  const { isPending, isError, data } = useQuery({
+    queryKey: ["readyShifts", user.company_id],
+    queryFn: async () => {
+      const response = await axios.get(
+        "http://localhost:3000/ScheduledWorkShifts/" + user.company_id,
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+  });
+
   const saveShiftsMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
@@ -66,7 +81,7 @@ const AdminPage = ({
       return response.data;
     },
     onSuccess: () => {
-      setCalendarEvents([]);
+      setCalendarEvents(data);
     },
     onError: (err) => {
       console.log(err);
@@ -112,7 +127,12 @@ const AdminPage = ({
           </div>
         ) : (
           <div className="w-100">
-            <ReadyShiftsCalendarComponent user={user} />
+            <ReadyShiftsCalendarComponent
+              user={user}
+              isPending={isPending}
+              isError={isError}
+              data={data}
+            />
           </div>
         )}
         <Suspense fallback={<div>Ładowanie ustawień...</div>}>

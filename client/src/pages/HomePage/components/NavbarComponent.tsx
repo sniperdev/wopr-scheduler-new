@@ -33,7 +33,7 @@ const NavbarComponent = ({
               onClick={() => setCalendarToggle(true)}
               active={calendarToggle}
             >
-              {user.isAdmin ? "Tworzenie grafiku" : "Mój grafik"}
+              {user.isAdmin ? "Edycja grafiku" : "Mój grafik"}
             </Button>
             <Button
               onClick={() => setCalendarToggle(false)}
