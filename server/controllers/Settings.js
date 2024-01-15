@@ -30,7 +30,15 @@ const updateCompanyInfo = async (req, res) => {
         },
       },
     );
-
+    await Users.update(
+      { name, surname, phone },
+      {
+        where: {
+          company_id: id,
+          email: req.body.email,
+        },
+      },
+    );
     if (updatedCompanyInfo[0] === 0) {
       return res.status(404).send({ message: "Company not found" });
     }

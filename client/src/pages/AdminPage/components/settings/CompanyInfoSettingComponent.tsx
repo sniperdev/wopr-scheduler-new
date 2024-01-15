@@ -9,6 +9,7 @@ interface CompanyInfo {
   name: string;
   surname: string;
   phone: string;
+  email: string;
 }
 
 interface Props {
@@ -22,6 +23,7 @@ const CompanyInfoSettingComponent = ({ user }: Props) => {
     name: "",
     phone: "",
     surname: "",
+    email: user.email,
   });
 
   const {
