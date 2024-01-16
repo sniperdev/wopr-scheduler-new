@@ -103,6 +103,15 @@ const addAllUserWorkShifts = async (req, res) => {
 
 const deleteUserShift = async (req, res) => {
   try {
+    const shift = await UsersWorkShifts.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (shift.isScheduled)
+      return res
+        .status(400)
+        .json({ message: "Cannot delete scheduled work shift" });
     await UsersWorkShifts.destroy({
       where: {
         id: req.params.id,

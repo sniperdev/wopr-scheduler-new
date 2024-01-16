@@ -32,11 +32,35 @@ const HomePage = ({
   const [showModal, setShowModal] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
 
-  const { isPending, isError, data, refetch } = useQuery({
+  const {
+    isPending: isUserShiftsPending,
+    isError: isUserShiftsError,
+    data: userShiftsData,
+    refetch: refetchUserShifts,
+  } = useQuery({
     queryKey: ["userShifts", user.id],
     queryFn: async () => {
       const response = await axios.get(
         "http://localhost:3000/UsersWorkShifts/" + user.id,
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+  });
+
+  const {
+    isPending: isReadyShiftsPending,
+    isError: isReadyShiftsError,
+    data: readyShiftsData,
+  } = useQuery({
+    queryKey: ["readyShifts", user.company_id],
+    queryFn: async () => {
+      const response = await axios.get(
+        "http://localhost:3000/ScheduledWorkShifts/" + user.company_id,
         {
           headers: {
             "auth-token": `${localStorage.getItem("token")}`,
@@ -60,7 +84,7 @@ const HomePage = ({
       return response.data;
     },
     onSuccess: () => {
-      refetch();
+      refetchUserShifts();
     },
   });
 
@@ -70,7 +94,7 @@ const HomePage = ({
   };
 
   const handleCloseModal = () => {
-    refetch();
+    refetchUserShifts();
     setShowModal(false);
     setSelectedDate("");
   };
@@ -78,7 +102,7 @@ const HomePage = ({
   const handleRemoveEvent = (clickedEvent: EventClickArg) => {
     const { event } = clickedEvent;
     const date = event.startStr.slice(0, 16);
-    const clickedElement = data.find(
+    const clickedElement = userShiftsData.find(
       (shift: Shift) => shift.title === event.title && date === shift.start,
     );
     removeDateMutation.mutate(clickedElement.id);
@@ -95,20 +119,20 @@ const HomePage = ({
         setShowModal={undefined}
         setShowCanvas={setShowCanvas}
       ></NavbarComponent>
-      {isPending && <p>Pobieranie danych kalendarza...</p>}
-      {isError && <p>Wystąpił błąd</p>}
+      {isUserShiftsPending && <p>Pobieranie danych kalendarza...</p>}
+      {isUserShiftsError && <p>Wystąpił błąd</p>}
       <div className="mx-2 mt-2 calendar">
         {calendarToggle ? (
           <CalendarComponent
-            data={data}
+            data={userShiftsData}
             handleDateClick={handleDateClick}
             handleRemoveEvent={handleRemoveEvent}
           />
         ) : (
           <ReadyShiftsCalendarComponent
-            isPending={isPending}
-            isError={isError}
-            data={data}
+            isPending={isReadyShiftsPending}
+            isError={isReadyShiftsError}
+            data={readyShiftsData}
           />
         )}
       </div>
