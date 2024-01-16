@@ -21,7 +21,7 @@ const getAllUserWorkShifts = async (req, res) => {
         (shift) => shift.id === item.shift_id,
       );
       let color = null;
-      if (defaultShift && defaultShift.updatedAt > item.createdAt) {
+      if (item.isScheduled) {
         color = "red";
       }
       return {
