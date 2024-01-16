@@ -36,7 +36,12 @@ const getScheduledWorkShifts = async (req, res) => {
 
 const createScheduledWorkShifts = async (req, res) => {
   try {
-    const shifts = req.body;
+    const shifts = req.body.events;
+    const companyId = req.body.company_id;
+    await UsersWorkShifts.update(
+      { isScheduled: false },
+      { where: { company_id: companyId } },
+    );
     for (const shift of shifts) {
       await UsersWorkShifts.update(
         { isScheduled: true },

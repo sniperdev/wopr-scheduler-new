@@ -2,11 +2,12 @@ import NavbarComponent from "../HomePage/components/NavbarComponent.tsx";
 import AdminCalendarComponent from "./components/AdminCalendarComponent.tsx";
 import "./AdminPage.css";
 import ShiftListComponent from "./components/ShiftListComponent.tsx";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
 import ReadyShiftsCalendarComponent from "../HomePage/components/ReadyShiftsCalendarComponent.tsx";
+import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasComponent.tsx";
 interface Props {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -27,6 +28,7 @@ const AdminPage = ({
   const [calendarEvents, setCalendarEvents] = useState<AdminShiftItem[]>([]);
   const [listEvents, setListEvents] = useState<AdminShiftItem[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(false);
 
   const UserShiftListMutation = useMutation({
     mutationFn: async () => {
@@ -50,13 +52,34 @@ const AdminPage = ({
 
   useEffect(() => {
     UserShiftListMutation.mutate();
+    if (isSuccess) {
+      setCalendarEvents(data);
+    }
   }, []);
+
+  const { isPending, isError, data, isSuccess, refetch } = useQuery({
+    queryKey: ["readyShifts", user.company_id],
+    queryFn: async () => {
+      const response = await axios.get(
+        "http://localhost:3000/ScheduledWorkShifts/" + user.company_id,
+        {
+          headers: {
+            "auth-token": `${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      return response.data;
+    },
+  });
 
   const saveShiftsMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
         "http://localhost:3000/createScheduledWorkShifts/",
-        calendarEvents,
+        {
+          events: calendarEvents,
+          company_id: user.company_id,
+        },
         {
           headers: {
             "auth-token": `${localStorage.getItem("token")}`,
@@ -66,7 +89,7 @@ const AdminPage = ({
       return response.data;
     },
     onSuccess: () => {
-      setCalendarEvents([]);
+      refetch();
     },
     onError: (err) => {
       console.log(err);
@@ -81,14 +104,15 @@ const AdminPage = ({
         calendarToggle={calendarToggle}
         saveShiftsMutation={saveShiftsMutation}
         setShowModal={setShowModal}
+        setShowCanvas={setShowCanvas}
       />
       <div className="d-flex mx-2 mt-3 calendar gap-3">
         {calendarToggle && (
           <div className="w-25">
             {UserShiftListMutation.isError ? (
-              <div>Error</div>
+              <div>Błąd</div>
             ) : UserShiftListMutation.isPending ? (
-              <div>Loading...</div>
+              <div>Ładowanie...</div>
             ) : (
               <ShiftListComponent
                 data={listEvents}
@@ -112,7 +136,11 @@ const AdminPage = ({
           </div>
         ) : (
           <div className="w-100">
-            <ReadyShiftsCalendarComponent user={user} />
+            <ReadyShiftsCalendarComponent
+              isPending={isPending}
+              isError={isError}
+              data={data}
+            />
           </div>
         )}
         <Suspense fallback={<div>Ładowanie ustawień...</div>}>
@@ -124,6 +152,10 @@ const AdminPage = ({
             />
           )}
         </Suspense>
+        <HelpOffcanvasComponent
+          showCanvas={showCanvas}
+          setShowCanvas={setShowCanvas}
+        ></HelpOffcanvasComponent>
       </div>
     </div>
   );

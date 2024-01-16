@@ -105,7 +105,11 @@ const HomePage = ({
             handleRemoveEvent={handleRemoveEvent}
           />
         ) : (
-          <ReadyShiftsCalendarComponent user={user} />
+          <ReadyShiftsCalendarComponent
+            isPending={isPending}
+            isError={isError}
+            data={data}
+          />
         )}
       </div>
       <AddDateModal
