@@ -7,6 +7,7 @@ import axios from "axios";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
 import ReadyShiftsCalendarComponent from "../HomePage/components/ReadyShiftsCalendarComponent.tsx";
+import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasComponent.tsx";
 interface Props {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -27,6 +28,7 @@ const AdminPage = ({
   const [calendarEvents, setCalendarEvents] = useState<AdminShiftItem[]>([]);
   const [listEvents, setListEvents] = useState<AdminShiftItem[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(false);
 
   const UserShiftListMutation = useMutation({
     mutationFn: async () => {
@@ -50,9 +52,12 @@ const AdminPage = ({
 
   useEffect(() => {
     UserShiftListMutation.mutate();
+    if (isSuccess) {
+      setCalendarEvents(data);
+    }
   }, []);
 
-  const { isPending, isError, data } = useQuery({
+  const { isPending, isError, data, isSuccess, refetch } = useQuery({
     queryKey: ["readyShifts", user.company_id],
     queryFn: async () => {
       const response = await axios.get(
@@ -71,7 +76,10 @@ const AdminPage = ({
     mutationFn: async () => {
       const response = await axios.post(
         "http://localhost:3000/createScheduledWorkShifts/",
-        calendarEvents,
+        {
+          events: calendarEvents,
+          company_id: user.company_id,
+        },
         {
           headers: {
             "auth-token": `${localStorage.getItem("token")}`,
@@ -81,7 +89,7 @@ const AdminPage = ({
       return response.data;
     },
     onSuccess: () => {
-      setCalendarEvents(data);
+      refetch();
     },
     onError: (err) => {
       console.log(err);
@@ -96,14 +104,15 @@ const AdminPage = ({
         calendarToggle={calendarToggle}
         saveShiftsMutation={saveShiftsMutation}
         setShowModal={setShowModal}
+        setShowCanvas={setShowCanvas}
       />
       <div className="d-flex mx-2 mt-3 calendar gap-3">
         {calendarToggle && (
           <div className="w-25">
             {UserShiftListMutation.isError ? (
-              <div>Error</div>
+              <div>Błąd</div>
             ) : UserShiftListMutation.isPending ? (
-              <div>Loading...</div>
+              <div>Ładowanie...</div>
             ) : (
               <ShiftListComponent
                 data={listEvents}
@@ -128,7 +137,6 @@ const AdminPage = ({
         ) : (
           <div className="w-100">
             <ReadyShiftsCalendarComponent
-              user={user}
               isPending={isPending}
               isError={isError}
               data={data}
@@ -144,6 +152,10 @@ const AdminPage = ({
             />
           )}
         </Suspense>
+        <HelpOffcanvasComponent
+          showCanvas={showCanvas}
+          setShowCanvas={setShowCanvas}
+        ></HelpOffcanvasComponent>
       </div>
     </div>
   );

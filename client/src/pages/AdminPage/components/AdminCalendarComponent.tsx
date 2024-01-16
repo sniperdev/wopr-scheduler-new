@@ -27,7 +27,13 @@ const AdminCalendarComponent = ({
       (element) => Number(element.id) === clickedEvent,
     );
     if (clickedEventList) {
-      setListEvents([...listEvents, clickedEventList]);
+      setListEvents([
+        ...listEvents,
+        {
+          ...clickedEventList,
+          date: clickedEventList.start.slice(0, 10),
+        },
+      ]);
       setCalendarEvents(
         calendarEvents.filter((e) => Number(e.id) !== clickedEvent),
       );
