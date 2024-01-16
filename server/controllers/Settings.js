@@ -89,6 +89,15 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const generateRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 const addUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -97,6 +106,7 @@ const addUser = async (req, res) => {
     const password = Math.random().toString(36).slice(-8);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    const color = generateRandomColor();
 
     await Users.create({
       name,
@@ -105,6 +115,7 @@ const addUser = async (req, res) => {
       phone,
       isAdmin,
       password: hashedPassword,
+      color: color,
       company_id: id,
     });
 

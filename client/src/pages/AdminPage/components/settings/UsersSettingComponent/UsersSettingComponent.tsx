@@ -138,6 +138,7 @@ const UsersSettingComponent = ({ user }: Props) => {
               newUser={newUser}
               setNewUser={setNewUser}
               addUserMutation={addUserMutation}
+              setShowCard={setShowCard}
             ></AddUserComponent>
             {showCard && (
               <SuccessAddUserCard

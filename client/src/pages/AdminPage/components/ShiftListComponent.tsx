@@ -20,13 +20,16 @@ const ShiftListComponent = ({
     setListEvents(newListEvents);
   };
   return (
-    <ListGroup>
-      {data.map((item: AdminShiftItem) => (
-        <ListGroup.Item key={item.id} onClick={() => handleClick(item)}>
-          {item.title} - <b>{item.date}</b>
-        </ListGroup.Item>
-      ))}
-    </ListGroup>
+    <>
+      {data.length === 0 && <p>Brak dostępnych zmian</p>}
+      <ListGroup>
+        {data.map((item: AdminShiftItem) => (
+          <ListGroup.Item key={item.id} onClick={() => handleClick(item)}>
+            {item.title} - <b>{item.date}</b>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+    </>
   );
 };
 

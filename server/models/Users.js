@@ -32,6 +32,10 @@ const Users = sequelize.define("Users", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  color: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   createdAt: {
     field: "created_at",
     type: DataTypes.DATE,

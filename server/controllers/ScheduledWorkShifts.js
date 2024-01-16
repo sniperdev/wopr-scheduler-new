@@ -8,7 +8,7 @@ const getScheduledWorkShifts = async (req, res) => {
       include: [
         {
           model: Users,
-          attributes: ["name", "surname"],
+          attributes: ["name", "surname", "color"],
         },
         {
           model: Shifts,
@@ -23,6 +23,7 @@ const getScheduledWorkShifts = async (req, res) => {
         end: item.end,
         title: `${item.Shift.name} - ${item.User.name} ${item.User.surname}`,
         user_id: item.user_id,
+        color: item.User.color,
       };
     });
     newWorkShifts = newWorkShifts.sort(

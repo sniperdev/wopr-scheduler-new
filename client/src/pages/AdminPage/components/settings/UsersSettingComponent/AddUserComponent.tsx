@@ -8,6 +8,7 @@ interface Props {
   newUser: NewUser;
   setNewUser: React.Dispatch<React.SetStateAction<NewUser>>;
   addUserMutation: UseMutationResult<any, Error, NewUser, unknown>;
+  setShowCard: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const schema = Joi.object({
@@ -39,7 +40,12 @@ const schema = Joi.object({
   isAdmin: Joi.boolean(),
 });
 
-const AddUserComponent = ({ newUser, setNewUser, addUserMutation }: Props) => {
+const AddUserComponent = ({
+  newUser,
+  setNewUser,
+  addUserMutation,
+  setShowCard,
+}: Props) => {
   const [errors, setErrors] = useState<ValidationError>();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +63,10 @@ const AddUserComponent = ({ newUser, setNewUser, addUserMutation }: Props) => {
       setErrors(error);
       return;
     }
-    if (newUser) addUserMutation.mutate(newUser);
+    if (newUser) {
+      setShowCard(false);
+      addUserMutation.mutate(newUser);
+    }
   };
 
   return (

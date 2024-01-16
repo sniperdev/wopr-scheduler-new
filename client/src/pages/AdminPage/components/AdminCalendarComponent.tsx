@@ -21,17 +21,26 @@ const AdminCalendarComponent = ({
   listEvents,
   setListEvents,
 }: Props) => {
+  function reformatDate(dateStr: string) {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // January is 0!
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
   const handleEventClick = (info: EventClickArg) => {
     const clickedEvent = Number(info.event.id);
     const clickedEventList = calendarEvents.find(
       (element) => Number(element.id) === clickedEvent,
     );
     if (clickedEventList) {
+      const date = reformatDate(clickedEventList.start);
       setListEvents([
         ...listEvents,
         {
           ...clickedEventList,
-          date: clickedEventList.start.slice(0, 10),
+          date: date,
         },
       ]);
       setCalendarEvents(

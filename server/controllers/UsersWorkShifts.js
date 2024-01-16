@@ -45,7 +45,7 @@ const getAdminUserWorkShifts = async (req, res) => {
       include: [
         {
           model: Users,
-          attributes: ["name", "surname"],
+          attributes: ["name", "surname", "color"],
           where: { company_id: req.params.id },
         },
         {
@@ -61,6 +61,7 @@ const getAdminUserWorkShifts = async (req, res) => {
         end: item.end,
         title: `${item.Shift.name} - ${item.User.name} ${item.User.surname}`,
         user_id: item.user_id.toString(),
+        color: item.User.color,
         date: `${item.start.slice(8, 10)}-${item.start.slice(
           5,
           7,
