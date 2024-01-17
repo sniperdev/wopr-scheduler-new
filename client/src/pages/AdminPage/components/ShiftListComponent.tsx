@@ -1,5 +1,6 @@
 import { ListGroup } from "react-bootstrap";
 import { AdminShiftItem } from "../../../utils/interfaces/AdminShiftItem.ts";
+import "./ShiftListComponent.css";
 interface Props {
   data: AdminShiftItem[];
   calendarEvents: AdminShiftItem[];
@@ -22,7 +23,7 @@ const ShiftListComponent = ({
   return (
     <>
       {data.length === 0 && <p>Brak dostępnych zmian</p>}
-      <ListGroup>
+      <ListGroup className="shifts-list overflow-y-scroll">
         {data.map((item: AdminShiftItem) => (
           <ListGroup.Item key={item.id} onClick={() => handleClick(item)}>
             {item.title} - <b>{item.date}</b>
