@@ -1,7 +1,7 @@
 import "./HomePage.css";
 
 import NavbarComponent from "./components/NavbarComponent.tsx";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import AddDateModal from "./components/AddDateModal.tsx";
 import { useState } from "react";
@@ -9,6 +9,8 @@ import { DateClickArg, EventClickArg } from "fullcalendar";
 import CalendarComponent from "./components/CalendarComponent.tsx";
 import ReadyShiftsCalendarComponent from "./components/ReadyShiftsCalendarComponent.tsx";
 import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasComponent.tsx";
+import RemoveDateModal from "./components/RemoveDateModal.tsx";
+import { EventImpl } from "@fullcalendar/core/internal";
 
 interface Props {
   user: User;
@@ -16,12 +18,7 @@ interface Props {
   calendarToggle: boolean;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
-interface Shift {
-  id: number;
-  title: string;
-  start: string;
-  end: string;
-}
+
 const HomePage = ({
   user,
   setUser,
@@ -29,7 +26,9 @@ const HomePage = ({
   setCalendarToggle,
 }: Props) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [showModal, setShowModal] = useState(false);
+  const [showAddDateModal, setShowAddDateModal] = useState(false);
+  const [showRemoveDateModal, setShowRemoveDateModal] = useState(false);
+  const [clickedEvent, setClickedEvent] = useState<EventImpl>();
   const [showCanvas, setShowCanvas] = useState(false);
 
   const {
@@ -71,41 +70,26 @@ const HomePage = ({
     },
   });
 
-  const removeDateMutation = useMutation({
-    mutationFn: async (id: number) => {
-      const response = await axios.delete(
-        "http://localhost:3000/UsersWorkShifts/" + id,
-        {
-          headers: {
-            "auth-token": `${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      return response.data;
-    },
-    onSuccess: () => {
-      refetchUserShifts();
-    },
-  });
-
   const handleDateClick = (clickedDate: DateClickArg) => {
     setSelectedDate(clickedDate.dateStr);
-    setShowModal(true);
+    setShowAddDateModal(true);
   };
 
   const handleCloseModal = () => {
     refetchUserShifts();
-    setShowModal(false);
+    setShowAddDateModal(false);
     setSelectedDate("");
   };
 
   const handleRemoveEvent = (clickedEvent: EventClickArg) => {
     const { event } = clickedEvent;
-    const date = event.startStr.slice(0, 16);
-    const clickedElement = userShiftsData.find(
-      (shift: Shift) => shift.title === event.title && date === shift.start,
-    );
-    removeDateMutation.mutate(clickedElement.id);
+    setClickedEvent(event);
+    setShowRemoveDateModal(true);
+  };
+
+  const handleRemoveEventClose = () => {
+    setShowRemoveDateModal(false);
+    refetchUserShifts();
   };
 
   return (
@@ -137,15 +121,21 @@ const HomePage = ({
         )}
       </div>
       <AddDateModal
-        showModal={showModal}
+        showModal={showAddDateModal}
         handleCloseModal={handleCloseModal}
         selectedDate={selectedDate}
         user={user}
       />
+      <RemoveDateModal
+        showModal={showRemoveDateModal}
+        clickedEvent={clickedEvent}
+        handleRemoveEventClose={handleRemoveEventClose}
+        userShiftsData={userShiftsData}
+      />
       <HelpOffcanvasComponent
         showCanvas={showCanvas}
         setShowCanvas={setShowCanvas}
-      ></HelpOffcanvasComponent>
+      />
     </div>
   );
 };

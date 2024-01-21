@@ -59,7 +59,11 @@ const RegisterFormComponent = ({
       onSubmit={handleSubmitForm}
       className="login-page-form d-flex flex-column gap-2 w-25"
     >
-      {validationError && <p>Wprowadź poprawne dane</p>}
+      {validationError && (
+        <p className="text-danger text-center fw-bold">
+          Wprowadź poprawne dane
+        </p>
+      )}
       <input
         type="text"
         className="form-control"
