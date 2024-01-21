@@ -34,7 +34,7 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
       show={showModal}
       onHide={handleCloseModal}
       backdrop="static"
-      fullscreen
+      size="xl"
     >
       <Modal.Header closeButton>
         <Modal.Title>Ustawienia</Modal.Title>

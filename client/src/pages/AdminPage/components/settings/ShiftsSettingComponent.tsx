@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Trash, PencilSquare } from "react-bootstrap-icons";
+import RemoveSettingModal from "./RemoveSettingModal.tsx";
 
 interface Props {
   user: User;
@@ -17,6 +18,8 @@ interface Shifts {
 
 const ShiftsSettingComponent = ({ user }: Props) => {
   const [shifts, setShifts] = useState<Shifts[]>([]);
+  const [removeModal, setRemoveModal] = useState(false);
+  const [shiftId, setShiftId] = useState<number>(0);
   const [originalShifts, setOriginalShifts] = useState<Shifts[]>([]);
   const [addShift, setAddShift] = useState({
     name: "",
@@ -62,6 +65,11 @@ const ShiftsSettingComponent = ({ user }: Props) => {
       return response.data;
     },
     onSuccess: () => {
+      setAddShift({
+        name: "",
+        start: "",
+        end: "",
+      });
       refetch();
     },
   });
@@ -116,8 +124,9 @@ const ShiftsSettingComponent = ({ user }: Props) => {
     });
   };
 
-  const handleRemoveButtonClick = (id: number) => {
-    removeShiftMutation.mutate(id);
+  const handleRemoveButtonClick = () => {
+    removeShiftMutation.mutate(shiftId);
+    setRemoveModal(false);
   };
 
   const handleAddInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,7 +195,10 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                       <PencilSquare />
                     </Button>
                     <Button
-                      onClick={() => handleRemoveButtonClick(shift.id)}
+                      onClick={() => {
+                        setShiftId(shift.id);
+                        setRemoveModal(true);
+                      }}
                       variant="danger"
                       type="button"
                     >
@@ -205,6 +217,7 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                 type="text"
                 name="name"
                 onChange={handleAddInputChange}
+                value={addShift.name}
               />
             </Form.Group>
             <Form.Group className="col">
@@ -213,6 +226,7 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                 type="time"
                 name="start"
                 onChange={handleAddInputChange}
+                value={addShift.start}
               />
             </Form.Group>
             <Form.Group className="col">
@@ -221,6 +235,7 @@ const ShiftsSettingComponent = ({ user }: Props) => {
                 type="time"
                 name="end"
                 onChange={handleAddInputChange}
+                value={addShift.end}
               />
             </Form.Group>
             <Button className="my-3" type="submit">
@@ -229,6 +244,12 @@ const ShiftsSettingComponent = ({ user }: Props) => {
           </Form>
         </Col>
       </Row>
+      <RemoveSettingModal
+        handleDelete={handleRemoveButtonClick}
+        removeModal={removeModal}
+        setRemoveModal={setRemoveModal}
+        message={"Czy na pewno chcesz usunąć tę zmianę?"}
+      />
     </Container>
   );
 };
