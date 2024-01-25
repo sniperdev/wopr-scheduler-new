@@ -5,6 +5,7 @@ import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import AddUserComponent from "./AddUserComponent.tsx";
 import { NewUser } from "../../../../../utils/interfaces/NewUserInterface.ts";
 import SuccessAddUserCard from "./SuccessAddUserCard.tsx";
+import RemoveSettingModal from "../RemoveSettingModal.tsx";
 
 interface Props {
   user: User;
@@ -12,6 +13,8 @@ interface Props {
 
 const UsersSettingComponent = ({ user }: Props) => {
   const [showCard, setShowCard] = useState(false);
+  const [removeModal, setRemoveModal] = useState(false);
+  const [userId, setUserId] = useState<number>(0);
   const [newUser, setNewUser] = useState<NewUser>({
     name: "",
     surname: "",
@@ -97,8 +100,9 @@ const UsersSettingComponent = ({ user }: Props) => {
     },
   });
 
-  const handleDeleteUser = (userId: number) => {
+  const handleDeleteUser = () => {
     deleteUserMutation.mutate(userId);
+    setRemoveModal(false);
   };
 
   if (isLoading) return "Loading...";
@@ -125,7 +129,12 @@ const UsersSettingComponent = ({ user }: Props) => {
                   <td>{user.email}</td>
                   <td>{user.isAdmin ? "Administrator" : "Pracownik"}</td>
                   <td className="text-center">
-                    <Button onClick={() => handleDeleteUser(user.id)}>
+                    <Button
+                      onClick={() => {
+                        setUserId(user.id);
+                        setRemoveModal(true);
+                      }}
+                    >
                       Usuń
                     </Button>
                   </td>
@@ -149,6 +158,12 @@ const UsersSettingComponent = ({ user }: Props) => {
           </div>
         </Col>
       </Row>
+      <RemoveSettingModal
+        handleDelete={handleDeleteUser}
+        removeModal={removeModal}
+        setRemoveModal={setRemoveModal}
+        message={"Czy na pewno chcesz usunąć tego użytkownika?"}
+      />
     </Container>
   );
 };

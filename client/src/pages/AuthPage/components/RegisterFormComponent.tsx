@@ -62,7 +62,7 @@ const RegisterFormComponent = ({
       className="login-page-form d-flex flex-column gap-2 w-25"
     >
       {validationError && (
-        <p className="text-center text-danger fw-bold">
+        <p className="text-danger text-center fw-bold">
           Wprowadź poprawne dane
         </p>
       )}

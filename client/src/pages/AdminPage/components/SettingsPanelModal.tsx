@@ -3,7 +3,6 @@ import { useState } from "react";
 import CompanyInfoSettingComponent from "./settings/CompanyInfoSettingComponent.tsx";
 import ShiftsSettingComponent from "./settings/ShiftsSettingComponent.tsx";
 import UsersSettingComponent from "./settings/UsersSettingComponent/UsersSettingComponent.tsx";
-import ResetSettingComponent from "./settings/ResetSettingComponent.tsx";
 
 interface Props {
   showModal: boolean;
@@ -25,8 +24,6 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
         return <ShiftsSettingComponent user={user} />;
       case "users":
         return <UsersSettingComponent user={user} />;
-      case "reset":
-        return <ResetSettingComponent />;
       default:
         return null;
     }
@@ -37,7 +34,7 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
       show={showModal}
       onHide={handleCloseModal}
       backdrop="static"
-      fullscreen
+      size="xl"
     >
       <Modal.Header closeButton>
         <Modal.Title>Ustawienia</Modal.Title>
@@ -53,9 +50,6 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
             </Nav.Link>
             <Nav.Link onClick={() => handleSettingTab("users")}>
               Użytkownicy
-            </Nav.Link>
-            <Nav.Link onClick={() => handleSettingTab("reset")}>
-              Reset ustawień serwera
             </Nav.Link>
           </Nav>
         </div>
