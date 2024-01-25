@@ -40,6 +40,28 @@ const HelpOffcanvasComponent = ({ showCanvas, setShowCanvas }: Props) => {
             className="w-100"
           />
           <p>Następnie wybieramy zmianę oraz klikamy w przycisk "Zapisz"</p>
+          <hr />
+          <p>
+            Jeśli chcemy usunąć daną zmianę klikamy w wybraną zmianę następnie w
+            wyskakującym oknie potwierdź
+          </p>
+          <img
+            src="/src/assets/images/help/3.png"
+            alt=""
+            onClick={() => handleImageClick("/src/assets/images/help/3.png")}
+            className="w-100"
+          />
+          <hr />
+          <p>
+            Jeśli chcemy się wyglodować z aplikacji klikamy w przycisk
+            "Wyloguj", a następnie w przycisk "Potwierdź"
+          </p>
+          <img
+            src="/src/assets/images/help/4.png"
+            alt=""
+            onClick={() => handleImageClick("/src/assets/images/help/4.png")}
+            className="w-100"
+          />
         </Offcanvas.Body>
       </Offcanvas>
       <ImageModal
