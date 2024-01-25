@@ -68,6 +68,7 @@ const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
+          required
         />
         <input
           type="password"
@@ -76,6 +77,7 @@ const SignInFormComponent = ({ changeLoginForm, setUser }: Props) => {
           name="password"
           value={formData.password}
           onChange={handleInputChange}
+          required
         />
         <button type="submit" className="btn btn-primary">
           Zaloguj się

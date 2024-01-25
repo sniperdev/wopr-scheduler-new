@@ -14,11 +14,13 @@ interface User {
 }
 
 const loginSchema = Joi.object({
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: ["com", "pl"] },
-  }),
-  password: Joi.string(),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "pl"] },
+    })
+    .required(),
+  password: Joi.string().required().min(8),
   repeatPassword: Joi.ref("password"),
 });
 
@@ -59,13 +61,18 @@ const RegisterFormComponent = ({
       onSubmit={handleSubmitForm}
       className="login-page-form d-flex flex-column gap-2 w-25"
     >
-      {validationError && <p>Wprowadź poprawne dane</p>}
+      {validationError && (
+        <p className="text-center text-danger fw-bold">
+          Wprowadź poprawne dane
+        </p>
+      )}
       <input
         type="text"
         className="form-control"
         placeholder="Adres e-mail"
         name="email"
         onChange={handleInputChange}
+        required
       />
       <input
         type="password"
@@ -73,6 +80,7 @@ const RegisterFormComponent = ({
         placeholder="Hasło"
         name="password"
         onChange={handleInputChange}
+        required
       />
       <input
         type="password"
@@ -80,6 +88,7 @@ const RegisterFormComponent = ({
         placeholder="Powtórz hasło"
         name="repeatPassword"
         onChange={handleInputChange}
+        required
       />
       <button type="submit" className="btn btn-primary">
         Zarejestruj się

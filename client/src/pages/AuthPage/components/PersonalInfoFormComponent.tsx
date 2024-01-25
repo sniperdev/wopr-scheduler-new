@@ -7,10 +7,10 @@ interface Props {
 }
 
 const personalInfoSchema = Joi.object({
-  company: Joi.string().required(),
-  address: Joi.string().required(),
-  name: Joi.string().required(),
-  surname: Joi.string().required(),
+  company: Joi.string().required().min(3),
+  address: Joi.string().required().min(5),
+  name: Joi.string().required().min(3),
+  surname: Joi.string().required().min(3),
   phone: Joi.string()
     .length(9)
     .pattern(/^[0-9]+$/)
@@ -49,7 +49,11 @@ const PersonalInfoFormComponent = ({
 
   return (
     <form onSubmit={handleSubmitForm} className="row gap-2 w-25">
-      {validationError && <p>Wprowadź poprawne dane</p>}
+      {validationError && (
+        <p className="text-center text-danger fw-bold">
+          Wprowadź poprawne dane
+        </p>
+      )}
       <div>
         <input
           onChange={handleInputChange}
@@ -57,6 +61,7 @@ const PersonalInfoFormComponent = ({
           className="form-control"
           placeholder="Nazwa firmy"
           name="company"
+          min="3"
           required
         />
       </div>
@@ -67,6 +72,7 @@ const PersonalInfoFormComponent = ({
           className="form-control"
           placeholder="Adres firmy"
           name="address"
+          min="5"
           required
         />
       </div>
@@ -77,6 +83,7 @@ const PersonalInfoFormComponent = ({
           className="form-control"
           placeholder="Imie"
           name="name"
+          min="3"
           required
         />
       </div>
@@ -87,6 +94,7 @@ const PersonalInfoFormComponent = ({
           className="form-control"
           placeholder="Nazwisko"
           name="surname"
+          min="3"
           required
         />
       </div>
@@ -97,6 +105,7 @@ const PersonalInfoFormComponent = ({
           className="form-control"
           placeholder="Numer telefonu"
           name="phone"
+          pattern="[0-9]{8}"
           required
         />
       </div>
