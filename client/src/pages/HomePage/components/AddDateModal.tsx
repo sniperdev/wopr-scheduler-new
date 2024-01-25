@@ -113,15 +113,15 @@ const AddDateModal = ({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Zamknij
-        </Button>
         <Button
           variant="primary"
           onClick={saveShift}
           disabled={selectedOption === ""}
         >
           Zapisz
+        </Button>
+        <Button variant="secondary" onClick={handleCloseModal}>
+          Anuluj
         </Button>
       </Modal.Footer>
     </Modal>

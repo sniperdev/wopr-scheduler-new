@@ -8,9 +8,17 @@ interface Props {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   user: User;
+  readyShiftsMutation: any;
+  readyShiftsRefetch: any;
 }
 
-const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
+const SettingsPanelModal = ({
+  showModal,
+  setShowModal,
+  user,
+  readyShiftsRefetch,
+  readyShiftsMutation,
+}: Props) => {
   const [activeTab, setActiveTab] = useState("companyInfo");
 
   const handleSettingTab = (tab: string) => setActiveTab(tab);
@@ -21,7 +29,13 @@ const SettingsPanelModal = ({ showModal, setShowModal, user }: Props) => {
       case "companyInfo":
         return <CompanyInfoSettingComponent user={user} />;
       case "shifts":
-        return <ShiftsSettingComponent user={user} />;
+        return (
+          <ShiftsSettingComponent
+            user={user}
+            readyShiftsRefetch={readyShiftsRefetch}
+            readyShiftsMutation={readyShiftsMutation}
+          />
+        );
       case "users":
         return <UsersSettingComponent user={user} />;
       default:

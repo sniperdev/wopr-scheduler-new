@@ -7,6 +7,8 @@ import RemoveSettingModal from "./RemoveSettingModal.tsx";
 
 interface Props {
   user: User;
+  readyShiftsRefetch: any;
+  readyShiftsMutation: any;
 }
 
 interface Shifts {
@@ -15,8 +17,11 @@ interface Shifts {
   start: string;
   end: string;
 }
-
-const ShiftsSettingComponent = ({ user }: Props) => {
+const ShiftsSettingComponent = ({
+  user,
+  readyShiftsRefetch,
+  readyShiftsMutation,
+}: Props) => {
   const [shifts, setShifts] = useState<Shifts[]>([]);
   const [removeModal, setRemoveModal] = useState(false);
   const [shiftId, setShiftId] = useState<number>(0);
@@ -26,7 +31,6 @@ const ShiftsSettingComponent = ({ user }: Props) => {
     start: "",
     end: "",
   });
-
   const { data, isLoading, error, refetch } = useQuery<Shifts[]>({
     queryKey: ["shifts", user.company_id],
     queryFn: async () => {
@@ -87,6 +91,8 @@ const ShiftsSettingComponent = ({ user }: Props) => {
       return response.data;
     },
     onSuccess: () => {
+      readyShiftsRefetch();
+      readyShiftsMutation.mutate();
       refetch();
     },
   });
@@ -105,6 +111,8 @@ const ShiftsSettingComponent = ({ user }: Props) => {
       return response.data;
     },
     onSuccess: () => {
+      readyShiftsRefetch();
+      readyShiftsMutation.mutate();
       refetch();
     },
   });

@@ -1,5 +1,7 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Gear, InfoCircle } from "react-bootstrap-icons";
+import LogoutModal from "../../../shared/components/LogoutModal.tsx";
+import { useState } from "react";
 
 interface Props {
   user: User;
@@ -19,9 +21,13 @@ const NavbarComponent = ({
   setShowModal,
   setShowCanvas,
 }: Props) => {
-  const handleNameClick = () => {
+  const [logoutModal, setLogoutModal] = useState(false);
+
+  const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(undefined);
+    setLogoutModal(false);
+    setCalendarToggle(true);
   };
   return (
     <Navbar expand="lg" className="p-3 bg-body-tertiary">
@@ -35,24 +41,27 @@ const NavbarComponent = ({
             >
               {user.isAdmin ? "Edycja grafiku" : "Mój grafik"}
             </Button>
+            {saveShiftsMutation && (
+              <Button
+                variant="danger"
+                onClick={saveShiftsMutation.mutate}
+                className="me-5"
+              >
+                Zapisz grafik
+              </Button>
+            )}
             <Button
               onClick={() => setCalendarToggle(false)}
               active={!calendarToggle}
             >
               Gotowy grafik
             </Button>
-            {saveShiftsMutation && (
-              <Button variant="danger" onClick={saveShiftsMutation.mutate}>
-                Zapisz grafik
-              </Button>
-            )}
           </Nav>
           <Navbar.Text>
-            Zalogowany jako:{" "}
-            <a
-              href="#"
-              onClick={handleNameClick}
-            >{`${user.name} ${user.surname}`}</a>
+            Zalogowany jako: {`${user.name} ${user.surname}`}
+            <a href="#" onClick={() => setLogoutModal(true)} className="px-2">
+              Wyloguj
+            </a>
           </Navbar.Text>
           {saveShiftsMutation && (
             <Button
@@ -68,6 +77,11 @@ const NavbarComponent = ({
           </Button>
         </Navbar.Collapse>
       </Container>
+      <LogoutModal
+        logoutModal={logoutModal}
+        setLogoutModal={setLogoutModal}
+        handleLogout={handleLogout}
+      ></LogoutModal>
     </Navbar>
   );
 };

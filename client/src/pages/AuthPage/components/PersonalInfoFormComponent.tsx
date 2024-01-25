@@ -105,7 +105,7 @@ const PersonalInfoFormComponent = ({
           className="form-control"
           placeholder="Numer telefonu"
           name="phone"
-          pattern="[0-9]{8}"
+          pattern="[0-9]{9}"
           required
         />
       </div>

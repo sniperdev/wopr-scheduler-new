@@ -149,6 +149,8 @@ const AdminPage = ({
               showModal={showModal}
               setShowModal={setShowModal}
               user={user}
+              readyShiftsMutation={UserShiftListMutation}
+              readyShiftsRefetch={refetch}
             />
           )}
         </Suspense>

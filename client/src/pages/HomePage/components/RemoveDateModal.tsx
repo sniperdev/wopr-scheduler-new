@@ -58,27 +58,39 @@ const RemoveDateModal = ({
       backdrop="static"
       centered
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Potwierdzenie</Modal.Title>
-      </Modal.Header>
-      {removeDateMutation.isError && (
-        <p className="text-center text-danger fw-bold mt-4">
-          Ta zmiana jest już zaplanowana
-        </p>
+      {!removeDateMutation.isError ? (
+        <>
+          <Modal.Header closeButton>
+            <Modal.Title>Potwierdzenie</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Czy na pewno chcesz usunąć tę zmianę?</Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={removeDate}
+              disabled={removeDateMutation.isPending}
+            >
+              Potwierdź
+            </Button>
+            <Button variant="primary" onClick={handleRemoveEventClose}>
+              Anuluj
+            </Button>
+          </Modal.Footer>
+        </>
+      ) : (
+        <>
+          <Modal.Body>
+            <p className="text-center text-danger fw-bold mt-4">
+              Ta zmiana jest już zaplanowana i nie może zostać usunięta
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleRemoveEventClose}>
+              Zamknij
+            </Button>
+          </Modal.Footer>
+        </>
       )}
-      <Modal.Body>Czy na pewno chcesz usunąć tę zmianę?</Modal.Body>
-      <Modal.Footer>
-        <Button
-          variant="secondary"
-          onClick={removeDate}
-          disabled={removeDateMutation.isPending}
-        >
-          Potwierdź
-        </Button>
-        <Button variant="primary" onClick={handleRemoveEventClose}>
-          Anuluj
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };

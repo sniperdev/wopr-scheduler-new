@@ -13,6 +13,7 @@ const WorkShiftFormComponent = ({
   handleShifts,
   handleRegister,
 }: Steps & Props) => {
+  const [error, setError] = useState(false);
   const [shifts, setShifts] = useState<WorkShifts[]>([
     { name: "", start: "", end: "" },
     { name: "", start: "", end: "" },
@@ -38,6 +39,16 @@ const WorkShiftFormComponent = ({
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    let localError = false;
+    shifts.forEach((element) => {
+      const startDate = new Date(`1970-01-01T${element.start}:00`);
+      const endDate = new Date(`1970-01-01T${element.end}:00`);
+      if (startDate > endDate) {
+        localError = true;
+        setError(true);
+      }
+    });
+    if (localError) return;
     handleShifts(shifts);
     handleRegister();
   };
@@ -47,6 +58,11 @@ const WorkShiftFormComponent = ({
       onSubmit={handleSubmitForm}
       className="login-page-form d-flex flex-column gap-2 w-25"
     >
+      {error && (
+        <p className="text-danger fw-bold text-center">
+          Godzina rozpoczęcia nie może być większa od godziny zakończenia
+        </p>
+      )}
       <p className="text-center fw-bold">Wpisz godziny i nazwy zmian</p>
       <div className="row">
         <p className="col">Nazwa zmiany</p>
