@@ -50,13 +50,6 @@ const AdminPage = ({
     },
   });
 
-  useEffect(() => {
-    UserShiftListMutation.mutate();
-    if (isSuccess) {
-      setCalendarEvents(data);
-    }
-  }, []);
-
   const { isPending, isError, data, isSuccess, refetch } = useQuery({
     queryKey: ["readyShifts", user.company_id],
     queryFn: async () => {
@@ -71,7 +64,12 @@ const AdminPage = ({
       return response.data;
     },
   });
-
+  useEffect(() => {
+    UserShiftListMutation.mutate();
+    if (isSuccess) {
+      setCalendarEvents(data);
+    }
+  }, []);
   const saveShiftsMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
@@ -149,8 +147,6 @@ const AdminPage = ({
               showModal={showModal}
               setShowModal={setShowModal}
               user={user}
-              readyShiftsMutation={UserShiftListMutation}
-              readyShiftsRefetch={refetch}
             />
           )}
         </Suspense>

@@ -7,8 +7,6 @@ import RemoveSettingModal from "./RemoveSettingModal.tsx";
 
 interface Props {
   user: User;
-  readyShiftsRefetch: any;
-  readyShiftsMutation: any;
 }
 
 interface Shifts {
@@ -17,11 +15,7 @@ interface Shifts {
   start: string;
   end: string;
 }
-const ShiftsSettingComponent = ({
-  user,
-  readyShiftsRefetch,
-  readyShiftsMutation,
-}: Props) => {
+const ShiftsSettingComponent = ({ user }: Props) => {
   const [shifts, setShifts] = useState<Shifts[]>([]);
   const [removeModal, setRemoveModal] = useState(false);
   const [shiftId, setShiftId] = useState<number>(0);
@@ -91,8 +85,6 @@ const ShiftsSettingComponent = ({
       return response.data;
     },
     onSuccess: () => {
-      readyShiftsRefetch();
-      readyShiftsMutation.mutate();
       refetch();
     },
   });
@@ -111,8 +103,6 @@ const ShiftsSettingComponent = ({
       return response.data;
     },
     onSuccess: () => {
-      readyShiftsRefetch();
-      readyShiftsMutation.mutate();
       refetch();
     },
   });
