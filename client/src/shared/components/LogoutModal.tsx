@@ -4,9 +4,15 @@ interface Props {
   logoutModal: boolean;
   setLogoutModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleLogout: () => void;
+  user: User;
 }
 
-const LogoutModal = ({ logoutModal, setLogoutModal, handleLogout }: Props) => {
+const LogoutModal = ({
+  logoutModal,
+  setLogoutModal,
+  handleLogout,
+  user,
+}: Props) => {
   return (
     <Modal
       show={logoutModal}
@@ -19,7 +25,7 @@ const LogoutModal = ({ logoutModal, setLogoutModal, handleLogout }: Props) => {
       </Modal.Header>
       <Modal.Body>
         <p>Czy na pewno chcesz się wylogować?</p>
-        <p>Wszystkie niezapisane zmiany zostaną utracone.</p>
+        {user.isAdmin && <p>Wszystkie niezapisane zmiany zostaną utracone.</p>}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleLogout}>

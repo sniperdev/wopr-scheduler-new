@@ -81,6 +81,7 @@ const NavbarComponent = ({
         logoutModal={logoutModal}
         setLogoutModal={setLogoutModal}
         handleLogout={handleLogout}
+        user={user}
       ></LogoutModal>
     </Navbar>
   );
