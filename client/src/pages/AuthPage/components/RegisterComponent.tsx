@@ -40,30 +40,19 @@ const RegisterComponent = ({ changeLoginForm }: Props) => {
   });
 
   const registerUserMutation = useMutation({
-    mutationFn: () => {
-      return axios.post("http://localhost:3000/register", registrationInfo);
-    },
-    onSuccess: () => {
-      navigate("/login");
-    },
-  });
+    mutationFn: () => axios.post("http://localhost:3000/register", registrationInfo),
+    onSuccess: () => navigate("login"),
+  })
+  const setStep = (step: number) => setCurrentRegistrationStep(step);
 
-  const setStep = (step: number) => {
-    return setCurrentRegistrationStep(step);
-  };
-
-  const handleRegistrationInfo = (values: object) => {
-    setRegistrationInfo({ ...registrationInfo, ...values });
-  };
+  const handleRegistrationInfo = (values: object) => setRegistrationInfo({ ...registrationInfo, ...values });
 
   const handleShifts = (value: WorkShifts[]) => {
     const newRegistrationInfo = { ...registrationInfo, shifts: [...value] };
     setRegistrationInfo(newRegistrationInfo);
   };
 
-  const handleRegister = async () => {
-    registerUserMutation.mutate();
-  };
+  const handleRegister = async () => registerUserMutation.mutate();
 
   const renderStep = (currentRegistrationStep: number) => {
     switch (currentRegistrationStep) {
