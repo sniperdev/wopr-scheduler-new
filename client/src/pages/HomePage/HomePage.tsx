@@ -11,20 +11,15 @@ import ReadyShiftsCalendarComponent from "./components/ReadyShiftsCalendarCompon
 import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasComponent.tsx";
 import RemoveDateModal from "./components/RemoveDateModal.tsx";
 import { EventImpl } from "@fullcalendar/core/internal";
+import { UserData } from "../../App.tsx";
 
 interface Props {
-  user: User;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  user: UserData;
   calendarToggle: boolean;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const HomePage = ({
-  user,
-  setUser,
-  calendarToggle,
-  setCalendarToggle,
-}: Props) => {
+const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [showAddDateModal, setShowAddDateModal] = useState(false);
   const [showRemoveDateModal, setShowRemoveDateModal] = useState(false);
@@ -96,7 +91,6 @@ const HomePage = ({
     <div className="vh-100">
       <NavbarComponent
         user={user}
-        setUser={setUser}
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
         saveShiftsMutation={undefined}

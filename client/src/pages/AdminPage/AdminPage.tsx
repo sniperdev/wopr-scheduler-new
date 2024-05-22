@@ -8,9 +8,11 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { AdminShiftItem } from "../../utils/interfaces/AdminShiftItem.ts";
 import ReadyShiftsCalendarComponent from "../HomePage/components/ReadyShiftsCalendarComponent.tsx";
 import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasComponent.tsx";
+import { UserData } from "../../App.tsx";
+import { useAppDispatch } from "../../redux/hooks.ts";
+import { getUser } from "../../redux/slice/userSlice.ts";
 interface Props {
-  user: User;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  user: UserData;
   calendarToggle: boolean;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -19,16 +21,19 @@ const SettingsPanelModal = lazy(
   () => import("./components/SettingsPanelModal.tsx"),
 );
 
-const AdminPage = ({
-  user,
-  setUser,
-  calendarToggle,
-  setCalendarToggle,
-}: Props) => {
+const AdminPage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
+  //TESTOWO
+  const dispatch = useAppDispatch();
+
   const [calendarEvents, setCalendarEvents] = useState<AdminShiftItem[]>([]);
   const [listEvents, setListEvents] = useState<AdminShiftItem[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
+
+  //TESTOWO
+  useEffect(() => {
+    dispatch(getUser({ email: "wrona@gmail.com", password: "12345678" }));
+  }, []);
 
   const UserShiftListMutation = useMutation({
     mutationFn: async () => {
@@ -97,7 +102,6 @@ const AdminPage = ({
     <div className="vh-100">
       <NavbarComponent
         user={user}
-        setUser={setUser}
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
         saveShiftsMutation={saveShiftsMutation}

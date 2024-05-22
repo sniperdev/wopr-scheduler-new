@@ -2,10 +2,10 @@ import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Gear, InfoCircle } from "react-bootstrap-icons";
 import LogoutModal from "../../../shared/components/LogoutModal.tsx";
 import { useState } from "react";
+import { UserData } from "../../../App.tsx";
 
 interface Props {
-  user: User;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  user: UserData;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   calendarToggle: boolean;
   saveShiftsMutation: any;
@@ -14,7 +14,6 @@ interface Props {
 }
 const NavbarComponent = ({
   user,
-  setUser,
   setCalendarToggle,
   calendarToggle,
   saveShiftsMutation,
@@ -25,7 +24,7 @@ const NavbarComponent = ({
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setUser(undefined);
+    // setUser(undefined);
     setLogoutModal(false);
     setCalendarToggle(true);
   };

@@ -1,52 +1,49 @@
-import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
-import {useMutation} from "@tanstack/react-query";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import SignInFormComponent from "./SignInFormComponent.tsx";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks.ts";
+import { getUser, selectIsAdmin } from "../../../../redux/slice/userSlice.ts";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-    changeLoginForm: () => void;
-    setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  changeLoginForm: () => void;
 }
 
-interface FormData {
-    email: string;
-    password: string;
+export interface LoginData {
+  email: string;
+  password: string;
 }
 
-const SignInFormContainer = ({ changeLoginForm, setUser }: Props) => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState<FormData>({
-        email: "",
-        password: "",
-    });
+const SignInFormContainer: React.FC<Props> = ({ changeLoginForm }: Props) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const isAdmin = useAppSelector(selectIsAdmin);
 
-    const loginMutation = useMutation({
-        mutationFn: (loginParams: FormData) => axios.post("http://localhost:3000/login", loginParams).then(res => res.data),
-        onSuccess: (data: { jwt: string, data: User }) => {
-            setUser(data.data);
-            localStorage.setItem("token", data.jwt);
-            data.data.isAdmin ? navigate("/admin") : navigate("/app");
-        },
-        onError: console.log,
-    })
+  const [formData, setFormData] = useState<LoginData>({
+    email: "wrona@gmail.com",
+    password: "12345678",
+  });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value })
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const handleFormSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        loginMutation.mutate(formData);
-    };
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(getUser(formData));
+    // console.log(isAdmin);
+    // isAdmin ? navigate("/admin") : navigate("/app");
+  };
 
-    return (
-        <SignInFormComponent
-            formData={formData}
-            handleInputChange={handleInputChange}
-            handleFormSubmit={handleFormSubmit}
-            loginMutation={loginMutation}
-            changeLoginForm={changeLoginForm}
-        />
-    );
+  return (
+    <>
+      <SignInFormComponent
+        formData={formData}
+        handleInputChange={handleInputChange}
+        handleFormSubmit={handleFormSubmit}
+        // loginMutation={loginMutation}
+        changeLoginForm={changeLoginForm}
+      />
+    </>
+  );
 };
 
 export default SignInFormContainer;

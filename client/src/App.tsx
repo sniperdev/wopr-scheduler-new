@@ -1,13 +1,18 @@
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { lazy, ReactNode, Suspense, useState } from "react";
+import { useAppSelector } from "./redux/hooks.ts";
+import { selectUser } from "./redux/slice/userSlice.ts";
+import { User } from "./utils/interfaces/UserInterface.ts";
 
 const LazyAuthPage = lazy(() => import("./pages/AuthPage/AuthPage.tsx"));
 const LazyHomePage = lazy(() => import("./pages/HomePage/HomePage.tsx"));
 const LazyAdminPage = lazy(() => import("./pages/AdminPage/AdminPage.tsx"));
 
+export type UserData = Pick<User, "data">["data"];
+
 interface ProtectedRouteProps {
-  user: User | undefined;
+  user: UserData;
   children: ReactNode;
 }
 
@@ -26,7 +31,8 @@ const ProtectedRouteAdmin = ({ user, children }: ProtectedRouteProps) => {
 };
 
 function App() {
-  const [user, setUser] = useState<User>();
+  // const [user, setUser] = useState<User>();
+  const user = useAppSelector(selectUser);
   const [calendarToggle, setCalendarToggle] = useState<boolean>(true);
 
   return (
@@ -38,7 +44,6 @@ function App() {
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyHomePage
                 user={user!}
-                setUser={setUser}
                 calendarToggle={calendarToggle}
                 setCalendarToggle={setCalendarToggle}
               />
@@ -53,7 +58,6 @@ function App() {
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyAdminPage
                 user={user!}
-                setUser={setUser}
                 calendarToggle={calendarToggle}
                 setCalendarToggle={setCalendarToggle}
               />
@@ -65,7 +69,7 @@ function App() {
         path="/"
         element={
           <Suspense fallback={<h1>Ładowanie...</h1>}>
-            <LazyAuthPage setUser={setUser} />
+            <LazyAuthPage />
           </Suspense>
         }
       ></Route>
