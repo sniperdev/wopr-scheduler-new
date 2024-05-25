@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../utils/interfaces/UserInterface.ts";
 
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
 export interface UserState {
   user: User;
   loading: boolean;
@@ -26,22 +31,25 @@ const initialState: UserState = {
   error: null,
 };
 
-export const getUser = createAsyncThunk("user", async (formData) => {
-  const response = await fetch("http://localhost:3000/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
+export const getUser = createAsyncThunk(
+  "user",
+  async (formData: LoginCredentials) => {
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-  const result = await response.json();
-  if (response.ok) {
-    localStorage.setItem("token", result.jwt);
-  }
+    const result = await response.json();
+    if (response.ok) {
+      localStorage.setItem("token", result.jwt);
+    }
 
-  return result;
-});
+    return result;
+  },
+);
 
 const userReducer = createSlice({
   name: "user",
