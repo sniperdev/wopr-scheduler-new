@@ -1,31 +1,22 @@
+import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { AdminShiftItem } from '../../../utils/interfaces/AdminShiftItem.ts';
 import './ShiftListComponent.css';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
+import { addScheduledShifts, deleteAdminShifts, selectAdminShifts } from '../../../redux/slice/calendarSlice.ts';
 
-interface Props {
-  data: AdminShiftItem[];
-  calendarEvents: AdminShiftItem[];
-  // setCalendarEvents: React.Dispatch<React.SetStateAction<AdminShiftItem[]>>;
-  listEvents: AdminShiftItem[];
-  // setListEvents: React.Dispatch<React.SetStateAction<AdminShiftItem[]>>;
-}
-function ShiftListComponent({
-  data,
-  calendarEvents,
-  // setCalendarEvents,
-  listEvents,
-  // setListEvents,
-}: Props) {
+function ShiftListComponent() {
+  const dispatch = useAppDispatch();
+  const listEvents = useAppSelector(selectAdminShifts);
   const handleClick = (item: AdminShiftItem) => {
-    // setCalendarEvents([...calendarEvents, item]);
-    const newListEvents = listEvents.filter((e) => e.id !== item.id);
-    // setListEvents(newListEvents);
+    dispatch(addScheduledShifts(item));
+    dispatch(deleteAdminShifts(item.id));
   };
   return (
     <>
-      {data.length === 0 && <p>Brak dostępnych zmian</p>}
+      {listEvents.length === 0 && <p>Brak dostępnych zmian</p>}
       <ListGroup className="shifts-list overflow-y-scroll">
-        {data.map((item: AdminShiftItem) => (
+        {listEvents.map((item: AdminShiftItem) => (
           <ListGroup.Item key={item.id} onClick={() => handleClick(item)}>
             {item.title}
             {' '}

@@ -12,6 +12,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@tanstack/eslint-plugin-query'],
   rules: {
+    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },

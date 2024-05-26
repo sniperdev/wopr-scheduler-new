@@ -67,13 +67,7 @@ function AdminPage({ user, calendarToggle, setCalendarToggle }: Props) {
           ) : scheduledShiftsLoading ? (
             <div>Ładowanie...</div>
           ) : (
-            <ShiftListComponent
-              data={listEvents}
-              calendarEvents={calendarEvents}
-              // setCalendarEvents={setCalendarEvents}
-              // setListEvents={setListEvents}
-              listEvents={listEvents}
-            />
+            <ShiftListComponent />
           )}
         </div>
         )}
