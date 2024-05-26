@@ -78,11 +78,7 @@ function AdminPage({ user, calendarToggle, setCalendarToggle }: Props) {
           </div>
         ) : (
           <div className="w-100">
-            {/* <ReadyShiftsCalendarComponent */}
-            {/*  isPending={isPending} */}
-            {/*  isError={isError} */}
-            {/*  data={data} */}
-            {/* /> */}
+             <ReadyShiftsCalendarComponent />
           </div>
         )}
         <Suspense fallback={<div>Ładowanie ustawień...</div>}>

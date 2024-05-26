@@ -121,22 +121,25 @@ const calendarReducer = createSlice({
     addAdminShifts: (state, action: PayloadAction<AdminShiftItem>) => {
       state.adminShifts.item.push(action.payload);
     },
-    deleteAdminShifts: (state, action: PayloadAction<string>) => state = {
-      ...state,
-      adminShifts: {
-        ...state.adminShifts,
-        item: state.adminShifts.item.filter((e) => e.id !== action.payload),
-      },
+    deleteAdminShifts: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        adminShifts: {
+          ...state.adminShifts,
+          item: state.adminShifts.item.filter((e) => e.id !== action.payload),
+        }
+      }
     },
     addScheduledShifts: (state, action) => {
       state.scheduledShifts.item.push(action.payload);
     },
-    deleteScheduledShift: (state, action: PayloadAction<number>) => state = {
-      ...state,
-      scheduledShifts: {
+    deleteScheduledShift: (state, action: PayloadAction<number>) => {
+      return {...state,
+        scheduledShifts: {
         ...state.scheduledShifts,
-        item: state.scheduledShifts.item.filter((e) => Number(e.id) !== action.payload),
-      },
+          item: state.scheduledShifts.item.filter((e) => Number(e.id) !== action.payload),
+        },
+      }
     },
   },
   extraReducers(builder) {

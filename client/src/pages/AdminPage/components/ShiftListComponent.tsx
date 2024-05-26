@@ -1,4 +1,3 @@
-import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { AdminShiftItem } from '../../../utils/interfaces/AdminShiftItem.ts';
 import './ShiftListComponent.css';

@@ -2,8 +2,6 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
-    "airbnb",
-    "airbnb/hooks",
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@tanstack/eslint-plugin-query/recommended'
@@ -12,7 +10,6 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@tanstack/eslint-plugin-query'],
   rules: {
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },

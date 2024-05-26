@@ -3,18 +3,24 @@ import timeGridWeek from "@fullcalendar/timegrid";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
+import {useAppSelector} from "../../../redux/hooks.ts";
+import {
+  selectScheduledShifts,
+  selectScheduledShiftsError,
+  selectScheduledShiftsLoading
+} from "../../../redux/slice/calendarSlice.ts";
 
-interface Props {
-  isPending: boolean;
-  isError: boolean;
-  data: any;
-}
 
-const ReadyShiftsCalendarComponent = ({ isPending, isError, data }: Props) => {
+
+const ReadyShiftsCalendarComponent = () => {
+  const scheduledShifts = useAppSelector(selectScheduledShifts);
+  const scheduledShiftsLoading = useAppSelector(selectScheduledShiftsLoading);
+  const scheduledShiftsError = useAppSelector(selectScheduledShiftsError);
+
   return (
     <>
-      {isPending && <div>Loading...</div>}
-      {isError && <div>Error</div>}
+      {scheduledShiftsLoading && <div>Loading...</div>}
+      {scheduledShiftsError && <div>Error</div>}
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -36,7 +42,7 @@ const ReadyShiftsCalendarComponent = ({ isPending, isError, data }: Props) => {
         locale="pl"
         weekNumberCalculation={"ISO"}
         height="100%"
-        events={data}
+        events={scheduledShifts}
       ></FullCalendar>
     </>
   );
