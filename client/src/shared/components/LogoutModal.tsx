@@ -1,18 +1,19 @@
 import { Button, Modal } from "react-bootstrap";
+import {selectUser} from "../../redux/slice/userSlice.ts";
+import {useAppSelector} from "../../redux/hooks.ts";
 
 interface Props {
   logoutModal: boolean;
   setLogoutModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleLogout: () => void;
-  user: User;
 }
 
 const LogoutModal = ({
   logoutModal,
   setLogoutModal,
   handleLogout,
-  user,
 }: Props) => {
+  const user = useAppSelector(selectUser);
   return (
     <Modal
       show={logoutModal}
@@ -24,8 +25,8 @@ const LogoutModal = ({
         <Modal.Title>Potwierdzenie</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Czy na pewno chcesz się wylogować?</p>
-        {user.isAdmin && <p>Wszystkie niezapisane zmiany zostaną utracone.</p>}
+        <div className="text-center"><p>Czy na pewno chcesz się wylogować?</p>
+          {user.isAdmin && <p>Wszystkie niezapisane zmiany zostaną utracone.</p>}</div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleLogout}>

@@ -4,32 +4,33 @@ import {
 import { Gear, InfoCircle } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import LogoutModal from '../../../shared/components/LogoutModal.tsx';
-import { selectUser } from '../../../redux/slice/userSlice.ts';
+import {logout, selectUser} from '../../../redux/slice/userSlice.ts';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { UserData } from '../../../App.tsx';
 import { setScheduledShifts } from '../../../redux/slice/calendarSlice.ts';
+import {useNavigate} from "react-router-dom";
 
 interface Props {
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   calendarToggle: boolean;
-  saveShiftsMutation: any;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>;
 }
 function NavbarComponent({
   setCalendarToggle,
   calendarToggle,
-  saveShiftsMutation,
   setShowModal,
   setShowCanvas,
 }: Props) {
   const user: UserData = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [logoutModal, setLogoutModal] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    dispatch(logout());
+    navigate('/');
     setLogoutModal(false);
     setCalendarToggle(true);
   };
@@ -69,7 +70,7 @@ function NavbarComponent({
               Wyloguj
             </a>
           </Navbar.Text>
-          {saveShiftsMutation && (
+          {user.isAdmin && (
             <Button
               className="mx-4"
               onClick={() => setShowModal!(true)}
@@ -87,7 +88,6 @@ function NavbarComponent({
         logoutModal={logoutModal}
         setLogoutModal={setLogoutModal}
         handleLogout={handleLogout}
-        user={user}
       />
     </Navbar>
   );

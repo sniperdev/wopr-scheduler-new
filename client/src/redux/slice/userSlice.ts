@@ -54,7 +54,25 @@ export const getUser = createAsyncThunk(
 const userReducer = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.user = {
+        jwt: '',
+        data: {
+          id: null,
+          name: '',
+          surname: '',
+          email: '',
+          phone: 0,
+          isAdmin: true,
+          createdAt: '',
+          updatedAt: '',
+          company_id: 0,
+        },
+      };
+      localStorage.removeItem('token');
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(getUser.pending, (state) => ({
@@ -74,6 +92,8 @@ const userReducer = createSlice({
       }));
   },
 });
+
+export const { logout } = userReducer.actions;
 
 export const selectUser = (state: { user: UserState }) => state.user.user.data;
 export const selectIsAdmin = (state: { user: UserState }) => state.user.user.data.isAdmin;

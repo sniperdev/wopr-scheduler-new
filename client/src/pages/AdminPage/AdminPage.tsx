@@ -1,22 +1,16 @@
 import React, {
   lazy, Suspense, useEffect, useState,
 } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import NavbarComponent from '../HomePage/components/NavbarComponent.tsx';
 import AdminCalendarComponent from './components/AdminCalendarComponent.tsx';
 import './AdminPage.css';
 import ShiftListComponent from './components/ShiftListComponent.tsx';
-import { AdminShiftItem } from '../../utils/interfaces/AdminShiftItem.ts';
 import ReadyShiftsCalendarComponent from '../HomePage/components/ReadyShiftsCalendarComponent.tsx';
 import HelpOffcanvasComponent from '../../shared/components/HelpOffcanvasComponent.tsx';
 import { UserData } from '../../App.tsx';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts';
 import { getUser } from '../../redux/slice/userSlice.ts';
 import {
-  CalendarState,
-  selectAdminShifts,
-  selectScheduledShifts,
   selectScheduledShiftsError, selectScheduledShiftsLoading,
 } from '../../redux/slice/calendarSlice.ts';
 
@@ -34,12 +28,6 @@ function AdminPage({ user, calendarToggle, setCalendarToggle }: Props) {
   const scheduledShiftsError = useAppSelector(selectScheduledShiftsError);
   const scheduledShiftsLoading = useAppSelector(selectScheduledShiftsLoading);
 
-  const listEvents = useAppSelector(selectAdminShifts);
-  // const [listEvents, setListEvents] = useState<AdminShiftItem[]>([]);
-
-  const calendarEvents = useAppSelector(selectScheduledShifts);
-  // const [calendarEvents, setCalendarEvents] = useState<AdminShiftItem[]>([]);
-
   const [showModal, setShowModal] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
 
@@ -54,8 +42,6 @@ function AdminPage({ user, calendarToggle, setCalendarToggle }: Props) {
       <NavbarComponent
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
-        saveShiftsMutation={null}
-        // saveShiftsMutation={saveShiftsMutation}
         setShowModal={setShowModal}
         setShowCanvas={setShowCanvas}
       />
