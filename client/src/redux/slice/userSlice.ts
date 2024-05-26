@@ -84,5 +84,6 @@ const userReducer = createSlice({
 export const selectUser = (state: { user: UserState }) => state.user.user.data;
 export const selectIsAdmin = (state: { user: UserState }) =>
   state.user.user.data.isAdmin;
-export const selectToken = (state: { user: UserState }) => state.user.user?.jwt;
+export const selectCompanyId = (state: { user: UserState }) => state.user.user.data.company_id;
+export const selectToken = (state: { user: UserState }) => state.user.user.jwt;
 export default userReducer.reducer;

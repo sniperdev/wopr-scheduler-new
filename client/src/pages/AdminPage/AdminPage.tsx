@@ -11,6 +11,7 @@ import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasCompone
 import { UserData } from "../../App.tsx";
 import { useAppDispatch } from "../../redux/hooks.ts";
 import { getUser } from "../../redux/slice/userSlice.ts";
+import {getCalendar} from "../../redux/slice/calendarSlice.ts";
 
 interface Props {
   user: UserData;
@@ -34,6 +35,7 @@ const AdminPage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
   //TESTOWO
   useEffect(() => {
     dispatch(getUser({ email: "wrona@gmail.com", password: "12345678" }));
+    dispatch(getCalendar)
   }, []);
 
   const UserShiftListMutation = useMutation({
