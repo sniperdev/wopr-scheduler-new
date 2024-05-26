@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import SignInFormComponent from "./SignInFormComponent.tsx";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks.ts";
-import { getUser, selectIsAdmin } from "../../../../redux/slice/userSlice.ts";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import SignInFormComponent from './SignInFormComponent.tsx';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import { getUser, selectIsAdmin } from '../../../../redux/slice/userSlice.ts';
 
 interface Props {
   changeLoginForm: () => void;
@@ -19,12 +19,11 @@ const SignInFormContainer: React.FC<Props> = ({ changeLoginForm }: Props) => {
   const isAdmin = useAppSelector(selectIsAdmin);
 
   const [formData, setFormData] = useState<LoginData>({
-    email: "wrona@gmail.com",
-    password: "12345678",
+    email: 'wrona@gmail.com',
+    password: '12345678',
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,15 +33,13 @@ const SignInFormContainer: React.FC<Props> = ({ changeLoginForm }: Props) => {
   };
 
   return (
-    <>
-      <SignInFormComponent
-        formData={formData}
-        handleInputChange={handleInputChange}
-        handleFormSubmit={handleFormSubmit}
+    <SignInFormComponent
+      formData={formData}
+      handleInputChange={handleInputChange}
+      handleFormSubmit={handleFormSubmit}
         // loginMutation={loginMutation}
-        changeLoginForm={changeLoginForm}
-      />
-    </>
+      changeLoginForm={changeLoginForm}
+    />
   );
 };
 

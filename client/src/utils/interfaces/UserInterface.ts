@@ -1,7 +1,7 @@
 export interface User {
   jwt: string;
   data: {
-    id: number;
+    id: number | null;
     name: string;
     surname: string;
     email: string;

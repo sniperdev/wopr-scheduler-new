@@ -1,17 +1,17 @@
-import "./HomePage.css";
+import './HomePage.css';
 
-import NavbarComponent from "./components/NavbarComponent.tsx";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import AddDateModal from "./components/AddDateModal.tsx";
-import { useState } from "react";
-import { DateClickArg, EventClickArg } from "fullcalendar";
-import CalendarComponent from "./components/CalendarComponent.tsx";
-import ReadyShiftsCalendarComponent from "./components/ReadyShiftsCalendarComponent.tsx";
-import HelpOffcanvasComponent from "../../shared/components/HelpOffcanvasComponent.tsx";
-import RemoveDateModal from "./components/RemoveDateModal.tsx";
-import { EventImpl } from "@fullcalendar/core/internal";
-import { UserData } from "../../App.tsx";
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useState } from 'react';
+import { DateClickArg, EventClickArg } from 'fullcalendar';
+import { EventImpl } from '@fullcalendar/core/internal';
+import NavbarComponent from './components/NavbarComponent.tsx';
+import AddDateModal from './components/AddDateModal.tsx';
+import CalendarComponent from './components/CalendarComponent.tsx';
+import ReadyShiftsCalendarComponent from './components/ReadyShiftsCalendarComponent.tsx';
+import HelpOffcanvasComponent from '../../shared/components/HelpOffcanvasComponent.tsx';
+import RemoveDateModal from './components/RemoveDateModal.tsx';
+import { UserData } from '../../App.tsx';
 
 interface Props {
   user: UserData;
@@ -19,8 +19,8 @@ interface Props {
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
-  const [selectedDate, setSelectedDate] = useState<string>("");
+function HomePage({ user, calendarToggle, setCalendarToggle }: Props) {
+  const [selectedDate, setSelectedDate] = useState<string>('');
   const [showAddDateModal, setShowAddDateModal] = useState(false);
   const [showRemoveDateModal, setShowRemoveDateModal] = useState(false);
   const [clickedEvent, setClickedEvent] = useState<EventImpl>();
@@ -32,13 +32,13 @@ const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
     data: userShiftsData,
     refetch: refetchUserShifts,
   } = useQuery({
-    queryKey: ["userShifts", user.id],
+    queryKey: ['userShifts', user.id],
     queryFn: async () => {
       const response = await axios.get(
-        "http://localhost:3000/UsersWorkShifts/" + user.id,
+        `http://localhost:3000/UsersWorkShifts/${user.id}`,
         {
           headers: {
-            "auth-token": `${localStorage.getItem("token")}`,
+            'auth-token': `${localStorage.getItem('token')}`,
           },
         },
       );
@@ -51,13 +51,13 @@ const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
     isError: isReadyShiftsError,
     data: readyShiftsData,
   } = useQuery({
-    queryKey: ["readyShifts", user.company_id],
+    queryKey: ['readyShifts', user.company_id],
     queryFn: async () => {
       const response = await axios.get(
-        "http://localhost:3000/ScheduledWorkShifts/" + user.company_id,
+        `http://localhost:3000/ScheduledWorkShifts/${user.company_id}`,
         {
           headers: {
-            "auth-token": `${localStorage.getItem("token")}`,
+            'auth-token': `${localStorage.getItem('token')}`,
           },
         },
       );
@@ -73,7 +73,7 @@ const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
   const handleCloseModal = () => {
     refetchUserShifts();
     setShowAddDateModal(false);
-    setSelectedDate("");
+    setSelectedDate('');
   };
 
   const handleRemoveEvent = (clickedEvent: EventClickArg) => {
@@ -96,7 +96,7 @@ const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
         saveShiftsMutation={undefined}
         setShowModal={undefined}
         setShowCanvas={setShowCanvas}
-      ></NavbarComponent>
+      />
       {isUserShiftsPending && <p>Pobieranie danych kalendarza...</p>}
       {isUserShiftsError && <p>Wystąpił błąd</p>}
       <div className="mx-2 mt-2 calendar">
@@ -132,6 +132,6 @@ const HomePage = ({ user, calendarToggle, setCalendarToggle }: Props) => {
       />
     </div>
   );
-};
+}
 
 export default HomePage;

@@ -1,34 +1,36 @@
-import "./App.css";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { lazy, ReactNode, Suspense, useState } from "react";
-import { useAppSelector } from "./redux/hooks.ts";
-import { selectUser } from "./redux/slice/userSlice.ts";
-import { User } from "./utils/interfaces/UserInterface.ts";
+import './App.css';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import {
+  lazy, ReactNode, Suspense, useState,
+} from 'react';
+import { useAppSelector } from './redux/hooks.ts';
+import { selectUser } from './redux/slice/userSlice.ts';
+import { User } from './utils/interfaces/UserInterface.ts';
 
-const LazyAuthPage = lazy(() => import("./pages/AuthPage/AuthPage.tsx"));
-const LazyHomePage = lazy(() => import("./pages/HomePage/HomePage.tsx"));
-const LazyAdminPage = lazy(() => import("./pages/AdminPage/AdminPage.tsx"));
+const LazyAuthPage = lazy(() => import('./pages/AuthPage/AuthPage.tsx'));
+const LazyHomePage = lazy(() => import('./pages/HomePage/HomePage.tsx'));
+const LazyAdminPage = lazy(() => import('./pages/AdminPage/AdminPage.tsx'));
 
-export type UserData = Pick<User, "data">["data"];
+export type UserData = Pick<User, 'data'>['data'];
 
 interface ProtectedRouteProps {
   user: UserData;
   children: ReactNode;
 }
 
-const ProtectedRouteApp = ({ user, children }: ProtectedRouteProps) => {
+function ProtectedRouteApp({ user, children }: ProtectedRouteProps) {
   if (!user) {
     return <Navigate to="/" replace />;
   }
   return children;
-};
+}
 
-const ProtectedRouteAdmin = ({ user, children }: ProtectedRouteProps) => {
+function ProtectedRouteAdmin({ user, children }: ProtectedRouteProps) {
   if (!user?.isAdmin) {
     return <Navigate to="/" replace />;
   }
   return children;
-};
+}
 
 function App() {
   // const [user, setUser] = useState<User>();
@@ -39,7 +41,7 @@ function App() {
     <Routes>
       <Route
         path="/app"
-        element={
+        element={(
           <ProtectedRouteApp user={user}>
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyHomePage
@@ -49,11 +51,11 @@ function App() {
               />
             </Suspense>
           </ProtectedRouteApp>
-        }
-      ></Route>
+        )}
+      />
       <Route
         path="/admin"
-        element={
+        element={(
           <ProtectedRouteAdmin user={user}>
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyAdminPage
@@ -63,16 +65,16 @@ function App() {
               />
             </Suspense>
           </ProtectedRouteAdmin>
-        }
-      ></Route>
+        )}
+      />
       <Route
         path="/"
-        element={
+        element={(
           <Suspense fallback={<h1>Ładowanie...</h1>}>
             <LazyAuthPage />
           </Suspense>
-        }
-      ></Route>
+        )}
+      />
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/register" element={<Navigate to="/" replace />} />
     </Routes>
