@@ -1,10 +1,10 @@
 import './App.css';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import {
-  lazy, ReactNode, Suspense, useState,
+  lazy, ReactNode, Suspense, useEffect, useState,
 } from 'react';
 import { useAppSelector } from './redux/hooks.ts';
-import { selectUser } from './redux/slice/userSlice.ts';
+import {selectIsAdmin, selectUser} from './redux/slice/userSlice.ts';
 import { User } from './utils/interfaces/UserInterface.ts';
 
 const LazyAuthPage = lazy(() => import('./pages/AuthPage/AuthPage.tsx'));
@@ -33,9 +33,11 @@ function ProtectedRouteAdmin({ user, children }: ProtectedRouteProps) {
 }
 
 function App() {
-  // const [user, setUser] = useState<User>();
   const user = useAppSelector(selectUser);
+  const isAdmin = useAppSelector(selectIsAdmin);
+
   const [calendarToggle, setCalendarToggle] = useState<boolean>(true);
+
 
   return (
     <Routes>
@@ -71,12 +73,12 @@ function App() {
         path="/"
         element={(
           <Suspense fallback={<h1>Ładowanie...</h1>}>
-            <LazyAuthPage />
+            <LazyAuthPage/>
           </Suspense>
         )}
       />
-      <Route path="/login" element={<Navigate to="/" replace />} />
-      <Route path="/register" element={<Navigate to="/" replace />} />
+      <Route path="/login" element={<Navigate to="/" replace/>}/>
+      <Route path="/register" element={<Navigate to="/" replace/>}/>
     </Routes>
   );
 }

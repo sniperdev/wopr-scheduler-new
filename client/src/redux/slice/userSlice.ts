@@ -21,7 +21,7 @@ const initialState: UserState = {
       surname: '',
       email: '',
       phone: 0,
-      isAdmin: true,
+      isAdmin: false,
       createdAt: '',
       updatedAt: '',
       company_id: 0,

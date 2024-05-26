@@ -1,8 +1,10 @@
-import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { getUser } from '../slice/userSlice.ts';
+import {createListenerMiddleware, isAnyOf} from '@reduxjs/toolkit';
+import {getUser} from '../slice/userSlice.ts';
 import { getAdminShifts, getScheduledShifts, setScheduledShifts } from '../slice/calendarSlice.ts';
 
+
 export const listenerMiddleware1 = createListenerMiddleware();
+export const listenerMiddleware2 = createListenerMiddleware();
 
 listenerMiddleware1.startListening({
   matcher: isAnyOf(getUser.fulfilled),
@@ -12,11 +14,10 @@ listenerMiddleware1.startListening({
   },
 });
 
-export const listenerMiddleware2 = createListenerMiddleware();
-
 listenerMiddleware2.startListening({
   matcher: isAnyOf(setScheduledShifts.fulfilled),
   effect: async (_action, listenerApi) => {
     await listenerApi.dispatch(getScheduledShifts());
   },
 });
+
