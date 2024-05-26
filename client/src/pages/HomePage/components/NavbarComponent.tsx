@@ -1,30 +1,35 @@
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { Gear, InfoCircle } from "react-bootstrap-icons";
-import LogoutModal from "../../../shared/components/LogoutModal.tsx";
-import { useState } from "react";
-import { UserData } from "../../../App.tsx";
+import {
+  Button, Container, Nav, Navbar,
+} from 'react-bootstrap';
+import { Gear, InfoCircle } from 'react-bootstrap-icons';
+import { useState } from 'react';
+import LogoutModal from '../../../shared/components/LogoutModal.tsx';
+import { selectUser } from '../../../redux/slice/userSlice.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
+import { UserData } from '../../../App.tsx';
+import { setScheduledShifts } from '../../../redux/slice/calendarSlice.ts';
 
 interface Props {
-  user: UserData;
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   calendarToggle: boolean;
   saveShiftsMutation: any;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const NavbarComponent = ({
-  user,
+function NavbarComponent({
   setCalendarToggle,
   calendarToggle,
   saveShiftsMutation,
   setShowModal,
   setShowCanvas,
-}: Props) => {
+}: Props) {
+  const user: UserData = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+
   const [logoutModal, setLogoutModal] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    // setUser(undefined);
+    localStorage.removeItem('token');
     setLogoutModal(false);
     setCalendarToggle(true);
   };
@@ -38,12 +43,12 @@ const NavbarComponent = ({
               onClick={() => setCalendarToggle(true)}
               active={calendarToggle}
             >
-              {user.isAdmin ? "Edycja grafiku" : "Mój grafik"}
+              {user.isAdmin ? 'Edycja grafiku' : 'Mój grafik'}
             </Button>
-            {saveShiftsMutation && (
+            {user.isAdmin && (
               <Button
                 variant="danger"
-                onClick={saveShiftsMutation.mutate}
+                onClick={() => dispatch(setScheduledShifts())}
                 className="me-5"
               >
                 Zapisz grafik
@@ -57,7 +62,9 @@ const NavbarComponent = ({
             </Button>
           </Nav>
           <Navbar.Text>
-            Zalogowany jako: {`${user.name} ${user.surname}`}
+            Zalogowany jako:
+            {' '}
+            {`${user.name} ${user.surname}`}
             <a href="#" onClick={() => setLogoutModal(true)} className="px-2">
               Wyloguj
             </a>
@@ -81,9 +88,9 @@ const NavbarComponent = ({
         setLogoutModal={setLogoutModal}
         handleLogout={handleLogout}
         user={user}
-      ></LogoutModal>
+      />
     </Navbar>
   );
-};
+}
 
 export default NavbarComponent;
