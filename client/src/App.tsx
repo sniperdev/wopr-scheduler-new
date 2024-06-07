@@ -1,7 +1,7 @@
 import './App.css';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import {
-  lazy, ReactNode, Suspense, useEffect, useState,
+  lazy, ReactNode, Suspense, useState,
 } from 'react';
 import { useAppSelector } from './redux/hooks.ts';
 import {selectIsAdmin, selectUser} from './redux/slice/userSlice.ts';
@@ -14,21 +14,21 @@ const LazyAdminPage = lazy(() => import('./pages/AdminPage/AdminPage.tsx'));
 export type UserData = Pick<User, 'data'>['data'];
 
 interface ProtectedRouteProps {
-  user: UserData;
+  isAdmin: boolean;
   children: ReactNode;
 }
 
-function ProtectedRouteApp({ user, children }: ProtectedRouteProps) {
-  if (!user) {
+function ProtectedRouteApp({ isAdmin, children }: ProtectedRouteProps) {
+  if (!isAdmin) {
     return <Navigate to="/" replace />;
   }
   return children;
 }
 
-function ProtectedRouteAdmin({ user, children }: ProtectedRouteProps) {
-  if (!user?.isAdmin) {
-    return <Navigate to="/" replace />;
-  }
+function ProtectedRouteAdmin({ isAdmin, children }: ProtectedRouteProps) {
+  // if (isAdmin) {
+  //   return <Navigate to="/" replace />;
+  // }
   return children;
 }
 
@@ -44,7 +44,7 @@ function App() {
       <Route
         path="/app"
         element={(
-          <ProtectedRouteApp user={user}>
+          <ProtectedRouteApp isAdmin={isAdmin}>
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyHomePage
                 user={user!}
@@ -58,7 +58,7 @@ function App() {
       <Route
         path="/admin"
         element={(
-          <ProtectedRouteAdmin user={user}>
+          <ProtectedRouteAdmin isAdmin={isAdmin}>
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyAdminPage
                 user={user!}

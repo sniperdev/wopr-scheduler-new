@@ -95,7 +95,7 @@ export const setScheduledShifts = createAsyncThunk(
     const companyId = selectCompanyId(getState() as RootState);
     const token = selectToken(getState() as RootState);
     const events = selectScheduledShifts(getState() as RootState);
-    const response = await fetch('http://localhost:3000/createScheduledWorkShifts/', {
+    const response = await fetch('http://localhost:3000/AdminUsersWorkShifts/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
