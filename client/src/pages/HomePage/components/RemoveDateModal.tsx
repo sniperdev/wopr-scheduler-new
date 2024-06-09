@@ -49,7 +49,7 @@ const RemoveDateModal = ({
     if (!clickedEvent) return;
     const date = clickedEvent.startStr.slice(0, 16);
     const clickedElement = userShiftsData.find(
-      (shift: Shift) =>
+      (shift) =>
         shift.title === clickedEvent.title && date === shift.start,
     );
     clickedElement && removeDateMutation.mutate(clickedElement.id);

@@ -63,7 +63,10 @@ function HomePage({ calendarToggle, setCalendarToggle }: Props) {
         calendarToggle={calendarToggle}
         setShowCanvas={setShowCanvas}
       />
-      {userShiftsLoading && <p>Pobieranie danych kalendarza...</p>}
+      {userShiftsLoading &&
+        <div className="position-absolute top-50 start-50 translate-middle bg-white w-50 h-25 z-1">
+          <p className="fs-1 fw-bold">Pobieranie danych kalendarza...</p>
+        </div>}
       {userShiftsError && <p>Wystąpił błąd</p>}
       <div className="mx-2 mt-2 calendar">
         {calendarToggle ? (
