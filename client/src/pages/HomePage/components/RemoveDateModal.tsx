@@ -5,6 +5,7 @@ import { EventImpl } from "@fullcalendar/core/internal";
 import { useEffect } from "react";
 import {useAppSelector} from "../../../redux/hooks.ts";
 import {selectUserShifts} from "../../../redux/slice/calendarSlice.ts";
+import {selectToken} from "../../../redux/slice/userSlice.ts";
 
 interface Props {
   showModal: boolean;
@@ -23,6 +24,7 @@ const RemoveDateModal = ({
   clickedEvent,
   handleRemoveEventClose,
 }: Props) => {
+  const token = useAppSelector(selectToken);
   const userShiftsData = useAppSelector(selectUserShifts);
   const removeDateMutation = useMutation({
     mutationFn: async (id: number) => {
@@ -30,7 +32,7 @@ const RemoveDateModal = ({
         "http://localhost:3000/UsersWorkShifts/" + id,
         {
           headers: {
-            "auth-token": `${localStorage.getItem("token")}`,
+            "auth-token": token,
           },
         },
       );
