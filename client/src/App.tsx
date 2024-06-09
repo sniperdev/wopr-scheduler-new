@@ -14,28 +14,28 @@ const LazyAdminPage = lazy(() => import('./pages/AdminPage/AdminPage.tsx'));
 export type UserData = Pick<User, 'data'>['data'];
 
 interface ProtectedRouteProps {
-  isAdmin: boolean;
   children: ReactNode;
 }
 
-function ProtectedRouteApp({ isAdmin, children }: ProtectedRouteProps) {
-  if (!isAdmin) {
+function ProtectedRouteApp({ children }: ProtectedRouteProps) {
+  const isAdmin = useAppSelector(selectIsAdmin);
+  if (isAdmin === null) return <Navigate to="/" replace />;
+  if (isAdmin) {
+    return <Navigate to="/admin" replace />;
+  }
+  return children;
+}
+
+function ProtectedRouteAdmin({ children }: ProtectedRouteProps) {
+  const isAdmin = useAppSelector(selectIsAdmin);
+  if (isAdmin === false || isAdmin === null) {
     return <Navigate to="/" replace />;
   }
   return children;
 }
 
-function ProtectedRouteAdmin({ isAdmin, children }: ProtectedRouteProps) {
-  // if (isAdmin) {
-  //   return <Navigate to="/" replace />;
-  // }
-  return children;
-}
-
 function App() {
   const user = useAppSelector(selectUser);
-  const isAdmin = useAppSelector(selectIsAdmin);
-
   const [calendarToggle, setCalendarToggle] = useState<boolean>(true);
 
 
@@ -44,7 +44,7 @@ function App() {
       <Route
         path="/app"
         element={(
-          <ProtectedRouteApp isAdmin={isAdmin}>
+          <ProtectedRouteApp>
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyHomePage
                 user={user!}
@@ -58,7 +58,7 @@ function App() {
       <Route
         path="/admin"
         element={(
-          <ProtectedRouteAdmin isAdmin={isAdmin}>
+          <ProtectedRouteAdmin>
             <Suspense fallback={<h1>Ładowanie...</h1>}>
               <LazyAdminPage
                 user={user!}

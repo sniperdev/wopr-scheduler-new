@@ -6,7 +6,7 @@ export interface User {
     surname: string;
     email: string;
     phone: number;
-    isAdmin: boolean;
+    isAdmin: boolean | null;
     createdAt: string;
     updatedAt: string;
     company_id: number;
