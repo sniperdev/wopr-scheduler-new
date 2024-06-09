@@ -1,7 +1,4 @@
 import './HomePage.css';
-
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useState } from 'react';
 import { DateClickArg, EventClickArg } from 'fullcalendar';
 import { EventImpl } from '@fullcalendar/core/internal';
@@ -12,6 +9,10 @@ import ReadyShiftsCalendarComponent from './components/ReadyShiftsCalendarCompon
 import HelpOffcanvasComponent from '../../shared/components/HelpOffcanvasComponent.tsx';
 import RemoveDateModal from './components/RemoveDateModal.tsx';
 import { UserData } from '../../App.tsx';
+import {
+  getUserShifts, selectUserShifts, selectUserShiftsError, selectUserShiftsLoading
+} from "../../redux/slice/calendarSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks.ts";
 
 interface Props {
   user: UserData;
@@ -19,51 +20,19 @@ interface Props {
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function HomePage({ user, calendarToggle, setCalendarToggle }: Props) {
+function HomePage({ calendarToggle, setCalendarToggle }: Props) {
+
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [showAddDateModal, setShowAddDateModal] = useState(false);
   const [showRemoveDateModal, setShowRemoveDateModal] = useState(false);
   const [clickedEvent, setClickedEvent] = useState<EventImpl>();
   const [showCanvas, setShowCanvas] = useState(false);
 
-  const {
-    isPending: isUserShiftsPending,
-    isError: isUserShiftsError,
-    data: userShiftsData,
-    refetch: refetchUserShifts,
-  } = useQuery({
-    queryKey: ['userShifts', user.id],
-    queryFn: async () => {
-      const response = await axios.get(
-        `http://localhost:3000/UsersWorkShifts/${user.id}`,
-        {
-          headers: {
-            'auth-token': `${localStorage.getItem('token')}`,
-          },
-        },
-      );
-      return response.data;
-    },
-  });
+  const dispatch = useAppDispatch();
+  const userShifts = useAppSelector(selectUserShifts);
+  const userShiftsLoading = useAppSelector(selectUserShiftsLoading);
+  const userShiftsError = useAppSelector(selectUserShiftsError);
 
-  const {
-    isPending: isReadyShiftsPending,
-    isError: isReadyShiftsError,
-    data: readyShiftsData,
-  } = useQuery({
-    queryKey: ['readyShifts', user.company_id],
-    queryFn: async () => {
-      const response = await axios.get(
-        `http://localhost:3000/ScheduledWorkShifts/${user.company_id}`,
-        {
-          headers: {
-            'auth-token': `${localStorage.getItem('token')}`,
-          },
-        },
-      );
-      return response.data;
-    },
-  });
 
   const handleDateClick = (clickedDate: DateClickArg) => {
     setSelectedDate(clickedDate.dateStr);
@@ -71,7 +40,7 @@ function HomePage({ user, calendarToggle, setCalendarToggle }: Props) {
   };
 
   const handleCloseModal = () => {
-    refetchUserShifts();
+    dispatch(getUserShifts());
     setShowAddDateModal(false);
     setSelectedDate('');
   };
@@ -84,47 +53,38 @@ function HomePage({ user, calendarToggle, setCalendarToggle }: Props) {
 
   const handleRemoveEventClose = () => {
     setShowRemoveDateModal(false);
-    refetchUserShifts();
+    dispatch(getUserShifts());
   };
 
   return (
     <div className="vh-100">
       <NavbarComponent
-        user={user}
         setCalendarToggle={setCalendarToggle}
         calendarToggle={calendarToggle}
-        saveShiftsMutation={undefined}
-        setShowModal={undefined}
         setShowCanvas={setShowCanvas}
       />
-      {isUserShiftsPending && <p>Pobieranie danych kalendarza...</p>}
-      {isUserShiftsError && <p>Wystąpił błąd</p>}
+      {userShiftsLoading && <p>Pobieranie danych kalendarza...</p>}
+      {userShiftsError && <p>Wystąpił błąd</p>}
       <div className="mx-2 mt-2 calendar">
         {calendarToggle ? (
           <CalendarComponent
-            data={userShiftsData}
+            data={userShifts}
             handleDateClick={handleDateClick}
             handleRemoveEvent={handleRemoveEvent}
           />
         ) : (
-          <ReadyShiftsCalendarComponent
-            isPending={isReadyShiftsPending}
-            isError={isReadyShiftsError}
-            data={readyShiftsData}
-          />
+          <ReadyShiftsCalendarComponent/>
         )}
       </div>
       <AddDateModal
         showModal={showAddDateModal}
         handleCloseModal={handleCloseModal}
         selectedDate={selectedDate}
-        user={user}
       />
       <RemoveDateModal
         showModal={showRemoveDateModal}
         clickedEvent={clickedEvent}
         handleRemoveEventClose={handleRemoveEventClose}
-        userShiftsData={userShiftsData}
       />
       <HelpOffcanvasComponent
         showCanvas={showCanvas}

@@ -13,7 +13,7 @@ import {useNavigate} from "react-router-dom";
 interface Props {
   setCalendarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   calendarToggle: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setShowModal?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>;
 }
 function NavbarComponent({

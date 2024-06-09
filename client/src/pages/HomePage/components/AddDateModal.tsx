@@ -2,11 +2,12 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import {selectToken, selectUser} from "../../../redux/slice/userSlice.ts";
+import {useAppSelector} from "../../../redux/hooks.ts";
 interface Props {
   showModal: boolean;
   handleCloseModal: () => void;
   selectedDate: string;
-  user: User;
 }
 
 interface Shift {
@@ -23,18 +24,19 @@ const AddDateModal = ({
   showModal,
   handleCloseModal,
   selectedDate,
-  user,
 }: Props) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const user = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
   const { isError, isSuccess, data } = useQuery({
-    queryKey: ["shifts", user.company_id],
+    queryKey: ["shifts", user.company_id, token],
     queryFn: async () => {
       const response = await axios.get(
-        "http://localhost:3000/Shifts/" + user.company_id,
+        "http://localhost:3000/dictionaries/shifts/" + user.company_id,
         {
           headers: {
-            "auth-token": `${localStorage.getItem("token")}`,
+            "auth-token": token,
           },
         },
       );
@@ -58,7 +60,7 @@ const AddDateModal = ({
         },
         {
           headers: {
-            "auth-token": `${localStorage.getItem("token")}`,
+            "auth-token": token,
           },
         },
       );

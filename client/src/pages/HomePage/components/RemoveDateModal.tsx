@@ -3,12 +3,13 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { EventImpl } from "@fullcalendar/core/internal";
 import { useEffect } from "react";
+import {useAppSelector} from "../../../redux/hooks.ts";
+import {selectUserShifts} from "../../../redux/slice/calendarSlice.ts";
 
 interface Props {
   showModal: boolean;
   clickedEvent: EventImpl | undefined;
   handleRemoveEventClose: () => void;
-  userShiftsData: Shift[];
 }
 interface Shift {
   id: number;
@@ -21,8 +22,8 @@ const RemoveDateModal = ({
   showModal,
   clickedEvent,
   handleRemoveEventClose,
-  userShiftsData,
 }: Props) => {
+  const userShiftsData = useAppSelector(selectUserShifts);
   const removeDateMutation = useMutation({
     mutationFn: async (id: number) => {
       const response = await axios.delete(

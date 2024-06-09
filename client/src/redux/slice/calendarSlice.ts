@@ -1,9 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { selectToken, selectCompanyId } from './userSlice.ts';
+import {selectToken, selectCompanyId, selectUser} from './userSlice.ts';
 import { RootState } from '../store.ts';
 import { AdminShiftItem } from '../../utils/interfaces/AdminShiftItem.ts';
+import {WorkShifts} from "../../utils/interfaces/WorkShiftsInterface.ts";
 
 export interface CalendarState {
+  userShifts: {
+    item: WorkShifts[];
+    loading: boolean;
+    success: boolean;
+    error: string | null;
+  }
   adminShifts: {
     item: AdminShiftItem[];
     loading: boolean;
@@ -24,6 +31,12 @@ export interface CalendarState {
 }
 
 const initialState: CalendarState = {
+  userShifts: {
+    item: [],
+    loading: false,
+    success: false,
+    error: null,
+  },
   adminShifts: {
     item: [],
     loading: false,
@@ -88,6 +101,29 @@ export const getScheduledShifts = createAsyncThunk(
     return result;
   },
 );
+
+export const getUserShifts = createAsyncThunk(
+  'userCalendar/fetchUserShifts',
+  async (_, { getState }) => {
+    const user = selectUser(getState() as RootState);
+    const token = selectToken(getState() as RootState);
+    const response = await fetch(
+      `http://localhost:3000/UsersWorkShifts/${user.id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': token,
+        },
+      },
+    );
+    const result = await response.json();
+    if (response.ok) {
+      localStorage.setItem('token', result.jwt);
+    }
+    return result;
+  }
+)
 
 export const setScheduledShifts = createAsyncThunk(
   'adminCalendar/setScheduledShifts',
@@ -222,7 +258,37 @@ const calendarReducer = createSlice({
           success: false,
           error: action.error?.message || null,
         },
-      }));
+      }))
+
+      .addCase(getUserShifts.pending, (state) => ({
+        ...state,
+        userShifts: {
+          ...state.userShifts,
+          loading: true,
+          success: false,
+          error: null,
+        }
+      }))
+      .addCase(getUserShifts.fulfilled, (state, action) => ({
+        ...state,
+        userShifts: {
+          item: action.payload,
+          loading: false,
+          success: true,
+          error: null,
+        }
+      }))
+      .addCase(getUserShifts.rejected, (state, action) => ({
+        ...state,
+        userShifts: {
+          ...state.userShifts,
+          loading: false,
+          success: false,
+          error: action.error?.message || null,
+        }
+      }))
+
+
   },
 });
 
@@ -234,6 +300,11 @@ export const selectAdminShifts = (state: { adminCalendar: CalendarState }) => st
 export const selectAdminShiftsLoading = (state: { adminCalendar: CalendarState }) => state.adminCalendar.adminShifts.loading;
 export const selectAdminShiftsSuccess = (state: { adminCalendar: CalendarState }) => state.adminCalendar.adminShifts.success;
 export const selectAdminShiftsError = (state: { adminCalendar: CalendarState }) => state.adminCalendar.adminShifts.error;
+
+export const selectUserShifts = (state: { adminCalendar: CalendarState }) => state.adminCalendar.userShifts.item;
+export const selectUserShiftsLoading = (state: { adminCalendar: CalendarState }) => state.adminCalendar.userShifts.loading;
+export const selectUserShiftsSuccess = (state: { adminCalendar: CalendarState }) => state.adminCalendar.userShifts.success;
+export const selectUserShiftsError = (state: { adminCalendar: CalendarState }) => state.adminCalendar.userShifts.error;
 
 export const selectScheduledShifts = (state: { adminCalendar: CalendarState }) => state.adminCalendar.scheduledShifts.item;
 export const selectScheduledShiftsLoading = (state: { adminCalendar: CalendarState }) => state.adminCalendar.scheduledShifts.loading;

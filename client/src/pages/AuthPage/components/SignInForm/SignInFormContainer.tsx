@@ -18,10 +18,10 @@ const SignInFormContainer: React.FC<Props> = ({ changeLoginForm }: Props) => {
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState<LoginData>({
-    // email: 'kurek@gmail.com',
-    // password: 'vu7mj8wd',
-    email: 'wrona@gmail.com',
-    password: '12345678',
+    email: 'kurek@gmail.com',
+    password: 'vu7mj8wd',
+    // email: 'wrona@gmail.com',
+    // password: '12345678',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -1,6 +1,6 @@
 import {createListenerMiddleware, isAnyOf} from '@reduxjs/toolkit';
 import {getUser} from '../slice/userSlice.ts';
-import { getAdminShifts, getScheduledShifts, setScheduledShifts } from '../slice/calendarSlice.ts';
+import {getAdminShifts, getScheduledShifts, getUserShifts, setScheduledShifts} from '../slice/calendarSlice.ts';
 
 
 export const listenerMiddleware1 = createListenerMiddleware();
@@ -11,6 +11,7 @@ listenerMiddleware1.startListening({
   effect: async (_action, listenerApi) => {
     await listenerApi.dispatch(getAdminShifts());
     await listenerApi.dispatch(getScheduledShifts());
+    await listenerApi.dispatch(getUserShifts());
   },
 });
 
